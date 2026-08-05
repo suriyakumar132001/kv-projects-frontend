@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import payrollService from "../../services/payrollService";
 
@@ -9,6 +11,9 @@ import "./Payroll.css";
 
 const GeneratePayroll = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
 
@@ -125,7 +130,7 @@ const GeneratePayroll = () => {
 
       toast.success("Payroll Generated Successfully");
 
-      navigate("/owner/payroll");
+      navigate(`/${role}/payroll`);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -366,7 +371,7 @@ const GeneratePayroll = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/owner/payroll")}
+              onClick={() => navigate(`/${role}/payroll`)}
             >
               Cancel
             </button>

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 
 import EmployeeToolbar from "../../components/employee/EmployeeToolbar";
@@ -13,6 +15,9 @@ import "./Employee.css";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -166,16 +171,16 @@ const EmployeeList = () => {
         status={status}
         setStatus={handleStatusChange}
         onSearch={handleSearch}
-        onAddEmployee={() => navigate("/owner/employees/add")}
+        onAddEmployee={() => navigate(`/${role}/employees/add`)}
       />
 
       <EmployeeTable
         employees={employees}
         onView={(emp) =>
-          navigate(`/owner/employees/view/${emp._id}`)
+          navigate(`/${role}/employees/view/${emp._id}`)
         }
         onEdit={(emp) =>
-          navigate(`/owner/employees/edit/${emp._id}`)
+          navigate(`/${role}/employees/edit/${emp._id}`)
         }
         onDelete={(emp) => openDeleteModal(emp)}
       />

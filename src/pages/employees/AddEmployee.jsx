@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import EmployeeForm from "../../components/employee/EmployeeForm";
 
@@ -11,6 +13,9 @@ import "./Employee.css";
 const AddEmployee = () => {
 
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
 
   const [loading,setLoading] = useState(false);
@@ -67,7 +72,7 @@ const AddEmployee = () => {
       );
 
 
-      navigate("/owner/employees");
+      navigate(`/${role}/employees`);
 
 
 

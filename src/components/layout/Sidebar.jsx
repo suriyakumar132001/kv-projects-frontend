@@ -166,7 +166,7 @@ const Sidebar = () => {
       {
         name: "Leave",
         icon: <FaCalendarAlt />,
-        path: "/admin/leave",
+        path: "/admin/leaves",
       },
 
       {
@@ -238,7 +238,7 @@ const Sidebar = () => {
       {
         name: "Leave",
         icon: <FaCalendarAlt />,
-        path: "/hr/leave",
+        path: "/hr/leaves",
       },
 
       {

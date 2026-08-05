@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import attendanceService from "../../services/attendanceService";
 
 import "./Attendance.css";
@@ -9,6 +11,9 @@ import "./Attendance.css";
 const AttendanceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [attendance, setAttendance] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,7 +32,7 @@ const AttendanceDetails = () => {
 
       if (!record) {
         toast.error("Attendance record not found");
-        navigate("/owner/attendance");
+        navigate(`/${role}/attendance`);
         return;
       }
 
@@ -116,7 +121,7 @@ const AttendanceDetails = () => {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/owner/attendance")}
+          onClick={() => navigate(`/${role}/attendance`)}
         >
           Back
         </button>

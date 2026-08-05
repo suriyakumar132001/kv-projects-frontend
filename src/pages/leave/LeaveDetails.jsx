@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import leaveService from "../../services/leaveService";
 
 import "./Leave.css";
@@ -9,6 +11,9 @@ import "./Leave.css";
 const LeaveDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [leave, setLeave] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -149,7 +154,7 @@ const LeaveDetails = () => {
 
           <button
             className="cancel-btn"
-            onClick={() => navigate("/owner/leave")}
+            onClick={() => navigate(`/${role}/leaves`)}
           >
             Back
           </button>
@@ -175,7 +180,7 @@ const LeaveDetails = () => {
           <button
             className="save-btn"
             onClick={() =>
-              navigate(`/owner/leaves/edit/${leave._id}`)
+              navigate(`/${role}/leaves/edit/${leave._id}`)
             }
           >
             Edit

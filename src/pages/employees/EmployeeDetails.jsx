@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import "./EmployeeDetails.css";
 
 const EmployeeDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +53,7 @@ const EmployeeDetails = () => {
         <button
           className="edit-btn"
           onClick={() =>
-            navigate(`/owner/employees/edit/${employee._id}`)
+            navigate(`/${role}/employees/edit/${employee._id}`)
           }
         >
           Edit Employee

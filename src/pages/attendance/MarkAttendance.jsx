@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import attendanceService from "../../services/attendanceService";
 import employeeService from "../../services/employeeService";
 
@@ -9,6 +11,9 @@ import "./Attendance.css";
 
 const MarkAttendance = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
 
@@ -57,7 +62,7 @@ const MarkAttendance = () => {
 
       toast.success("Attendance marked successfully");
 
-      navigate("/owner/attendance");
+      navigate(`/${role}/attendance`);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -120,7 +125,7 @@ const MarkAttendance = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/owner/attendance")}
+              onClick={() => navigate(`/${role}/attendance`)}
             >
               Cancel
             </button>

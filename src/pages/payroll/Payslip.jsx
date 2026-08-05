@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import payrollService from "../../services/payrollService";
 
 import "./Payroll.css";
@@ -9,6 +11,9 @@ import "./Payroll.css";
 const Payslip = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [payroll, setPayroll] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +36,7 @@ const Payslip = () => {
 
       toast.error("Failed to load payslip");
 
-      navigate("/owner/payroll");
+      navigate(`/${role}/payroll`);
 
     } finally {
 
@@ -368,7 +373,7 @@ const Payslip = () => {
 
           <button
             className="back-btn"
-            onClick={() => navigate("/owner/payroll")}
+            onClick={() => navigate(`/${role}/payroll`)}
           >
             Back
           </button>

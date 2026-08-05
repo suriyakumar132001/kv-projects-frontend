@@ -24,6 +24,7 @@ import EmployeeDetails from "./pages/employees/EmployeeDetails";
 // ================= ATTENDANCE =================
 import AttendanceList from "./pages/attendance/AttendanceList";
 import MarkAttendance from "./pages/attendance/MarkAttendance";
+import AttendanceDetails from "./pages/attendance/AttendanceDetails";
 
 // ================= LEAVE =================
 import LeaveList from "./pages/leave/LeaveList";
@@ -101,6 +102,8 @@ OWNER ROUTES
 
           <Route path="attendance/mark" element={<MarkAttendance />} />
 
+          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
           {/* Leave */}
 
           <Route path="leaves" element={<LeaveList />} />
@@ -168,7 +171,71 @@ ADMIN ROUTES
             </ProtectedRoute>
           }
         >
-          <Route index element={<h1>Admin Dashboard</h1>} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* Employee */}
+
+          <Route path="employees" element={<EmployeeList />} />
+
+          <Route path="employees/add" element={<AddEmployee />} />
+
+          <Route path="employees/edit/:id" element={<EditEmployee />} />
+
+          <Route path="employees/view/:id" element={<EmployeeDetails />} />
+
+          {/* Attendance */}
+
+          <Route path="attendance" element={<AttendanceList />} />
+
+          <Route path="attendance/mark" element={<MarkAttendance />} />
+
+          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
+          {/* Leave */}
+
+          <Route path="leaves" element={<LeaveList />} />
+
+          <Route path="leaves/apply" element={<ApplyLeave />} />
+
+          <Route path="leaves/view/:id" element={<LeaveDetails />} />
+
+          <Route path="leaves/edit/:id" element={<EditLeave />} />
+
+          {/* Payroll */}
+
+          <Route path="payroll" element={<PayrollList />} />
+
+          <Route path="payroll/generate" element={<GeneratePayroll />} />
+
+          <Route path="payroll/edit/:id" element={<EditPayroll />} />
+
+          <Route path="payroll/view/:id" element={<PayrollDetails />} />
+
+          <Route path="payroll/payslip/:id" element={<Payslip />} />
+
+          {/* Projects */}
+
+          <Route path="projects" element={<ProjectList />} />
+
+          <Route path="projects/dashboard" element={<ProjectDashboard />} />
+
+          <Route path="projects/create" element={<CreateProject />} />
+
+          <Route path="projects/view/:id" element={<ProjectDetails />} />
+
+          <Route path="projects/edit/:id" element={<EditProject />} />
+
+          {/* Clients */}
+
+          <Route path="clients" element={<ClientList />} />
+
+          <Route path="clients/create" element={<CreateClient />} />
+
+          <Route path="clients/view/:id" element={<ClientDetails />} />
+
+          <Route path="clients/edit/:id" element={<EditClient />} />
         </Route>
 
         {/* =====================================================
@@ -183,7 +250,49 @@ HR ROUTES
             </ProtectedRoute>
           }
         >
-          <Route index element={<h1>HR Dashboard</h1>} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* Employee */}
+
+          <Route path="employees" element={<EmployeeList />} />
+
+          <Route path="employees/add" element={<AddEmployee />} />
+
+          <Route path="employees/edit/:id" element={<EditEmployee />} />
+
+          <Route path="employees/view/:id" element={<EmployeeDetails />} />
+
+          {/* Attendance */}
+
+          <Route path="attendance" element={<AttendanceList />} />
+
+          <Route path="attendance/mark" element={<MarkAttendance />} />
+
+          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
+          {/* Leave */}
+
+          <Route path="leaves" element={<LeaveList />} />
+
+          <Route path="leaves/apply" element={<ApplyLeave />} />
+
+          <Route path="leaves/view/:id" element={<LeaveDetails />} />
+
+          <Route path="leaves/edit/:id" element={<EditLeave />} />
+
+          {/* Payroll */}
+
+          <Route path="payroll" element={<PayrollList />} />
+
+          <Route path="payroll/generate" element={<GeneratePayroll />} />
+
+          <Route path="payroll/edit/:id" element={<EditPayroll />} />
+
+          <Route path="payroll/view/:id" element={<PayrollDetails />} />
+
+          <Route path="payroll/payslip/:id" element={<Payslip />} />
         </Route>
 
         {/* =====================================================
@@ -198,7 +307,29 @@ SITE ENGINEER ROUTES
             </ProtectedRoute>
           }
         >
-          <Route index element={<h1>Site Engineer Dashboard</h1>} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* Projects */}
+
+          <Route path="projects" element={<ProjectList />} />
+
+          <Route path="projects/dashboard" element={<ProjectDashboard />} />
+
+          <Route path="projects/create" element={<CreateProject />} />
+
+          <Route path="projects/view/:id" element={<ProjectDetails />} />
+
+          <Route path="projects/edit/:id" element={<EditProject />} />
+
+          {/* Attendance */}
+
+          <Route path="attendance" element={<AttendanceList />} />
+
+          <Route path="attendance/mark" element={<MarkAttendance />} />
+
+          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
         </Route>
 
         {/* ================= 404 ================= */}

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import payrollService from "../../services/payrollService";
 
@@ -10,6 +12,9 @@ import "./Payroll.css";
 const EditPayroll = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
 
@@ -78,7 +83,7 @@ const EditPayroll = () => {
       });
     } catch (error) {
       toast.error("Failed to load payroll");
-      navigate("/owner/payroll");
+      navigate(`/${role}/payroll`);
     } finally {
       setLoading(false);
     }
@@ -140,7 +145,7 @@ const EditPayroll = () => {
 
       toast.success("Payroll Updated Successfully");
 
-      navigate("/owner/payroll");
+      navigate(`/${role}/payroll`);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -312,7 +317,7 @@ const EditPayroll = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/owner/payroll")}
+              onClick={() => navigate(`/${role}/payroll`)}
             >
               Cancel
             </button>

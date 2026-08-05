@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import EmployeeForm from "../../components/employee/EmployeeForm";
 
 const EditEmployee = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -74,7 +79,7 @@ const EditEmployee = () => {
 
       toast.success("Employee Updated Successfully");
 
-      navigate("/owner/employees");
+      navigate(`/${role}/employees`);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Update failed"

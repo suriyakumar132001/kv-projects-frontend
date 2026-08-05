@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import leaveService from "../../services/leaveService";
 import employeeService from "../../services/employeeService";
 
@@ -10,6 +12,9 @@ import "./Leave.css";
 const EditLeave = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +105,7 @@ const EditLeave = () => {
 
       toast.success("Leave Updated Successfully");
 
-      navigate("/owner/leaves");
+      navigate(`/${role}/leaves`);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Update Failed"
@@ -240,7 +245,7 @@ const EditLeave = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/owner/leave")}
+              onClick={() => navigate(`/${role}/leaves`)}
             >
               Cancel
             </button>

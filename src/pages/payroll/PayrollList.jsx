@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import payrollService from "../../services/payrollService";
 
 import PayrollToolbar from "../../components/payroll/PayrollToolbar";
@@ -12,6 +14,9 @@ import "./Payroll.css";
 
 const PayrollList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [payrolls, setPayrolls] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,16 +100,16 @@ const PayrollList = () => {
 
       <PayrollToolbar
         onRefresh={loadPayrolls}
-        onGenerate={() => navigate("/owner/payroll/generate")}
+        onGenerate={() => navigate(`/${role}/payroll/generate`)}
       />
 
       <PayrollTable
         payrolls={payrolls}
         onView={(payroll) =>
-          navigate(`/owner/payroll/view/${payroll._id}`)
+          navigate(`/${role}/payroll/view/${payroll._id}`)
         }
         onEdit={(payroll) =>
-          navigate(`/owner/payroll/edit/${payroll._id}`)
+          navigate(`/${role}/payroll/edit/${payroll._id}`)
         }
         onDelete={openDeleteModal}
         onPay={handleMarkPaid}

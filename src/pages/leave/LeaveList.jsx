@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import leaveService from "../../services/leaveService";
 
 import LeaveToolbar from "../../components/leave/LeaveToolbar";
@@ -12,6 +14,9 @@ import "./Leave.css";
 
 const LeaveList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [leaves, setLeaves] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -204,16 +209,16 @@ const LeaveList = () => {
         setLeaveType={handleType}
         onSearch={handleSearch}
         onRefresh={loadLeaves}
-        onApplyLeave={() => navigate("/owner/leaves/apply")}
+        onApplyLeave={() => navigate(`/${role}/leaves/apply`)}
       />
 
       <LeaveTable
         leaves={leaves}
         onView={(leave) =>
-          navigate(`/owner/leaves/view/${leave._id}`)
+          navigate(`/${role}/leaves/view/${leave._id}`)
         }
         onEdit={(leave) =>
-          navigate(`/owner/leaves/edit/${leave._id}`)
+          navigate(`/${role}/leaves/edit/${leave._id}`)
         }
         onDelete={openDeleteModal}
         onApprove={handleApprove}

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import employeeService from "../../services/employeeService";
 import leaveService from "../../services/leaveService";
 
@@ -9,6 +11,9 @@ import "./Leave.css";
 
 const ApplyLeave = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [employees, setEmployees] = useState([]);
 
@@ -80,7 +85,7 @@ const ApplyLeave = () => {
 
       toast.success("Leave Applied Successfully");
 
-      navigate("/owner/leaves");
+      navigate(`/${role}/leaves`);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -183,7 +188,7 @@ const ApplyLeave = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate("/owner/leaves")}
+              onClick={() => navigate(`/${role}/leaves`)}
             >
               Cancel
             </button>

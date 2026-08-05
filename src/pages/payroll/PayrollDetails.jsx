@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import payrollService from "../../services/payrollService";
 
 import "./Payroll.css";
@@ -9,6 +11,9 @@ import "./Payroll.css";
 const PayrollDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [payroll, setPayroll] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,7 +34,7 @@ const PayrollDetails = () => {
     } catch (error) {
       toast.error("Failed to load payroll details");
 
-      navigate("/owner/payroll");
+      navigate(`/${role}/payroll`);
     } finally {
       setLoading(false);
     }
@@ -62,7 +67,7 @@ const PayrollDetails = () => {
 
           <button
             className="back-btn"
-            onClick={() => navigate("/owner/payroll")}
+            onClick={() => navigate(`/${role}/payroll`)}
           >
             Back
           </button>
@@ -324,7 +329,7 @@ const PayrollDetails = () => {
 
           <button
             className="back-btn"
-            onClick={() => navigate("/owner/payroll")}
+            onClick={() => navigate(`/${role}/payroll`)}
           >
             Back
           </button>
@@ -332,7 +337,7 @@ const PayrollDetails = () => {
           <button
             className="edit-btn"
             onClick={() =>
-              navigate(`/owner/payroll/edit/${payroll._id}`)
+              navigate(`/${role}/payroll/edit/${payroll._id}`)
             }
           >
             Edit Payroll

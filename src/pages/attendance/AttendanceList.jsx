@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
+
 import attendanceService from "../../services/attendanceService";
 
 import AttendanceToolbar from "../../components/attendance/AttendanceToolbar";
@@ -11,6 +13,9 @@ import "./Attendance.css";
 
 const AttendanceList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,7 +102,7 @@ const AttendanceList = () => {
   // View Attendance
   // ==========================
   const handleView = (attendance) => {
-    navigate(`/owner/attendance/view/${attendance._id}`);
+    navigate(`/${role}/attendance/view/${attendance._id}`);
   };
 
   // ==========================
@@ -143,7 +148,7 @@ const AttendanceList = () => {
         onSearch={handleSearch}
         onRefresh={loadAttendance}
         onMarkAttendance={() =>
-          navigate("/owner/attendance/mark")
+          navigate(`/${role}/attendance/mark`)
         }
       />
 
