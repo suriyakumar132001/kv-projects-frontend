@@ -1,0 +1,74 @@
+.employee-details {
+  padding: 30px;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.details-header h2 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.details-header p {
+  color: #64748b;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-btn:hover {
+  background: #1d4ed8;
+}
+
+.details-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+}
+
+.details-grid strong {
+  color: #475569;
+}
+
+.details-grid p {
+  margin-top: 5px;
+}
+
+.address-box {
+  margin-top: 30px;
+}
+
+.address-box p {
+  margin-top: 8px;
+}
+
+@media (max-width:768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .details-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+}

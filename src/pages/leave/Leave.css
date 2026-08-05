@@ -1,0 +1,978 @@
+/* ===========================================
+   LEAVE MANAGEMENT PAGE
+=========================================== */
+
+.leave-page {
+  padding: 30px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+/* ===========================================
+   PAGE HEADER
+=========================================== */
+
+.leave-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.leave-header h2 {
+  font-size: 30px;
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.leave-header p {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.add-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   TOOLBAR
+=========================================== */
+
+.leave-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 25px;
+
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.toolbar-right {
+  display: flex;
+  gap: 15px;
+}
+
+/* ===========================================
+   SEARCH BOX
+=========================================== */
+
+.search-box {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #fff;
+
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+
+  padding: 12px 15px;
+
+  transition: .3s;
+}
+
+.search-box:hover {
+  border-color: #2563eb;
+}
+
+.search-box:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+.search-box svg {
+  color: #6b7280;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: transparent;
+}
+
+/* ===========================================
+   SELECTS
+=========================================== */
+
+.leave-select {
+  width: 180px;
+  height: 46px;
+
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+
+  padding: 0 15px;
+
+  font-size: 15px;
+
+  outline: none;
+  cursor: pointer;
+
+  transition: .3s;
+
+  background: #fff;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background-image:
+      linear-gradient(45deg, transparent 50%, #666 50%),
+      linear-gradient(135deg, #666 50%, transparent 50%);
+
+  background-position:
+      calc(100% - 18px) calc(50% - 3px),
+      calc(100% - 12px) calc(50% - 3px);
+
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.leave-select:hover {
+  border-color: #2563eb;
+}
+
+.leave-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+/* ===========================================
+   REFRESH BUTTON
+=========================================== */
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+
+  background: #10b981;
+  color: white;
+
+  padding: 12px 20px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: .3s;
+}
+
+.refresh-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+/* ===========================================
+   TABLE WRAPPER
+=========================================== */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+/* ===========================================
+   LEAVE TABLE
+=========================================== */
+
+.leave-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.leave-table thead {
+  background: #1e3a8a;
+}
+
+.leave-table thead th {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  padding: 16px;
+  white-space: nowrap;
+}
+
+.leave-table tbody tr {
+  border-bottom: 1px solid #edf2f7;
+  transition: 0.3s;
+}
+
+.leave-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.leave-table tbody td {
+  padding: 15px 16px;
+  color: #374151;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* ===========================================
+   STATUS BADGES
+=========================================== */
+
+.status-pending,
+.status-approved,
+.status-rejected {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+
+  padding: 7px 14px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff7d6;
+  color: #b7791f;
+}
+
+.status-approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===========================================
+   ACTION BUTTONS
+=========================================== */
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons button {
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: .3s;
+
+  color: #fff;
+}
+
+.view-btn {
+  background: #3b82f6;
+}
+
+.view-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.edit-btn {
+  background: #f59e0b;
+}
+
+.edit-btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background: #ef4444;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.approve-btn {
+  background: #10b981;
+}
+
+.approve-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.reject-btn {
+  background: #ef4444;
+}
+
+.reject-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   TABLE EMPTY STATE
+=========================================== */
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+/* ===========================================
+   PAGINATION
+=========================================== */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 25px;
+
+  background: #fff;
+
+  padding: 15px 20px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 5px 18px rgba(0,0,0,.08);
+}
+
+.pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-buttons button {
+  min-width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #e5e7eb;
+
+  cursor: pointer;
+
+  transition: .3s;
+}
+
+.pagination-buttons button:hover:not(:disabled) {
+  background: #2563eb;
+  color: white;
+}
+
+.pagination-buttons button.active {
+  background: #2563eb;
+  color: white;
+}
+
+.pagination-buttons button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ===========================================
+   LOADING
+=========================================== */
+
+.loading {
+  padding: 70px;
+  text-align: center;
+  font-size: 22px;
+  color: #6b7280;
+}
+
+/* ===========================================
+   APPLY / EDIT LEAVE FORM
+=========================================== */
+
+.leave-form-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.leave-form-card {
+  width: 100%;
+  max-width: 850px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.leave-form-card h2 {
+  font-size: 28px;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.leave-form-card p {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* ===========================================
+   FORM GRID
+=========================================== */
+
+.leave-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ===========================================
+   LABEL
+=========================================== */
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* ===========================================
+   INPUTS
+=========================================== */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  font-size: 15px;
+  color: #374151;
+
+  background: #fff;
+
+  transition: all .3s ease;
+
+  outline: none;
+}
+
+.form-group textarea {
+  height: 120px;
+  resize: vertical;
+  padding: 15px;
+}
+
+/* ===========================================
+   INPUT FOCUS
+=========================================== */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #2563eb;
+}
+
+/* ===========================================
+   SELECT DROPDOWN
+=========================================== */
+
+.form-group select {
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #666 50%),
+    linear-gradient(135deg, #666 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* ===========================================
+   DATE INPUT
+=========================================== */
+
+.form-group input[type="date"] {
+  cursor: pointer;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: 4px;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: .8;
+}
+
+/* ===========================================
+   BUTTONS
+=========================================== */
+
+.form-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+
+  margin-top: 10px;
+}
+
+.cancel-btn,
+.save-btn {
+  border: none;
+  border-radius: 10px;
+
+  padding: 13px 28px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .3s;
+}
+
+.cancel-btn {
+  background: #6b7280;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
+.save-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   DISABLED BUTTON
+=========================================== */
+
+.save-btn:disabled,
+.cancel-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* ===========================================
+   ERROR MESSAGE
+=========================================== */
+
+.error-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+}
+
+/* ===========================================
+   SUCCESS MESSAGE
+=========================================== */
+
+.success-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #059669;
+}
+
+/* ===========================================
+   SPINNER
+=========================================== */
+
+.button-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-loading svg {
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* ================================
+   LEAVE DETAILS PAGE
+================================ */
+
+
+.leave-details-page{
+
+    padding:30px;
+
+    animation:fadeIn .5s ease;
+
+}
+
+
+
+.leave-details-header{
+
+    margin-bottom:25px;
+
+}
+
+
+.leave-details-header h1{
+
+    font-size:30px;
+
+    color:#111827;
+
+}
+
+
+.leave-details-header p{
+
+    color:#6b7280;
+
+}
+
+
+
+
+
+/* Employee Profile */
+
+
+.leave-profile-card{
+
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    animation:slideUp .5s ease;
+
+}
+
+
+
+.profile-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:30px;
+
+}
+
+
+.leave-profile-card h2{
+
+    margin:0;
+
+}
+
+
+
+
+
+/* Information Cards */
+
+
+.leave-info-grid{
+
+    margin-top:25px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+
+
+
+.leave-info-card{
+
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.07);
+
+    transition:.3s;
+
+
+}
+
+
+.leave-info-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+
+
+.leave-info-card svg{
+
+    font-size:25px;
+
+    color:#2563eb;
+
+}
+
+
+
+.leave-info-card span{
+
+    color:#6b7280;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+/* Reason */
+
+
+.leave-reason-card,
+.leave-status-card{
+
+
+    margin-top:25px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.07);
+
+
+}
+
+
+
+
+
+/* Timeline */
+
+
+.status-timeline{
+
+    margin-top:20px;
+
+}
+
+
+.status-item{
+
+
+    display:flex;
+
+    gap:15px;
+
+    padding:15px;
+
+    border-left:3px solid #d1d5db;
+
+}
+
+
+.status-item svg{
+
+    color:#9ca3af;
+
+}
+
+
+
+.status-item.active{
+
+    border-color:#2563eb;
+
+}
+
+
+.status-item.active svg{
+
+    color:#16a34a;
+
+}
+
+
+
+
+
+
+/* Animations */
+
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+}
+
+to{
+
+opacity:1;
+
+}
+
+}
+
+
+
+
+@keyframes slideUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
