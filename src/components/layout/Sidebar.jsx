@@ -33,9 +33,17 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const menuItems = {
     owner: [
-      { name: "Dashboard", icon: <FaTachometerAlt />, path: "/owner/dashboard" },
+      {
+        name: "Dashboard",
+        icon: <FaTachometerAlt />,
+        path: "/owner/dashboard",
+      },
       { name: "Employees", icon: <FaUsers />, path: "/owner/employees" },
-      { name: "Attendance", icon: <FaCalendarCheck />, path: "/owner/attendance" },
+      {
+        name: "Attendance",
+        icon: <FaCalendarCheck />,
+        path: "/owner/attendance",
+      },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leaves" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/owner/projects" },
@@ -44,17 +52,33 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Sites", icon: <FaBuilding />, path: "/owner/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/owner/inventory" },
       { name: "Assets", icon: <FaLaptop />, path: "/owner/assets" },
-      { name: "Quotations", icon: <FaFileInvoice />, path: "/owner/quotations" },
-      { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/owner/invoices" },
+      {
+        name: "Quotations",
+        icon: <FaFileInvoice />,
+        path: "/owner/quotations",
+      },
+      {
+        name: "Invoices",
+        icon: <FaFileInvoiceDollar />,
+        path: "/owner/invoices",
+      },
       { name: "Payments", icon: <FaCreditCard />, path: "/owner/payments" },
       { name: "Analytics", icon: <FaChartBar />, path: "/owner/analytics" },
       { name: "Settings", icon: <FaCog />, path: "/owner/settings" },
     ],
 
     admin: [
-      { name: "Dashboard", icon: <FaTachometerAlt />, path: "/admin/dashboard" },
+      {
+        name: "Dashboard",
+        icon: <FaTachometerAlt />,
+        path: "/admin/dashboard",
+      },
       { name: "Employees", icon: <FaUsers />, path: "/admin/employees" },
-      { name: "Attendance", icon: <FaCalendarCheck />, path: "/admin/attendance" },
+      {
+        name: "Attendance",
+        icon: <FaCalendarCheck />,
+        path: "/admin/attendance",
+      },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leaves" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/admin/projects" },
@@ -63,6 +87,24 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Sites", icon: <FaBuilding />, path: "/admin/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/admin/inventory" },
       { name: "Analytics", icon: <FaChartBar />, path: "/admin/analytics" },
+      // inside admin: [ ... ] array, add these before the closing bracket:
+      {
+        name: "Assets",
+        icon: <FaLaptop />,
+        path: "/admin/assets",
+      },
+
+      {
+        name: "Invoices",
+        icon: <FaFileInvoiceDollar />,
+        path: "/admin/invoices",
+      },
+
+      {
+        name: "Payments",
+        icon: <FaCreditCard />,
+        path: "/admin/payments",
+      },
     ],
 
     hr: [
@@ -74,11 +116,36 @@ const Sidebar = ({ isOpen, onClose }) => {
     ],
 
     siteengineer: [
-      { name: "Dashboard", icon: <FaTachometerAlt />, path: "/siteengineer/dashboard" },
-      { name: "Projects", icon: <FaProjectDiagram />, path: "/siteengineer/projects" },
-      { name: "Attendance", icon: <FaCalendarCheck />, path: "/siteengineer/attendance" },
+      {
+        name: "Dashboard",
+        icon: <FaTachometerAlt />,
+        path: "/siteengineer/dashboard",
+      },
+      {
+        name: "Projects",
+        icon: <FaProjectDiagram />,
+        path: "/siteengineer/projects",
+      },
+      {
+        name: "Attendance",
+        icon: <FaCalendarCheck />,
+        path: "/siteengineer/attendance",
+      },
       { name: "Sites", icon: <FaBuilding />, path: "/siteengineer/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/siteengineer/inventory" },
+
+      // inside hr: [ ... ] array, add these before the closing bracket:
+      {
+        name: "Invoices",
+        icon: <FaFileInvoiceDollar />,
+        path: "/hr/invoices",
+      },
+
+      {
+        name: "Payments",
+        icon: <FaCreditCard />,
+        path: "/hr/payments",
+      },
     ],
   };
 

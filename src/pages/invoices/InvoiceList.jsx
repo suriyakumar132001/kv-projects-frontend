@@ -18,6 +18,7 @@ const InvoiceList = () => {
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
+  const canManage = role === "owner" || role === "admin";
   const canDelete = role === "owner";
 
   const [invoices, setInvoices] = useState([]);
@@ -70,9 +71,7 @@ const InvoiceList = () => {
       closeDeleteModal();
       loadInvoices();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Delete Failed"
-      );
+      toast.error(error.response?.data?.message || "Delete Failed");
     } finally {
       setDeleteLoading(false);
     }
@@ -94,7 +93,6 @@ const InvoiceList = () => {
 
   return (
     <div className="invoice-page">
-
       <div className="invoice-header">
         <div>
           <h2>Invoices</h2>
@@ -108,6 +106,7 @@ const InvoiceList = () => {
         status={status}
         setStatus={setStatus}
         onAddInvoice={() => navigate(`/${role}/invoices/create`)}
+        canCreate={canManage}
       />
 
       <InvoiceTable
@@ -115,6 +114,7 @@ const InvoiceList = () => {
         onView={(inv) => navigate(`/${role}/invoices/view/${inv._id}`)}
         onEdit={(inv) => navigate(`/${role}/invoices/edit/${inv._id}`)}
         onDelete={openDeleteModal}
+        canEdit={canManage}
         canDelete={canDelete}
       />
 
@@ -128,7 +128,6 @@ const InvoiceList = () => {
         onClose={closeDeleteModal}
         onConfirm={handleDelete}
       />
-
     </div>
   );
 };

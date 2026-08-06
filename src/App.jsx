@@ -78,6 +78,15 @@ import InvoiceList from "./pages/invoices/InvoiceList";
 import CreateInvoice from "./pages/invoices/CreateInvoice";
 import EditInvoice from "./pages/invoices/EditInvoice";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
+
+import PaymentList from "./pages/payments/PaymentList";
+import AddPayment from "./pages/payments/AddPayment";
+import EditPayment from "./pages/payments/EditPayment";
+import PaymentDetails from "./pages/payments/PaymentDetails";
+
+import Settings from "./pages/settings/Settings";
+
+import AnalyticsDashboard from "./pages/analytics/AnalyticsDashboard";
 function App() {
   return (
     <>
@@ -203,6 +212,18 @@ OWNER ROUTES
           <Route path="invoices/create" element={<CreateInvoice />} />
           <Route path="invoices/edit/:id" element={<EditInvoice />} />
           <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+          {/* Payments */}
+          <Route path="payments" element={<PaymentList />} />
+          <Route path="payments/add" element={<AddPayment />} />
+          <Route path="payments/edit/:id" element={<EditPayment />} />
+          <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+          {/* Analytics */}
+          <Route path="analytics" element={<AnalyticsDashboard />} />
+
+          {/* Settings */}
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         {/* =====================================================
@@ -294,6 +315,25 @@ ADMIN ROUTES
 
           {/* Inventory */}
           <Route path="inventory" element={<InventoryList />} />
+
+          {/* Analytics */}
+
+          <Route path="analytics" element={<AnalyticsDashboard />} />
+
+          <Route path="assets" element={<AssetList />} />
+          <Route path="assets/add" element={<AddAsset />} />
+          <Route path="assets/edit/:id" element={<EditAsset />} />
+          <Route path="assets/view/:id" element={<AssetDetails />} />
+
+          <Route path="invoices" element={<InvoiceList />} />
+          <Route path="invoices/create" element={<CreateInvoice />} />
+          <Route path="invoices/edit/:id" element={<EditInvoice />} />
+          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+          <Route path="payments" element={<PaymentList />} />
+          <Route path="payments/add" element={<AddPayment />} />
+          <Route path="payments/edit/:id" element={<EditPayment />} />
+          <Route path="payments/view/:id" element={<PaymentDetails />} />
         </Route>
 
         {/* =====================================================
@@ -351,6 +391,12 @@ HR ROUTES
           <Route path="payroll/view/:id" element={<PayrollDetails />} />
 
           <Route path="payroll/payslip/:id" element={<Payslip />} />
+
+          <Route path="invoices" element={<InvoiceList />} />
+          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+          <Route path="payments" element={<PaymentList />} />
+          <Route path="payments/view/:id" element={<PaymentDetails />} />
         </Route>
 
         {/* =====================================================

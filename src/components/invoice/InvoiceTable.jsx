@@ -13,10 +13,12 @@ const statusClass = (status) => {
   }
 };
 
-const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
+const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canEdit, canDelete }) => {
   return (
     <div className="table-wrapper">
+
       <table className="invoice-table">
+
         <thead>
           <tr>
             <th>Invoice #</th>
@@ -30,9 +32,11 @@ const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
         </thead>
 
         <tbody>
+
           {invoices.length > 0 ? (
             invoices.map((item) => (
               <tr key={item._id}>
+
                 <td>{item.invoiceNumber}</td>
 
                 <td>{item.client?.clientName || "-"}</td>
@@ -51,6 +55,7 @@ const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
 
                 <td>
                   <div className="action-buttons">
+
                     <button
                       className="action-btn view-btn"
                       onClick={() => onView(item)}
@@ -59,13 +64,15 @@ const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
                       <FaEye />
                     </button>
 
-                    <button
-                      className="action-btn edit-btn"
-                      onClick={() => onEdit(item)}
-                      title="Edit"
-                    >
-                      <FaEdit />
-                    </button>
+                    {canEdit && (
+                      <button
+                        className="action-btn edit-btn"
+                        onClick={() => onEdit(item)}
+                        title="Edit"
+                      >
+                        <FaEdit />
+                      </button>
+                    )}
 
                     {canDelete && (
                       <button
@@ -76,8 +83,10 @@ const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
                         <FaTrash />
                       </button>
                     )}
+
                   </div>
                 </td>
+
               </tr>
             ))
           ) : (
@@ -87,8 +96,11 @@ const InvoiceTable = ({ invoices, onView, onEdit, onDelete, canDelete }) => {
               </td>
             </tr>
           )}
+
         </tbody>
+
       </table>
+
     </div>
   );
 };

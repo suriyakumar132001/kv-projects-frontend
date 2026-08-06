@@ -6,6 +6,7 @@ const InvoiceToolbar = ({
   status,
   setStatus,
   onAddInvoice,
+  canCreate,
 }) => {
   return (
     <div className="invoice-toolbar">
@@ -32,10 +33,12 @@ const InvoiceToolbar = ({
         <option value="Paid">Paid</option>
       </select>
 
-      <button className="add-btn" onClick={onAddInvoice}>
-        <FaPlus />
-        Create Invoice
-      </button>
+      {canCreate && (
+        <button className="add-btn" onClick={onAddInvoice}>
+          <FaPlus />
+          Create Invoice
+        </button>
+      )}
 
     </div>
   );
