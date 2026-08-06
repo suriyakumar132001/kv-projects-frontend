@@ -7,7 +7,7 @@ const authService = {
   },
 
   register: async (data) => {
-    const response = await api.post("/auth/register", data);
+    const response = await api.post("/api/auth/login", data);
     return response.data;
   },
 };
