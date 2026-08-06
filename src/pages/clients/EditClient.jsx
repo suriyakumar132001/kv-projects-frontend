@@ -20,9 +20,14 @@ import {
 
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const EditClient = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -105,7 +110,7 @@ const EditClient = () => {
       setSuccess("Client updated successfully");
 
       setTimeout(() => {
-        navigate("/owner/clients");
+        navigate(`/${role}/clients`);
       }, 1000);
     } catch (err) {
       console.log(err);
@@ -262,7 +267,7 @@ const EditClient = () => {
               <Button
                 sx={{ ml: 2 }}
                 variant="outlined"
-                onClick={() => navigate("/owner/clients")}
+                onClick={() => navigate(`/${role}/clients`)}
               >
                 Cancel
               </Button>

@@ -30,8 +30,13 @@ import { Add, Visibility, Edit, Delete } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const ClientList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -145,7 +150,7 @@ const ClientList = () => {
         <Button
           variant="contained"
           startIcon={<Add />}
-          onClick={() => navigate("/owner/clients/create")}
+          onClick={() => navigate(`/${role}/clients/create`)}
         >
           Add Client
         </Button>
@@ -230,7 +235,7 @@ const ClientList = () => {
                     <TableCell>
                       <IconButton
                         onClick={() =>
-                          navigate(`/owner/clients/view/${item._id}`)
+                          navigate(`/${role}/clients/view/${item._id}`)
                         }
                       >
                         <Visibility />
@@ -238,7 +243,7 @@ const ClientList = () => {
 
                       <IconButton
                         onClick={() =>
-                          navigate(`/owner/clients/edit/${item._id}`)
+                          navigate(`/${role}/clients/edit/${item._id}`)
                         }
                       >
                         <Edit />

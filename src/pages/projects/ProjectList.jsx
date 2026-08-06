@@ -30,8 +30,13 @@ import { Add, Visibility, Edit, Delete } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const ProjectList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,14 +51,11 @@ const ProjectList = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        "http://localhost:5000/api/projects",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.get("http://localhost:5000/api/projects", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       setProjects(response.data.projects || []);
     } catch (err) {
@@ -125,7 +127,7 @@ const ProjectList = () => {
         <Button
           variant="contained"
           startIcon={<Add />}
-          onClick={() => navigate("/owner/projects/create")}
+          onClick={() => navigate(`/${role}/projects/create`)}
         >
           Add Project
         </Button>
@@ -198,7 +200,7 @@ const ProjectList = () => {
                     <TableCell>
                       <IconButton
                         onClick={() =>
-                          navigate(`/owner/projects/view/${item._id}`)
+                          navigate(`/${role}/projects/view/${item._id}`)
                         }
                       >
                         <Visibility />
@@ -206,7 +208,7 @@ const ProjectList = () => {
 
                       <IconButton
                         onClick={() =>
-                          navigate(`/owner/projects/edit/${item._id}`)
+                          navigate(`/${role}/projects/edit/${item._id}`)
                         }
                       >
                         <Edit />

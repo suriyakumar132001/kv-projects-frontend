@@ -30,9 +30,14 @@ import {
 
 import { useParams, useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -102,7 +107,7 @@ const ProjectDetails = () => {
           Project Details
         </Typography>
 
-        <Button variant="outlined" onClick={() => navigate("/owner/projects")}>
+        <Button variant="outlined" onClick={() => navigate(`/${role}/projects`)}>
           Back
         </Button>
       </Box>

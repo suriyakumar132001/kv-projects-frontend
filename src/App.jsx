@@ -58,6 +58,26 @@ import CreateQuotation from "./pages/quotations/CreateQuotation";
 import EditQuotation from "./pages/quotations/EditQuotation";
 import QuotationDetails from "./pages/quotations/QuotationDetails";
 
+// ================= Vendors =================
+
+import VendorList from "./pages/vendors/VendorList";
+import AddVendor from "./pages/vendors/AddVendor";
+
+// ================= Sites =================
+import SiteList from "./pages/sites/SiteList";
+import CreateSite from "./pages/sites/CreateSite";
+
+import InventoryList from "./pages/inventory/InventoryList";
+
+import AssetList from "./pages/assets/AssetList";
+import AddAsset from "./pages/assets/AddAsset";
+import EditAsset from "./pages/assets/EditAsset";
+import AssetDetails from "./pages/assets/AssetDetails";
+
+import InvoiceList from "./pages/invoices/InvoiceList";
+import CreateInvoice from "./pages/invoices/CreateInvoice";
+import EditInvoice from "./pages/invoices/EditInvoice";
+import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 function App() {
   return (
     <>
@@ -157,6 +177,32 @@ OWNER ROUTES
           <Route path="quotations/view/:id" element={<QuotationDetails />} />
 
           <Route path="quotations/edit/:id" element={<EditQuotation />} />
+
+          {/* Vendors */}
+
+          <Route path="vendors" element={<VendorList />} />
+
+          <Route path="vendors/add" element={<AddVendor />} />
+
+          {/* Sites */}
+          <Route path="sites" element={<SiteList />} />
+          <Route path="sites/create" element={<CreateSite />} />
+
+          {/* Inventory */}
+          <Route path="inventory" element={<InventoryList />} />
+
+          {/* Assets */}
+          <Route path="assets" element={<AssetList />} />
+          <Route path="assets/add" element={<AddAsset />} />
+          <Route path="assets/edit/:id" element={<EditAsset />} />
+          <Route path="assets/view/:id" element={<AssetDetails />} />
+
+          {/* Invoices */}
+
+          <Route path="invoices" element={<InvoiceList />} />
+          <Route path="invoices/create" element={<CreateInvoice />} />
+          <Route path="invoices/edit/:id" element={<EditInvoice />} />
+          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
         </Route>
 
         {/* =====================================================
@@ -236,6 +282,18 @@ ADMIN ROUTES
           <Route path="clients/view/:id" element={<ClientDetails />} />
 
           <Route path="clients/edit/:id" element={<EditClient />} />
+
+          {/* Vendors */}
+
+          <Route path="vendors" element={<VendorList />} />
+          <Route path="vendors/add" element={<AddVendor />} />
+
+          {/* Sites */}
+          <Route path="sites" element={<SiteList />} />
+          <Route path="sites/create" element={<CreateSite />} />
+
+          {/* Inventory */}
+          <Route path="inventory" element={<InventoryList />} />
         </Route>
 
         {/* =====================================================
@@ -330,6 +388,12 @@ SITE ENGINEER ROUTES
           <Route path="attendance/mark" element={<MarkAttendance />} />
 
           <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
+          {/* Sites */}
+          <Route path="sites" element={<SiteList />} />
+
+          {/* Inventory */}
+          <Route path="inventory" element={<InventoryList />} />
         </Route>
 
         {/* ================= 404 ================= */}

@@ -19,8 +19,13 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const CreateClient = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [formData, setFormData] = useState({
     clientName: "",
@@ -61,7 +66,7 @@ const CreateClient = () => {
       setSuccess("Client created successfully");
 
       setTimeout(() => {
-        navigate("/owner/clients");
+        navigate(`/${role}/clients`);
       }, 1000);
     } catch (err) {
       console.log(err);
@@ -208,7 +213,7 @@ const CreateClient = () => {
               <Button
                 sx={{ ml: 2 }}
                 variant="outlined"
-                onClick={() => navigate("/owner/clients")}
+                onClick={() => navigate(`/${role}/clients`)}
               >
                 Cancel
               </Button>

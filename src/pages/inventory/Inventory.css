@@ -1,0 +1,147 @@
+.inventory-page {
+  padding: 25px;
+  background: #f4f7fc;
+  min-height: 100vh;
+}
+
+.inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.inventory-header h2 {
+  font-size: 28px;
+  color: #1f2937;
+  margin: 0;
+}
+.inventory-header p {
+  margin: 5px 0 0;
+  color: #6b7280;
+}
+
+.inventory-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 240px;
+  height: 48px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0 15px;
+  background: #fff;
+}
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.search-icon {
+  margin-right: 10px;
+  color: #64748b;
+}
+
+.inventory-select {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  min-width: 180px;
+}
+.inventory-select:focus,
+.search-box:focus-within {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.refresh-btn {
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  background: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.refresh-btn:hover {
+  background: #059669;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.inventory-table thead {
+  background: #1e3a8a;
+  color: #fff;
+}
+.inventory-table th,
+.inventory-table td {
+  padding: 15px;
+  text-align: left;
+}
+.inventory-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+.inventory-table tbody tr:hover {
+  background: #f8fafc;
+}
+.inventory-table tbody tr.low-stock {
+  background: #fef2f2;
+}
+
+.stock-ok,
+.stock-low {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.stock-ok {
+  background: #dcfce7;
+  color: #15803d;
+}
+.stock-low {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+@media (max-width: 992px) {
+  .inventory-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-box,
+  .inventory-select,
+  .refresh-btn {
+    width: 100%;
+  }
+}

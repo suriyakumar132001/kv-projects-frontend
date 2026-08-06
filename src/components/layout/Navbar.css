@@ -136,15 +136,25 @@
   text-transform: capitalize;
 }
 
-/* Mobile */
-@media(max-width:768px){
-  .navbar{
-    padding:15px;
-  }
-  .search-box{
-    display:none;
-  }
-  .today{
-    display:none;
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-toggle-btn {
+  display: none;
+  border: none;
+  background: none;
+  font-size: 22px;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .menu-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

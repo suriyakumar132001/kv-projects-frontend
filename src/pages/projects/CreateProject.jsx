@@ -19,8 +19,13 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const CreateProject = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [formData, setFormData] = useState({
     projectName: "",
@@ -58,7 +63,7 @@ const CreateProject = () => {
       setSuccess("Project created successfully");
 
       setTimeout(() => {
-        navigate("/owner/projects");
+        navigate(`/${role}/projects`);
       }, 1000);
     } catch (err) {
       console.log(err);
@@ -178,7 +183,7 @@ const CreateProject = () => {
               <Button
                 sx={{ ml: 2 }}
                 variant="outlined"
-                onClick={() => navigate("/owner/projects")}
+                onClick={() => navigate(`/${role}/projects`)}
               >
                 Cancel
               </Button>

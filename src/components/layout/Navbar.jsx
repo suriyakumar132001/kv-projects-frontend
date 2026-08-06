@@ -4,10 +4,11 @@ import { useAuth } from "../../context/AuthContext";
 import {
   FaBell,
   FaSearch,
-  FaUserCircle
+  FaUserCircle,
+  FaBars,
 } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
 
   const { user } = useAuth();
 
@@ -23,6 +24,10 @@ const Navbar = () => {
     <header className="navbar">
 
       <div className="navbar-left">
+
+        <button className="menu-toggle-btn" onClick={onMenuClick}>
+          <FaBars />
+        </button>
 
         <h2>Construction ERP</h2>
 
