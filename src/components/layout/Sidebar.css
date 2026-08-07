@@ -22,6 +22,7 @@
 .sidebar-logo {
   padding: 24px 20px;
   flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-logo h2 {
@@ -41,15 +42,16 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 10px 20px 24px;
+  padding: 20px 20px 22px;
   flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-user .avatar {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: #2563eb; /* blue */
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
   display: flex;
   align-items: center;
@@ -57,6 +59,7 @@
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 10px;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
 }
 
 .sidebar-user h3 {
@@ -67,9 +70,11 @@
 }
 
 .sidebar-user p {
-  font-size: 13px;
+  font-size: 12.5px;
   color: #94a3b8;
-  margin: 2px 0 0;
+  margin: 3px 0 0;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
 }
 
 /* ===============================================
@@ -81,7 +86,7 @@
   min-height: 0; /* REQUIRED for overflow-y to work inside a flex column */
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 8px 12px;
+  padding: 12px 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -89,7 +94,7 @@
 
 /* Thin, unobtrusive scrollbar */
 .sidebar-menu::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .sidebar-menu::-webkit-scrollbar-thumb {
@@ -128,9 +133,10 @@
 }
 
 .menu-item.active {
-  background-color: #2563eb; /* blue highlight, matches screenshot */
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
   color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 /* ===============================================
@@ -174,15 +180,23 @@
 
 @media (max-width: 900px) {
   .sidebar {
+    /* top:0 + bottom:0 instead of height:100vh —
+       100vh is unreliable on real mobile browsers
+       because of the collapsing address bar / home
+       indicator area. This anchors the drawer to the
+       true top and bottom of the visible screen. */
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
-    width: 260px;
-    min-width: 260px;
-    height: 100vh;
+    height: auto;
+    width: 78%;
+    max-width: 300px;
+    min-width: 240px;
     transform: translateX(-100%);
-    transition: transform 0.25s ease;
+    transition: transform 0.28s ease;
     z-index: 1000;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
   }
 
   .sidebar.sidebar-open {
@@ -204,9 +218,21 @@
     color: #e2e8f0;
     font-size: 16px;
     cursor: pointer;
+    z-index: 2;
   }
 
   .sidebar-close-btn:hover {
     background: rgba(255, 255, 255, 0.15);
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 20px 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sidebar {
+    width: 84%;
+    min-width: 220px;
   }
 }
