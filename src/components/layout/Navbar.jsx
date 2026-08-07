@@ -4,8 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import {
   FaBell,
   FaSearch,
-  FaUserCircle,
   FaBars,
+  FaChevronDown,
 } from "react-icons/fa";
 
 const Navbar = ({ onMenuClick }) => {
@@ -18,6 +18,8 @@ const Navbar = ({ onMenuClick }) => {
     month: "long",
     year: "numeric",
   });
+
+  const initial = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
 
@@ -62,15 +64,17 @@ const Navbar = ({ onMenuClick }) => {
 
         <div className="profile">
 
-          <FaUserCircle className="profile-icon"/>
+          <div className="profile-avatar">{initial}</div>
 
-          <div>
+          <div className="profile-text">
 
             <h4>{user?.name}</h4>
 
             <p>{user?.role}</p>
 
           </div>
+
+          <FaChevronDown className="profile-chevron" />
 
         </div>
 
