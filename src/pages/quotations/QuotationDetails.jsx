@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -57,10 +57,9 @@ const QuotationDetails = () => {
     try {
       setLoading(true);
 
-      const response = await axios.get(
-        `http://localhost:5000/api/quotations/${id}`,
-        { headers: { Authorization: `Bearer ${token()}` } },
-      );
+      const response = await api.get(`/quotations/${id}`, {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
 
       setQuotation(response.data.quotation);
     } catch (err) {
@@ -77,8 +76,8 @@ const QuotationDetails = () => {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/quotations/status/${id}`,
+      await api.put(
+        `/quotations/status/${id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token()}` } },
       );
@@ -199,8 +198,6 @@ const QuotationDetails = () => {
           )}
         </Grid>
       </Paper>
-
-      {/* Items */}
 
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" fontWeight="bold" mb={2}>

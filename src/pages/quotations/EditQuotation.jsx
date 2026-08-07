@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -62,16 +62,11 @@ const EditQuotation = () => {
 
   const token = () => localStorage.getItem("token");
 
-  // ===============================================
-  // Load Clients + Quotation
-  // ===============================================
-
   const fetchClients = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/clients",
-        { headers: { Authorization: `Bearer ${token()}` } },
-      );
+      const response = await api.get("/clients", {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
 
       setClients(response.data.clients || []);
     } catch (err) {
@@ -81,10 +76,9 @@ const EditQuotation = () => {
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/quotations/${id}`,
-        { headers: { Authorization: `Bearer ${token()}` } },
-      );
+      const response = await api.get(`/quotations/${id}`, {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
 
       const q = response.data.quotation;
 
@@ -108,7 +102,6 @@ const EditQuotation = () => {
           : [newRow()],
       );
 
-      // Derive tax % back from stored tax amount + subtotal
       const derivedTaxPercent =
         q.subtotal > 0 ? ((q.tax || 0) / q.subtotal) * 100 : 0;
 
@@ -126,10 +119,6 @@ const EditQuotation = () => {
     fetchClients();
     fetchQuotation();
   }, [id]);
-
-  // ===============================================
-  // Handlers
-  // ===============================================
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -151,10 +140,6 @@ const EditQuotation = () => {
     );
   };
 
-  // ===============================================
-  // Calculations
-  // ===============================================
-
   const subtotal = items.reduce(
     (sum, row) => sum + Number(row.quantity || 0) * Number(row.unitPrice || 0),
     0,
@@ -163,10 +148,6 @@ const EditQuotation = () => {
   const taxAmount = (subtotal * Number(taxPercent || 0)) / 100;
 
   const grandTotal = subtotal + taxAmount - Number(discount || 0);
-
-  // ===============================================
-  // Submit
-  // ===============================================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -191,11 +172,9 @@ const EditQuotation = () => {
         grandTotal,
       };
 
-      await axios.put(
-        `http://localhost:5000/api/quotations/${id}`,
-        payload,
-        { headers: { Authorization: `Bearer ${token()}` } },
-      );
+      await api.put(`/quotations/${id}`, payload, {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
 
       setSuccess("Quotation updated successfully");
 
@@ -313,8 +292,6 @@ const EditQuotation = () => {
 
           <Divider sx={{ my: 3 }} />
 
-          {/* Items */}
-
           <Typography variant="h6" fontWeight="bold" mb={2}>
             Items
           </Typography>
@@ -409,8 +386,6 @@ const EditQuotation = () => {
 
           <Divider sx={{ mb: 3 }} />
 
-          {/* Totals */}
-
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <TextField
@@ -444,7 +419,8 @@ const EditQuotation = () => {
             </Typography>
 
             <Typography>
-              Discount: <strong>- ₹ {Number(discount || 0).toLocaleString()}</strong>
+              Discount:{" "}
+              <strong>- ₹ {Number(discount || 0).toLocaleString()}</strong>
             </Typography>
 
             <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>

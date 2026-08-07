@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -49,14 +49,11 @@ const EditProject = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        `http://localhost:5000/api/projects/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await api.get(`/projects/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const project = response.data.project;
 
@@ -96,7 +93,7 @@ const EditProject = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.put(`http://localhost:5000/api/projects/${id}`, formData, {
+      await api.put(`/projects/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

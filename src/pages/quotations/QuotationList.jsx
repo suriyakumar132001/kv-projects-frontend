@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -58,22 +58,14 @@ const QuotationList = () => {
 
   const token = () => localStorage.getItem("token");
 
-  // ===============================================
-  // Fetch Quotations
-  // ===============================================
-
   const fetchQuotations = async () => {
     try {
       setLoading(true);
 
-      const response = await axios.get(
-        "http://localhost:5000/api/quotations",
-        {
-          headers: { Authorization: `Bearer ${token()}` },
-        },
-      );
+      const response = await api.get("/quotations", {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
 
-      // Backend returns { success, count, quotations }
       setQuotations(response.data.quotations || []);
     } catch (err) {
       console.log(err);
@@ -87,14 +79,10 @@ const QuotationList = () => {
     fetchQuotations();
   }, []);
 
-  // ===============================================
-  // Quick Status Update
-  // ===============================================
-
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/quotations/status/${id}`,
+      await api.put(
+        `/quotations/status/${id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token()}` } },
       );
@@ -108,16 +96,12 @@ const QuotationList = () => {
     }
   };
 
-  // ===============================================
-  // Delete
-  // ===============================================
-
   const deleteQuotation = async (id) => {
     const confirmDelete = window.confirm("Delete this quotation?");
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/quotations/${id}`, {
+      await api.delete(`/quotations/${id}`, {
         headers: { Authorization: `Bearer ${token()}` },
       });
 
@@ -127,10 +111,6 @@ const QuotationList = () => {
       alert(err.response?.data?.message || "Delete failed");
     }
   };
-
-  // ===============================================
-  // Filter
-  // ===============================================
 
   const filteredQuotations = quotations.filter((item) => {
     const number = item.quotationNumber || "";
@@ -184,8 +164,6 @@ const QuotationList = () => {
         </Button>
       </Box>
 
-      {/* Filters */}
-
       <Paper sx={{ p: 3, mb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
@@ -215,8 +193,6 @@ const QuotationList = () => {
           </Grid>
         </Grid>
       </Paper>
-
-      {/* Table */}
 
       <Paper>
         <TableContainer>

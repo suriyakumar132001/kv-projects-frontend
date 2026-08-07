@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -49,14 +49,11 @@ const ProjectDetails = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        `http://localhost:5000/api/projects/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await api.get(`/projects/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       setProject(response.data.project);
     } catch (err) {
@@ -107,7 +104,10 @@ const ProjectDetails = () => {
           Project Details
         </Typography>
 
-        <Button variant="outlined" onClick={() => navigate(`/${role}/projects`)}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(`/${role}/projects`)}
+        >
           Back
         </Button>
       </Box>

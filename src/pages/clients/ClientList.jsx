@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -45,26 +45,18 @@ const ClientList = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
 
-  // ===============================================
-  // Fetch Clients
-  // ===============================================
-
   const fetchClients = async () => {
     try {
       setLoading(true);
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        "http://localhost:5000/api/clients",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await api.get("/clients", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
-      // Backend returns { success, count, clients }
       setClients(response.data.clients || []);
     } catch (err) {
       console.log(err);
@@ -78,10 +70,6 @@ const ClientList = () => {
     fetchClients();
   }, []);
 
-  // ===============================================
-  // Delete Client
-  // ===============================================
-
   const deleteClient = async (id) => {
     const confirmDelete = window.confirm("Delete this client?");
     if (!confirmDelete) return;
@@ -89,7 +77,7 @@ const ClientList = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:5000/api/clients/${id}`, {
+      await api.delete(`/clients/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,10 +89,6 @@ const ClientList = () => {
       alert(err.response?.data?.message || "Delete failed");
     }
   };
-
-  // ===============================================
-  // Filter
-  // ===============================================
 
   const filteredClients = clients.filter((item) => {
     const name = item.clientName || "";
@@ -156,8 +140,6 @@ const ClientList = () => {
         </Button>
       </Box>
 
-      {/* Filters */}
-
       <Paper sx={{ p: 3, mb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
@@ -185,8 +167,6 @@ const ClientList = () => {
           </Grid>
         </Grid>
       </Paper>
-
-      {/* Table */}
 
       <Paper>
         <TableContainer>

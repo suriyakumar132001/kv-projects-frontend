@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -51,7 +51,7 @@ const ProjectList = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.get("http://localhost:5000/api/projects", {
+      const response = await api.get("/projects", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -77,7 +77,7 @@ const ProjectList = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+      await api.delete(`/projects/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -49,14 +49,11 @@ const ProjectDashboard = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        "http://localhost:5000/api/projects",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await api.get("/projects", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       // Backend returns { success, count, projects }
       setProjects(response.data.projects || []);

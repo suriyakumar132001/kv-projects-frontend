@@ -4,7 +4,7 @@
 // ===============================================
 
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 import {
   Box,
@@ -54,7 +54,7 @@ const CreateProject = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.post("http://localhost:5000/api/projects", formData, {
+      await api.post("/projects", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
