@@ -3,9 +3,9 @@
 ========================== */
 
 .navbar {
-  position: sticky; /* was: fixed */
+  position: sticky;
   top: 0;
-  left: auto; /* remove hardcoded left:260px */
+  left: auto;
   width: 100%;
   height: 75px;
   background: #fff;
@@ -15,36 +15,59 @@
   padding: 0 30px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   z-index: 500;
+  gap: 16px;
 }
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
 .navbar-left h2 {
   color: #0f172a;
-
   font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-toggle-btn {
+  display: none;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  font-size: 22px;
+  color: #0f172a;
+  cursor: pointer;
 }
 
 /* Search */
 
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
 .search-box {
   display: flex;
-
   align-items: center;
-
   background: #f1f5f9;
-
   padding: 10px 18px;
-
   border-radius: 12px;
-
   gap: 10px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .search-box input {
   border: none;
-
   background: transparent;
-
-  width: 220px;
-
+  width: 100%;
+  min-width: 0;
   font-size: 15px;
 }
 
@@ -56,53 +79,39 @@
 
 .navbar-right {
   display: flex;
-
   align-items: center;
-
-  gap: 25px;
+  gap: 20px;
+  flex-shrink: 0;
 }
 
 .today {
   font-size: 14px;
-
   color: #64748b;
+  white-space: nowrap;
 }
 
 .notification-btn {
   position: relative;
-
   border: none;
-
   background: none;
-
   font-size: 22px;
-
   cursor: pointer;
+  color: #334155;
+  flex-shrink: 0;
 }
 
 .badge {
   position: absolute;
-
   top: -5px;
-
   right: -6px;
-
   background: red;
-
   color: #fff;
-
   font-size: 11px;
-
   width: 18px;
-
   height: 18px;
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   border-radius: 50%;
 }
 
@@ -110,51 +119,105 @@
 
 .profile {
   display: flex;
-
   align-items: center;
-
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .profile-icon {
   font-size: 42px;
-
   color: #2563eb;
+  flex-shrink: 0;
 }
 
 .profile h4 {
   font-size: 15px;
-
   color: #0f172a;
+  white-space: nowrap;
 }
 
 .profile p {
   font-size: 13px;
-
   color: #64748b;
-
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+/* ==========================
+   RESPONSIVE
+========================== */
 
-.menu-toggle-btn {
-  display: none;
-  border: none;
-  background: none;
-  font-size: 22px;
-  color: #0f172a;
-  cursor: pointer;
-}
-
+/* Tablet: show hamburger, shrink search */
 @media (max-width: 900px) {
+  .navbar {
+    padding: 0 16px;
+    gap: 10px;
+  }
+
   .menu-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .navbar-left h2 {
+    font-size: 18px;
+  }
+
+  .search-box {
+    max-width: 200px;
+    padding: 8px 14px;
+  }
+
+  .today {
+    display: none;
+  }
+
+  .navbar-right {
+    gap: 14px;
+  }
+}
+
+/* Small phones: drop search bar and profile text, keep icons */
+@media (max-width: 600px) {
+  .navbar {
+    height: 64px;
+    padding: 0 12px;
+  }
+
+  .navbar-left h2 {
+    font-size: 16px;
+  }
+
+  .navbar-center {
+    display: none;
+  }
+
+  .profile h4,
+  .profile p {
+    display: none;
+  }
+
+  .profile-icon {
+    font-size: 34px;
+  }
+
+  .notification-btn {
+    font-size: 20px;
+  }
+
+  .navbar-right {
+    gap: 12px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .navbar-left h2 {
+    font-size: 14px;
+  }
+
+  .navbar {
+    padding: 0 8px;
   }
 }
