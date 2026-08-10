@@ -5,10 +5,11 @@ import { toast } from "react-toastify";
 import {
   FaEye,
   FaEyeSlash,
-  FaBuilding,
-  FaUsers,
-  FaChartLine,
   FaHardHat,
+  FaUsers,
+  FaWarehouse,
+  FaChartLine,
+  FaIdCard,
 } from "react-icons/fa";
 
 import { useAuth } from "../../context/AuthContext";
@@ -54,133 +55,196 @@ const Login = () => {
     }
   };
 
-  return (
-    <div className="bp-container">
-      {/* ================= LEFT: Blueprint Panel ================= */}
-      <div className="bp-left">
-        <div className="bp-grid-bg"></div>
-        <div className="bp-vignette"></div>
+  // Simple window grid for each floor of the rising building illustration
+  const floorRows = [212, 182, 152, 122, 92];
+  const windowCols = [104, 134, 164, 194];
 
-        <div className="bp-left-top">
-          <span className="bp-eyebrow">
-            <span className="bp-eyebrow-line"></span>
-            Site Operations Platform
+  return (
+    <div className="site-container">
+      {/* ================= LEFT: Rising Site Panel ================= */}
+      <div className="site-left">
+        <div className="site-grid-bg"></div>
+        <div className="site-vignette"></div>
+
+        <div className="site-left-top">
+          <span className="site-eyebrow">
+            <span className="site-eyebrow-line"></span>
+            Project Access Terminal
           </span>
-          <h1 className="bp-brand">
-            <FaHardHat className="bp-brand-icon" />
+          <h1 className="site-brand">
+            <FaHardHat className="site-brand-icon" />
             KV Projects <span>ERP</span>
           </h1>
-          <p className="bp-tagline">
-            Manage employees, sites, payroll, attendance, inventory and
-            projects from one command deck.
+          <p className="site-tagline">
+            One terminal for your sites — employees, payroll, inventory,
+            attendance and progress, always in view.
           </p>
         </div>
 
-        {/* Animated drafting illustration */}
-        <div className="bp-draft-wrap">
-          <svg className="bp-draft-svg" viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg">
-            <path className="bp-draw" style={{ "--len": 520 }} d="M40 300 L40 60 L230 60" />
-            <path className="bp-draw" style={{ "--len": 180 }} d="M40 60 L20 90" />
-            <line className="bp-draw" style={{ "--len": 60 }} x1="40" y1="80" x2="60" y2="60" />
-            <line className="bp-draw" style={{ "--len": 220 }} x1="230" y1="60" x2="230" y2="120" />
-            <circle className="bp-draw" style={{ "--len": 40 }} cx="230" cy="126" r="5" />
+        {/* Crane assembles, then the tower rises floor by floor */}
+        <div className="site-build-wrap">
+          <svg
+            className="site-build-svg"
+            viewBox="0 0 300 260"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="20" y1="242" x2="280" y2="242" className="ground-line" />
+            <rect
+              x="20"
+              y="246"
+              width="260"
+              height="5"
+              className="hazard-strip"
+            />
 
-            <path className="bp-draw" style={{ "--len": 600 }} d="M120 300 L120 140 L340 140 L340 300" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="120" y1="180" x2="340" y2="180" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="120" y1="220" x2="340" y2="220" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="120" y1="260" x2="340" y2="260" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="176" y1="140" x2="176" y2="300" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="232" y1="140" x2="232" y2="300" />
-            <line className="bp-draw" style={{ "--len": 160 }} x1="288" y1="140" x2="288" y2="300" />
+            <line
+              x1="235"
+              y1="242"
+              x2="235"
+              y2="38"
+              className="crane-draw"
+              style={{ "--len": 204 }}
+            />
+            <line
+              x1="235"
+              y1="38"
+              x2="285"
+              y2="38"
+              className="crane-draw"
+              style={{ "--len": 50 }}
+            />
+            <line
+              x1="235"
+              y1="38"
+              x2="205"
+              y2="50"
+              className="crane-draw"
+              style={{ "--len": 33 }}
+            />
+            <g className="crane-hook-group">
+              <line x1="270" y1="38" x2="270" y2="70" className="crane-cable" />
+              <circle cx="270" cy="74" r="4" className="crane-hook" />
+            </g>
 
-            <line className="bp-draw" style={{ "--len": 460 }} x1="20" y1="300" x2="460" y2="300" />
-            <line className="bp-dim" x1="120" y1="312" x2="340" y2="312" />
-            <text className="bp-dimtext" x="205" y="309">24.60 M</text>
+            {floorRows.map((y, i) => (
+              <g key={y} className={`floor-group f${i + 1}`}>
+                <rect x="90" y={y} width="120" height="28" className="floor" />
+                {windowCols.map((x) => (
+                  <rect
+                    key={x}
+                    x={x}
+                    y={y + 8}
+                    width="10"
+                    height="12"
+                    className="window"
+                  />
+                ))}
+              </g>
+            ))}
           </svg>
         </div>
 
-        <div className="bp-feature-strip">
-          <div className="bp-feature" style={{ "--d": "0s" }}>
+        <div className="site-feature-strip">
+          <div className="site-feature" style={{ "--d": "1.3s" }}>
             <FaUsers />
-            <span>Employees</span>
+            <span>Workforce</span>
           </div>
-          <div className="bp-feature" style={{ "--d": "0.15s" }}>
-            <FaBuilding />
+          <div className="site-feature" style={{ "--d": "1.45s" }}>
+            <FaWarehouse />
             <span>Sites</span>
           </div>
-          <div className="bp-feature" style={{ "--d": "0.3s" }}>
+          <div className="site-feature" style={{ "--d": "1.6s" }}>
             <FaChartLine />
-            <span>Analytics</span>
+            <span>Progress</span>
           </div>
         </div>
 
-        <div className="bp-coordline">
-          <span>SITE-042 / BLOCK C</span>
-          <span>REV. 2026.03</span>
+        <div className="site-coordline">
+          <span>TERMINAL / KV-ERP</span>
+          <span>BUILD 2026.08</span>
         </div>
       </div>
 
-      {/* ================= RIGHT: Login Card ================= */}
-      <div className="bp-right">
-        <div className="bp-card">
-          <div className="bp-ticks"></div>
-          <div className="bp-stamp">
-            <div className="bp-stamp-ring"></div>
-            Access
-            <br />
-            Verified
+      {/* ================= RIGHT: Access Badge Card ================= */}
+      <div className="site-right">
+        <div className="badge-card">
+          <div className="badge-clip">
+            <div className="badge-hole"></div>
+          </div>
+          <div className="badge-tape"></div>
+
+          <div className="badge-cert">
+            <FaIdCard />
+            <span>
+              Clearance
+              <br />
+              Verified
+            </span>
           </div>
 
-          <div className="bp-card-head">
-            <span className="bp-tag">Field Login · 032</span>
+          <div className="badge-head">
+            <span className="badge-tag">Site Login</span>
             <h2>Welcome back</h2>
-            <p>Please login to continue</p>
+            <p>Sign in to access your dashboard</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bp-field">
+            <div className="badge-field">
               <label>Email</label>
-              <div className="bp-input-wrap">
+              <div className="badge-input-wrap">
                 <input
                   type="email"
                   placeholder="you@company.com"
                   {...register("email", { required: "Email is required" })}
                 />
-                <div className="bp-ruler-focus"></div>
+                <span className="scan-line"></span>
               </div>
-              {errors.email && <span className="bp-error">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="badge-error">{errors.email.message}</span>
+              )}
             </div>
 
-            <div className="bp-field">
+            <div className="badge-field">
               <label>Password</label>
-              <div className="bp-input-wrap">
+              <div className="badge-input-wrap">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
                 <button
                   type="button"
-                  className="bp-eye-btn"
+                  className="badge-eye-btn"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label="Toggle password visibility"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
-                <div className="bp-ruler-focus"></div>
+                <span className="scan-line"></span>
               </div>
-              {errors.password && <span className="bp-error">{errors.password.message}</span>}
+              {errors.password && (
+                <span className="badge-error">{errors.password.message}</span>
+              )}
             </div>
 
-            <button className="bp-submit" disabled={loading}>
-              <span className="bp-btn-label">
-                {loading && <span className="bp-spinner"></span>}
-                <span>{loading ? "Signing in..." : "Sign In"}</span>
+            <button className="badge-submit" disabled={loading}>
+              <span className="badge-btn-label">
+                {loading && <span className="badge-spinner"></span>}
+                <span>{loading ? "Verifying..." : "Swipe to Sign In"}</span>
               </span>
             </button>
           </form>
 
-          <p className="bp-footer-note">© {new Date().getFullYear()} KV Projects ERP</p>
+          <div className="badge-barcode" aria-hidden="true">
+            {Array.from({ length: 28 }).map((_, i) => (
+              <span key={i}></span>
+            ))}
+          </div>
+          <p className="badge-footer-note">
+            © {new Date().getFullYear()} KV Projects ERP
+          </p>
         </div>
       </div>
     </div>
