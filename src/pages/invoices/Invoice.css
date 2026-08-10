@@ -266,6 +266,26 @@
   background: #0f5c2c;
 }
 
+.email-btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  background: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.email-btn:hover {
+  background: #1d4ed8;
+}
+
+.email-btn:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
 @media (max-width: 992px) {
   .invoice-toolbar {
     flex-direction: column;
@@ -288,7 +308,8 @@
     flex-direction: column-reverse;
   }
   .invoice-actions .back-btn,
-  .invoice-actions .print-btn {
+  .invoice-actions .print-btn,
+  .invoice-actions .email-btn {
     width: 100%;
   }
 }

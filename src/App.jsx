@@ -79,6 +79,11 @@ import CreateInvoice from "./pages/invoices/CreateInvoice";
 import EditInvoice from "./pages/invoices/EditInvoice";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
+// ================= DPR =================
+import DPRList from "./pages/dpr/DPRList";
+import CreateDPR from "./pages/dpr/CreateDPR";
+import DPRDetails from "./pages/dpr/DPRDetails";
+
 import PaymentList from "./pages/payments/PaymentList";
 import AddPayment from "./pages/payments/AddPayment";
 import EditPayment from "./pages/payments/EditPayment";
@@ -219,6 +224,10 @@ OWNER ROUTES
           <Route path="payments/edit/:id" element={<EditPayment />} />
           <Route path="payments/view/:id" element={<PaymentDetails />} />
 
+          {/* Daily Progress Reports (view + delete only — creation is site-engineer only) */}
+          <Route path="dpr" element={<DPRList />} />
+          <Route path="dpr/view/:id" element={<DPRDetails />} />
+
           {/* Analytics */}
           <Route path="analytics" element={<AnalyticsDashboard />} />
 
@@ -334,6 +343,10 @@ ADMIN ROUTES
           <Route path="payments/add" element={<AddPayment />} />
           <Route path="payments/edit/:id" element={<EditPayment />} />
           <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+          {/* Daily Progress Reports (view + delete only — creation is site-engineer only) */}
+          <Route path="dpr" element={<DPRList />} />
+          <Route path="dpr/view/:id" element={<DPRDetails />} />
         </Route>
 
         {/* =====================================================
@@ -397,6 +410,10 @@ HR ROUTES
 
           <Route path="payments" element={<PaymentList />} />
           <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+          {/* Daily Progress Reports (view only — HR has no delete rights) */}
+          <Route path="dpr" element={<DPRList />} />
+          <Route path="dpr/view/:id" element={<DPRDetails />} />
         </Route>
 
         {/* =====================================================
@@ -440,6 +457,11 @@ SITE ENGINEER ROUTES
 
           {/* Inventory */}
           <Route path="inventory" element={<InventoryList />} />
+
+          {/* Daily Progress Reports — full access */}
+          <Route path="dpr" element={<DPRList />} />
+          <Route path="dpr/create" element={<CreateDPR />} />
+          <Route path="dpr/view/:id" element={<DPRDetails />} />
         </Route>
 
         {/* ================= 404 ================= */}

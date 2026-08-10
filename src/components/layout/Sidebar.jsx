@@ -20,6 +20,7 @@ import {
   FaSignOutAlt,
   FaProjectDiagram,
   FaTimes,
+  FaClipboardList,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -63,6 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         path: "/owner/invoices",
       },
       { name: "Payments", icon: <FaCreditCard />, path: "/owner/payments" },
+      { name: "DPR", icon: <FaClipboardList />, path: "/owner/dpr" },
       { name: "Analytics", icon: <FaChartBar />, path: "/owner/analytics" },
       { name: "Settings", icon: <FaCog />, path: "/owner/settings" },
     ],
@@ -87,23 +89,25 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Sites", icon: <FaBuilding />, path: "/admin/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/admin/inventory" },
       { name: "Analytics", icon: <FaChartBar />, path: "/admin/analytics" },
-      // inside admin: [ ... ] array, add these before the closing bracket:
       {
         name: "Assets",
         icon: <FaLaptop />,
         path: "/admin/assets",
       },
-
       {
         name: "Invoices",
         icon: <FaFileInvoiceDollar />,
         path: "/admin/invoices",
       },
-
       {
         name: "Payments",
         icon: <FaCreditCard />,
         path: "/admin/payments",
+      },
+      {
+        name: "DPR",
+        icon: <FaClipboardList />,
+        path: "/admin/dpr",
       },
     ],
 
@@ -113,6 +117,21 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Attendance", icon: <FaCalendarCheck />, path: "/hr/attendance" },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/hr/leaves" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/hr/payroll" },
+      {
+        name: "Invoices",
+        icon: <FaFileInvoiceDollar />,
+        path: "/hr/invoices",
+      },
+      {
+        name: "Payments",
+        icon: <FaCreditCard />,
+        path: "/hr/payments",
+      },
+      {
+        name: "DPR",
+        icon: <FaClipboardList />,
+        path: "/hr/dpr",
+      },
     ],
 
     siteengineer: [
@@ -133,18 +152,10 @@ const Sidebar = ({ isOpen, onClose }) => {
       },
       { name: "Sites", icon: <FaBuilding />, path: "/siteengineer/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/siteengineer/inventory" },
-
-      // inside hr: [ ... ] array, add these before the closing bracket:
       {
-        name: "Invoices",
-        icon: <FaFileInvoiceDollar />,
-        path: "/hr/invoices",
-      },
-
-      {
-        name: "Payments",
-        icon: <FaCreditCard />,
-        path: "/hr/payments",
+        name: "DPR",
+        icon: <FaClipboardList />,
+        path: "/siteengineer/dpr",
       },
     ],
   };

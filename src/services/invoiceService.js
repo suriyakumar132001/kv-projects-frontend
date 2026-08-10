@@ -22,12 +22,19 @@ const invoiceService = {
   },
 
   updatePaymentStatus: async (id, paymentStatus) => {
-    const response = await api.put(`/invoices/payment/${id}`, { paymentStatus });
+    const response = await api.put(`/invoices/payment/${id}`, {
+      paymentStatus,
+    });
     return response.data;
   },
 
   deleteInvoice: async (id) => {
     const response = await api.delete(`/invoices/${id}`);
+    return response.data;
+  },
+
+  sendInvoiceEmail: async (id) => {
+    const response = await api.post(`/email/send-invoice/${id}`);
     return response.data;
   },
 };

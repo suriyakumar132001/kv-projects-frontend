@@ -17,6 +17,7 @@ const InvoiceDetails = () => {
 
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [emailing, setEmailing] = useState(false);
 
   useEffect(() => {
     loadInvoice();
@@ -47,6 +48,18 @@ const InvoiceDetails = () => {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleEmailInvoice = async () => {
+    try {
+      setEmailing(true);
+      await invoiceService.sendInvoiceEmail(id);
+      toast.success("Invoice emailed to client successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to send email");
+    } finally {
+      setEmailing(false);
+    }
   };
 
   if (loading) return <h2>Loading...</h2>;
@@ -127,6 +140,14 @@ const InvoiceDetails = () => {
 
           <button className="print-btn" onClick={handlePrint}>
             Print Invoice
+          </button>
+
+          <button
+            className="email-btn"
+            onClick={handleEmailInvoice}
+            disabled={emailing}
+          >
+            {emailing ? "Sending..." : "Email Invoice"}
           </button>
         </div>
       </div>
