@@ -49,13 +49,11 @@ const RegisterUser = () => {
         role: selectedRole,
       });
 
-      if (res.emailSent) {
-        toast.success("User registered — login details emailed to them.");
-      } else {
-        toast.warn(
-          "User registered, but the welcome email failed to send. Please share their password manually.",
-        );
-      }
+      toast.success(
+        res.employeeLinked
+          ? "User created. Their login details are being emailed to them."
+          : "User created (employee profile couldn't be auto-linked — check Users page). Login details are being emailed to them.",
+      );
 
       navigate(`/${role}/users`);
     } catch (err) {
