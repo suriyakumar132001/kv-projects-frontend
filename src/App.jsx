@@ -92,6 +92,10 @@ import PaymentDetails from "./pages/payments/PaymentDetails";
 import Settings from "./pages/settings/Settings";
 
 import AnalyticsDashboard from "./pages/analytics/AnalyticsDashboard";
+
+// ================= USERS (Owner/Admin only) =================
+import UserList from "./pages/users/UserList";
+import RegisterUser from "./pages/users/RegisterUser";
 function App() {
   return (
     <>
@@ -231,6 +235,10 @@ OWNER ROUTES
           {/* Analytics */}
           <Route path="analytics" element={<AnalyticsDashboard />} />
 
+          {/* Users (Owner: create Admin, HR, Site Engineer) */}
+          <Route path="users" element={<UserList />} />
+          <Route path="users/add" element={<RegisterUser />} />
+
           {/* Settings */}
           <Route path="settings" element={<Settings />} />
         </Route>
@@ -347,6 +355,10 @@ ADMIN ROUTES
           {/* Daily Progress Reports (view + delete only — creation is site-engineer only) */}
           <Route path="dpr" element={<DPRList />} />
           <Route path="dpr/view/:id" element={<DPRDetails />} />
+
+          {/* Users (Admin: create HR, Site Engineer only) */}
+          <Route path="users" element={<UserList />} />
+          <Route path="users/add" element={<RegisterUser />} />
         </Route>
 
         {/* =====================================================

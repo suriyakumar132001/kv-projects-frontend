@@ -21,6 +21,7 @@ import {
   FaProjectDiagram,
   FaTimes,
   FaClipboardList,
+  FaUserShield,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -66,6 +67,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Payments", icon: <FaCreditCard />, path: "/owner/payments" },
       { name: "DPR", icon: <FaClipboardList />, path: "/owner/dpr" },
       { name: "Analytics", icon: <FaChartBar />, path: "/owner/analytics" },
+      { name: "Users", icon: <FaUserShield />, path: "/owner/users" },
       { name: "Settings", icon: <FaCog />, path: "/owner/settings" },
     ],
 
@@ -108,6 +110,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         name: "DPR",
         icon: <FaClipboardList />,
         path: "/admin/dpr",
+      },
+      {
+        name: "Users",
+        icon: <FaUserShield />,
+        path: "/admin/users",
       },
     ],
 
