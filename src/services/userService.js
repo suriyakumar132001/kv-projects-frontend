@@ -29,6 +29,13 @@ const userService = {
     const response = await api.patch(`/users/${id}/status`, { status });
     return response.data;
   },
+
+  // Owner/Admin only — create/link an Employee profile for an existing
+  // user who was created before auto-linking existed.
+  provisionEmployee: async (id) => {
+    const response = await api.post(`/users/${id}/provision-employee`);
+    return response.data;
+  },
 };
 
 export default userService;

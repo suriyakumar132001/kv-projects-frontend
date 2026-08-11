@@ -23,6 +23,7 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [togglingId, setTogglingId] = useState(null);
+  const [provisioningId, setProvisioningId] = useState(null);
 
   useEffect(() => {
     loadUsers();
@@ -55,13 +56,13 @@ const UserList = () => {
 
       await userService.updateUserStatus(
         targetUser._id || targetUser.id,
-        nextStatus
+        nextStatus,
       );
 
       toast.success(
         `${targetUser.name} ${
           nextStatus === "Active" ? "activated" : "deactivated"
-        }`
+        }`,
       );
 
       loadUsers();
@@ -69,6 +70,30 @@ const UserList = () => {
       toast.error(error.response?.data?.message || "Failed to update status");
     } finally {
       setTogglingId(null);
+    }
+  };
+
+  const handleProvisionEmployee = async (targetUser) => {
+    const id = targetUser._id || targetUser.id;
+
+    try {
+      setProvisioningId(id);
+
+      const res = await userService.provisionEmployee(id);
+
+      toast.success(
+        `Employee profile ${res.employee?.employeeId || ""} created for ${
+          targetUser.name
+        }`,
+      );
+
+      loadUsers();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to create employee profile",
+      );
+    } finally {
+      setProvisioningId(null);
     }
   };
 
@@ -104,6 +129,7 @@ const UserList = () => {
                 <th>Role</th>
                 <th>Phone</th>
                 <th>Status</th>
+                <th>Employee Profile</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -139,6 +165,25 @@ const UserList = () => {
                       </span>
                     </td>
                     <td>
+                      {uRole === "owner" ? (
+                        <span style={{ color: "#9ca3af" }}>—</span>
+                      ) : u.employeeLinked ? (
+                        <span className="role-badge siteengineer">
+                          {u.employeeId}
+                        </span>
+                      ) : (
+                        <button
+                          className="status-toggle-btn activate"
+                          disabled={provisioningId === id}
+                          onClick={() => handleProvisionEmployee(u)}
+                        >
+                          {provisioningId === id
+                            ? "Creating..."
+                            : "Create Profile"}
+                        </button>
+                      )}
+                    </td>
+                    <td>
                       {canManage(u) ? (
                         <button
                           className={`status-toggle-btn ${
@@ -150,8 +195,8 @@ const UserList = () => {
                           {togglingId === id
                             ? "Updating..."
                             : u.status === "Active"
-                            ? "Deactivate"
-                            : "Activate"}
+                              ? "Deactivate"
+                              : "Activate"}
                         </button>
                       ) : (
                         <span style={{ color: "#9ca3af" }}>—</span>
