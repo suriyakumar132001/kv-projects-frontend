@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 // ================= AUTH =================
 import Login from "./pages/auth/Login";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 // ================= LAYOUT =================
 import DashboardLayout from "./layouts/DashboardLayout";
@@ -105,6 +107,8 @@ function App() {
         {/* ================= LOGIN ================= */}
 
         <Route path="/" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* =====================================================
 OWNER ROUTES
@@ -485,3 +489,4 @@ SITE ENGINEER ROUTES
 }
 
 export default App;
+ 

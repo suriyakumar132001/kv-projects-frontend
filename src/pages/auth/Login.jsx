@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import {
@@ -227,6 +227,10 @@ const Login = () => {
               {errors.password && (
                 <span className="badge-error">{errors.password.message}</span>
               )}
+
+              <Link to="/forgot-password" className="badge-forgot-link">
+                Forgot password?
+              </Link>
             </div>
 
             <button className="badge-submit" disabled={loading}>

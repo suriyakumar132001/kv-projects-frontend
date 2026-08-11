@@ -507,6 +507,19 @@ rect.hazard-strip {
   display: block;
   animation: badge-shake 0.35s ease;
 }
+
+.badge-forgot-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--steel);
+  text-decoration: none;
+}
+
+.badge-forgot-link:hover {
+  color: var(--orange);
+  text-decoration: underline;
+}
 @keyframes badge-shake {
   0%,
   100% {
