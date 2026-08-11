@@ -14,8 +14,11 @@ const MarkAttendance = () => {
 
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
+  const isSiteEngineer = role === "siteengineer";
 
   const [employees, setEmployees] = useState([]);
+  const [myEmployee, setMyEmployee] = useState(null);
+  const [loadingProfile, setLoadingProfile] = useState(isSiteEngineer);
 
   const [formData, setFormData] = useState({
     employee: "",
@@ -25,8 +28,30 @@ const MarkAttendance = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadEmployees();
+    if (isSiteEngineer) {
+      loadMyEmployee();
+    } else {
+      loadEmployees();
+    }
   }, []);
+
+  // Site Engineers only ever check themselves in — load their own
+  // linked employee profile instead of a full picker.
+  const loadMyEmployee = async () => {
+    try {
+      setLoadingProfile(true);
+      const res = await employeeService.getMyEmployee();
+      setMyEmployee(res.employee);
+      setFormData((prev) => ({ ...prev, employee: res.employee._id }));
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "No employee profile is linked to your account. Contact your Admin/Owner.",
+      );
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
 
   const loadEmployees = async () => {
     try {
@@ -52,7 +77,11 @@ const MarkAttendance = () => {
     e.preventDefault();
 
     if (!formData.employee) {
-      return toast.error("Please select employee");
+      return toast.error(
+        isSiteEngineer
+          ? "No employee profile linked to your account"
+          : "Please select employee",
+      );
     }
 
     try {
@@ -64,50 +93,57 @@ const MarkAttendance = () => {
 
       navigate(`/${role}/attendance`);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Attendance failed"
-      );
+      toast.error(error.response?.data?.message || "Attendance failed");
     } finally {
       setLoading(false);
     }
   };
 
+  if (loadingProfile) {
+    return <h2>Loading your profile...</h2>;
+  }
+
   return (
     <div className="attendance-form-page">
-
       <div className="attendance-form-card">
-
         <h2>Mark Attendance</h2>
 
         <form onSubmit={handleSubmit}>
-
           <div className="form-group">
-
             <label>Employee</label>
 
-            <select
-              name="employee"
-              value={formData.employee}
-              onChange={handleChange}
-            >
-              <option value="">Select Employee</option>
+            {isSiteEngineer ? (
+              myEmployee ? (
+                <input
+                  type="text"
+                  value={`${myEmployee.employeeId} - ${myEmployee.name}`}
+                  disabled
+                  readOnly
+                />
+              ) : (
+                <p style={{ color: "#b91c1c", margin: 0 }}>
+                  No employee profile linked to your account. Contact your
+                  Admin/Owner.
+                </p>
+              )
+            ) : (
+              <select
+                name="employee"
+                value={formData.employee}
+                onChange={handleChange}
+              >
+                <option value="">Select Employee</option>
 
-              {employees.map((emp) => (
-                <option
-                  key={emp._id}
-                  value={emp._id}
-                >
-                  {emp.employeeId} - {emp.name}
-                </option>
-              ))}
-
-            </select>
-
+                {employees.map((emp) => (
+                  <option key={emp._id} value={emp._id}>
+                    {emp.employeeId} - {emp.name}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="form-group">
-
             <label>Remarks</label>
 
             <textarea
@@ -117,11 +153,9 @@ const MarkAttendance = () => {
               onChange={handleChange}
               placeholder="Enter remarks"
             />
-
           </div>
 
           <div className="form-buttons">
-
             <button
               type="button"
               className="cancel-btn"
@@ -133,17 +167,13 @@ const MarkAttendance = () => {
             <button
               type="submit"
               className="save-btn"
-              disabled={loading}
+              disabled={loading || (isSiteEngineer && !myEmployee)}
             >
               {loading ? "Saving..." : "Check In"}
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
   );
 };

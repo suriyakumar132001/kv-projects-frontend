@@ -13,6 +13,13 @@ const employeeService = {
     return response.data;
   },
 
+  // Get my own linked employee profile (used by Site Engineer's
+  // self-only Mark Attendance screen)
+  getMyEmployee: async () => {
+    const response = await api.get("/employees/me");
+    return response.data;
+  },
+
   // Create employee
   createEmployee: async (data) => {
     const response = await api.post("/employees", data);
