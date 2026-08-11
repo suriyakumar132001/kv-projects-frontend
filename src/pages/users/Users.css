@@ -163,6 +163,15 @@
   border-color: #bbf7d0;
 }
 
+.delete-btn {
+  color: #fff !important;
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+.delete-btn:hover {
+  background: #b91c1c !important;
+}
+
 .users-empty {
   padding: 60px 20px;
   text-align: center;

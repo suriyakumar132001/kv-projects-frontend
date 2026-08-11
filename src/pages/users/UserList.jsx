@@ -24,6 +24,7 @@ const UserList = () => {
   const [loading, setLoading] = useState(true);
   const [togglingId, setTogglingId] = useState(null);
   const [provisioningId, setProvisioningId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     loadUsers();
@@ -94,6 +95,32 @@ const UserList = () => {
       );
     } finally {
       setProvisioningId(null);
+    }
+  };
+
+  const handleDelete = async (targetUser) => {
+    const id = targetUser._id || targetUser.id;
+
+    const confirmed = window.confirm(
+      `Delete ${targetUser.name} (${roleLabels[targetUser.role?.toLowerCase()] || targetUser.role})?\n\n` +
+        `This removes their login access AND their Employee profile. ` +
+        `This cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeletingId(id);
+
+      await userService.deleteUser(id);
+
+      toast.success(`${targetUser.name} was deleted`);
+
+      loadUsers();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete user");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -185,19 +212,29 @@ const UserList = () => {
                     </td>
                     <td>
                       {canManage(u) ? (
-                        <button
-                          className={`status-toggle-btn ${
-                            u.status === "Active" ? "deactivate" : "activate"
-                          }`}
-                          disabled={togglingId === id}
-                          onClick={() => handleToggleStatus(u)}
-                        >
-                          {togglingId === id
-                            ? "Updating..."
-                            : u.status === "Active"
-                              ? "Deactivate"
-                              : "Activate"}
-                        </button>
+                        <div style={{ display: "flex", gap: "8px" }}>
+                          <button
+                            className={`status-toggle-btn ${
+                              u.status === "Active" ? "deactivate" : "activate"
+                            }`}
+                            disabled={togglingId === id || deletingId === id}
+                            onClick={() => handleToggleStatus(u)}
+                          >
+                            {togglingId === id
+                              ? "Updating..."
+                              : u.status === "Active"
+                                ? "Deactivate"
+                                : "Activate"}
+                          </button>
+
+                          <button
+                            className="status-toggle-btn delete-btn"
+                            disabled={deletingId === id || togglingId === id}
+                            onClick={() => handleDelete(u)}
+                          >
+                            {deletingId === id ? "Deleting..." : "Delete"}
+                          </button>
+                        </div>
                       ) : (
                         <span style={{ color: "#9ca3af" }}>—</span>
                       )}
