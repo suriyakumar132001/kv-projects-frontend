@@ -32,17 +32,17 @@
 
 .modal-header {
   padding: 20px 25px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
 }
 
 .modal-header h2 {
-  color: #0f172a;
+  color: var(--ink);
   font-size: 20px;
 }
 
 .modal-body {
   padding: 25px;
-  color: #475569;
+  color: var(--text-dark);
   line-height: 1.6;
 }
 
@@ -51,12 +51,12 @@
   justify-content: flex-end;
   gap: 15px;
   padding: 20px 25px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border);
 }
 
 .cancel-btn {
-  background: #cbd5e1;
-  color: #0f172a;
+  background: var(--border);
+  color: var(--ink);
   border: none;
   padding: 12px 22px;
   border-radius: 8px;
@@ -65,7 +65,7 @@
 }
 
 .delete-btn {
-  background: #ef4444;
+  background: var(--danger);
   color: #fff;
   border: none;
   padding: 12px 22px;
@@ -75,11 +75,11 @@
 }
 
 .cancel-btn:hover {
-  background: #94a3b8;
+  background: var(--text-muted);
 }
 
 .delete-btn:hover {
-  background: #dc2626;
+  background: var(--danger);
 }
 
 /* ==========================

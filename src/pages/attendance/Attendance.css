@@ -2,7 +2,7 @@
 
 .attendance-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
 }
 .attendance-header {
@@ -15,12 +15,12 @@
 }
 .attendance-header h2 {
   font-size: 28px;
-  color: #1f2937;
+  color: var(--text-dark);
   margin: 0;
 }
 .attendance-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .attendance-toolbar {
@@ -52,7 +52,7 @@
   flex: 1;
   min-width: 280px;
   height: 48px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0 15px;
   background: #fff;
@@ -65,14 +65,14 @@
 }
 .search-icon {
   margin-right: 10px;
-  color: #64748b;
+  color: var(--text-soft);
 }
 
 .attendance-select,
 .attendance-date {
   height: 48px;
   padding: 0 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
   min-width: 180px;
@@ -81,7 +81,7 @@
 .attendance-date:focus,
 .search-box:focus-within {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--ink);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -99,16 +99,16 @@
   font-weight: 600;
 }
 .refresh-btn {
-  background: #10b981;
+  background: var(--success);
 }
 .add-btn {
-  background: #2563eb;
+  background: var(--ink);
 }
 .refresh-btn:hover {
-  background: #059669;
+  background: var(--success-dark);
 }
 .add-btn:hover {
-  background: #1d4ed8;
+  background: var(--ink-2);
 }
 
 .table-wrapper {
@@ -122,7 +122,7 @@
   overflow: hidden;
 }
 .attendance-table thead {
-  background: #1e3a8a;
+  background: var(--ink);
   color: #fff;
 }
 .attendance-table th,
@@ -131,7 +131,7 @@
   text-align: left;
 }
 .attendance-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 .attendance-table tbody tr:hover {
   background: #f8fafc;
@@ -147,20 +147,20 @@
   font-weight: 600;
 }
 .status-present {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--success-bg);
+  color: var(--success-dark);
 }
 .status-absent {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 .status-halfday {
-  background: #dbeafe;
-  color: #2563eb;
+  background: var(--info-bg);
+  color: var(--ink);
 }
 .status-leave {
-  background: #fef3c7;
-  color: #ca8a04;
+  background: var(--warning-bg);
+  color: var(--warning);
 }
 
 .action-buttons {
@@ -176,10 +176,10 @@
   cursor: pointer;
 }
 .view-btn {
-  background: #3b82f6;
+  background: var(--orange);
 }
 .checkout-btn {
-  background: #ef4444;
+  background: var(--danger);
 }
 
 .attendance-form-page {
@@ -209,7 +209,7 @@
 .form-group select,
 .form-group textarea {
   padding: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 .form-buttons {
@@ -228,11 +228,11 @@
   cursor: pointer;
 }
 .cancel-btn {
-  background: #6b7280;
+  background: var(--text-soft);
 }
 .save-btn,
 .back-btn {
-  background: #2563eb;
+  background: var(--ink);
 }
 
 .details-grid {
@@ -267,5 +267,69 @@
   .attendance-table {
     display: block;
     overflow-x: auto;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.attendance-form-page,
+.attendance-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 900px) {
+  .attendance-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .attendance-form-page,
+  .attendance-page {
+    padding: 16px;
+  }
+
+  .attendance-header h2 {
+    font-size: 20px;
+  }
+
+  .attendance-table {
+    min-width: 640px;
+  }
+
+  .details-card {
+    padding: 18px;
+  }
+
+  .form-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .attendance-table {
+    min-width: 560px;
   }
 }

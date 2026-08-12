@@ -1,6 +1,6 @@
 .site-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
 }
 
@@ -14,12 +14,12 @@
 }
 .site-header h2 {
   font-size: 28px;
-  color: #1f2937;
+  color: var(--text-dark);
   margin: 0;
 }
 .site-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .site-toolbar {
@@ -41,7 +41,7 @@
   flex: 1;
   min-width: 240px;
   height: 48px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0 15px;
   background: #fff;
@@ -54,13 +54,13 @@
 }
 .search-icon {
   margin-right: 10px;
-  color: #64748b;
+  color: var(--text-soft);
 }
 
 .site-select {
   height: 48px;
   padding: 0 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
   min-width: 160px;
@@ -68,7 +68,7 @@
 .site-select:focus,
 .search-box:focus-within {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--ink);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -78,7 +78,7 @@
   border: none;
   border-radius: 10px;
   color: #fff;
-  background: #2563eb;
+  background: var(--ink);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -86,7 +86,7 @@
   font-weight: 600;
 }
 .add-btn:hover {
-  background: #1d4ed8;
+  background: var(--ink-2);
 }
 
 .table-wrapper {
@@ -100,7 +100,7 @@
   overflow: hidden;
 }
 .site-table thead {
-  background: #1e3a8a;
+  background: var(--ink);
   color: #fff;
 }
 .site-table th,
@@ -109,7 +109,7 @@
   text-align: left;
 }
 .site-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 .site-table tbody tr:hover {
   background: #f8fafc;
@@ -126,24 +126,24 @@
   font-weight: 600;
 }
 .status-planning {
-  background: #e0e7ff;
+  background: var(--info-bg);
   color: #4338ca;
 }
 .status-started {
-  background: #dbeafe;
-  color: #2563eb;
+  background: var(--info-bg);
+  color: var(--ink);
 }
 .status-inprogress {
-  background: #fef3c7;
-  color: #ca8a04;
+  background: var(--warning-bg);
+  color: var(--warning);
 }
 .status-completed {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--success-bg);
+  color: var(--success-dark);
 }
 .status-onhold {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .action-btn {
@@ -152,12 +152,12 @@
   border-radius: 8px;
   color: #fff;
   cursor: pointer;
-  background: #10b981;
+  background: var(--success);
   font-size: 13px;
   font-weight: 600;
 }
 .action-btn:hover {
-  background: #059669;
+  background: var(--success-dark);
 }
 
 .site-form-page {
@@ -194,7 +194,7 @@
 .form-group select,
 .form-group textarea {
   padding: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 .form-buttons {
@@ -212,10 +212,10 @@
   cursor: pointer;
 }
 .cancel-btn {
-  background: #6b7280;
+  background: var(--text-soft);
 }
 .save-btn {
-  background: #2563eb;
+  background: var(--ink);
 }
 
 @media (max-width: 992px) {
@@ -233,5 +233,69 @@
   }
   .form-group.full-width {
     grid-column: auto;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.site-page,
+.site-form-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 900px) {
+  .site-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-page,
+  .site-form-page {
+    padding: 16px;
+  }
+
+  .site-header h2 {
+    font-size: 20px;
+  }
+
+  .site-table {
+    min-width: 640px;
+  }
+
+  .site-form-card {
+    padding: 18px;
+  }
+
+  .form-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-table {
+    min-width: 560px;
   }
 }

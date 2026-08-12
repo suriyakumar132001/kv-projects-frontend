@@ -8,7 +8,7 @@
    =============================================== */
 
 .welcome-card {
-  background: #0d1522;
+  background: var(--ink);
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
@@ -136,7 +136,7 @@
 
 .ring-bar {
   fill: none;
-  stroke: #f0a324;
+  stroke: var(--amber);
   stroke-width: 10;
   stroke-linecap: round;
   transition: stroke-dashoffset 1.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -188,7 +188,7 @@
   background: #ffffff;
   padding: 22px 22px 18px;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   box-shadow: 0 5px 15px rgba(13, 21, 34, 0.05);
   transition:
     transform 0.2s ease,
@@ -231,7 +231,7 @@
 }
 
 .card h2 {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12.5px;
   font-weight: 600;
   text-transform: uppercase;
@@ -288,18 +288,18 @@
 
 .c-proj .card-icon {
   background: #fcf1df;
-  color: #f0a324;
+  color: var(--amber);
 }
 .c-proj .accent-bar {
-  background-color: #f0a324;
+  background-color: var(--amber);
 }
 
 .c-att .card-icon {
   background: #f1f1f3;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 .c-att .accent-bar {
-  background-color: #6b7280;
+  background-color: var(--text-soft);
 }
 
 .c-rev .card-icon {
@@ -332,5 +332,29 @@
 
   .attendance-ring {
     align-self: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 16px;
+  }
+
+  .welcome-card {
+    padding: 22px 20px;
+  }
+
+  .welcome-text h1 {
+    font-size: 21px;
+  }
+
+  .welcome-meta {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .attendance-ring {
+    width: 120px;
+    height: 120px;
   }
 }

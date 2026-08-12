@@ -7,12 +7,12 @@
   width: 280px;
   min-width: 280px;
   height: 100vh;
-  background-color: #0d1522; /* ink navy */
+  background-color: var(--ink); /* ink navy */
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 24px 24px;
-  color: #e2e8f0;
+  color: var(--border);
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -44,13 +44,13 @@
   flex-shrink: 0;
   background-image: repeating-linear-gradient(
     45deg,
-    #f0a324 0 4px,
-    #0d1522 4px 8px
+    var(--amber) 0 4px,
+    var(--ink) 4px 8px
   );
 }
 
 .sidebar-logo h2 {
-  color: #f0a324; /* amber */
+  color: var(--amber); /* amber */
   font-family: "Oswald", sans-serif;
   font-size: 21px;
   font-weight: 700;
@@ -76,7 +76,7 @@
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: conic-gradient(from 180deg, #f0a324, #3c6e9e, #f0a324);
+  background: conic-gradient(from 180deg, var(--amber), #3c6e9e, var(--amber));
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -110,7 +110,7 @@
 
 .sidebar-user p {
   font-size: 11px;
-  color: #f0a324;
+  color: var(--amber);
   margin: 4px 0 0;
   text-transform: uppercase;
   letter-spacing: 1.4px;
@@ -181,14 +181,14 @@
 
 .menu-item.active {
   background: linear-gradient(90deg, rgba(240, 163, 36, 0.16), transparent);
-  border-left: 3px solid #f0a324;
+  border-left: 3px solid var(--amber);
   color: #ffffff;
   font-weight: 600;
 }
 
 .menu-item.active span:first-child {
   opacity: 1;
-  color: #f0a324;
+  color: var(--amber);
 }
 
 /* ===============================================
@@ -200,7 +200,7 @@
   flex-shrink: 0;
   margin: 12px;
   padding: 12px;
-  background-color: #ef4444; /* red */
+  background-color: var(--danger); /* red */
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -215,7 +215,7 @@
 }
 
 .logout-btn:hover {
-  background-color: #dc2626;
+  background-color: var(--danger);
 }
 
 /* ===============================================
@@ -267,7 +267,7 @@
     background: rgba(255, 255, 255, 0.08);
     border: none;
     border-radius: 6px;
-    color: #e2e8f0;
+    color: var(--border);
     font-size: 16px;
     cursor: pointer;
     z-index: 2;

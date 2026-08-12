@@ -1,24 +1,61 @@
-:root{
+/* ===============================================
+   KV Projects ERP — Design Tokens
+   Palette matches the Login page's "site badge" theme
+   (ink navy + amber/orange + concrete), so every screen
+   after login feels like the same product.
+   =============================================== */
 
---primary:#0F172A;
---secondary:#1E293B;
+:root {
+  /* ---- Brand core (from Login.css) ---- */
+  --ink: #0d1522; /* matches Sidebar's dark navy */
+  --ink-2: #1b1f24;
+  --orange: #e8590c; /* primary brand accent */
+  --orange-dark: #c74a0a;
+  --amber: #f0a324; /* Sidebar's amber — secondary accent */
+  --signal: #ffc107; /* small highlights / warnings */
+  --steel: #4c5560;
+  --concrete: #d9d5c9;
 
---accent:#F59E0B;
+  /* ---- Surfaces ---- */
+  --bg: #f4f6f9; /* page background, slightly cool so cards pop */
+  --card: #ffffff;
+  --border: #e5e7eb;
 
---success:#22C55E;
+  /* ---- Text ---- */
+  --text-dark: #1f2937;
+  --text-soft: #64748b;
+  --text-muted: #94a3b8;
 
---danger:#EF4444;
+  /* ---- Status colors (kept from before, still used everywhere) ---- */
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+  --success-dark: #15803d;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+  --danger-dark: #b91c1c;
+  --warning: #b45309;
+  --warning-bg: #fef3c7;
+  --info: #1d4ed8;
+  --info-bg: #dbeafe;
 
---background:#F8FAFC;
+  /* ---- Shape / elevation ---- */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.14);
 
---white:#ffffff;
+  /* ---- Fonts (same families the Login page loads) ---- */
+  --font-display: "Big Shoulders Display", "Oswald", sans-serif;
+  --font-body: "Manrope", "Inter", sans-serif;
+  --font-mono: "Space Mono", monospace;
 
---text:#334155;
-
---border:#E2E8F0;
-
---radius:12px;
-
---shadow:0 10px 30px rgba(0,0,0,.08);
-
+  /* ---- Shared breakpoints (for reference in comments —
+     CSS custom properties can't be used inside @media, so
+     every file's queries should just match these numbers) ----
+     Tablet:      max-width: 960px
+     Phone:       max-width: 600px
+     Small phone: max-width: 380px
+  */
 }

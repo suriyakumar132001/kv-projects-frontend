@@ -1,37 +1,376 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+/* ===============================================
+   KV Projects ERP — Global Styles
+   Loads the design tokens + the same fonts as the
+   Login page, then base resets and a small set of
+   reusable classes any page can use.
+   =============================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+
+@import "./variables.css";
+
+/* ---------- Reset ---------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-
-font-family:Inter,sans-serif;
-
-background:#F8FAFC;
-
-color:#334155;
-
+html {
+  scroll-behavior: smooth;
 }
 
-a{
-
-text-decoration:none;
-
-color:inherit;
-
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
 }
 
-button{
-
-cursor:pointer;
-
-border:none;
-
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  letter-spacing: 0.2px;
 }
 
-input{
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-outline:none;
+button {
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-body);
+}
 
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  outline: none;
+}
+
+/* Thin, unobtrusive scrollbar everywhere (matches Sidebar's) */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(15, 23, 42, 0.18);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ===============================================
+   Shared page shell
+   Use on the outermost <div> of any dashboard page:
+     <div className="page fade-up">...</div>
+   =============================================== */
+
+.page {
+  padding: 25px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-header h2 {
+  font-size: 26px;
+  color: var(--ink);
+}
+
+.page-header p {
+  margin-top: 4px;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+/* ===============================================
+   Cards
+   =============================================== */
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+/* ===============================================
+   Buttons
+   =============================================== */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--ink-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-primary:active:not(:disabled),
+.btn-secondary:active:not(:disabled),
+.btn-danger:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Accent variant — use sparingly for the one "hero" action on a page,
+   matches the Login page's orange brand accent */
+.btn-accent {
+  background: var(--orange);
+  color: #fff;
+}
+.btn-accent:hover:not(:disabled) {
+  background: var(--orange-dark);
+}
+
+/* ===============================================
+   Tables — wrap any <table> in this so it scrolls
+   horizontally on small screens instead of squashing
+     <div className="table-wrap"><table>...
+   =============================================== */
+
+.table-wrap {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 14px 18px;
+  background: #f8fafc;
+  color: var(--text-soft);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.table-empty {
+  padding: 56px 20px;
+  text-align: center;
+  color: var(--text-soft);
+}
+
+/* ===============================================
+   Badges (status / role pills)
+   =============================================== */
+
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pill-success {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.pill-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.pill-warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.pill-info {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+/* ===============================================
+   Forms
+   =============================================== */
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+.form-row label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text-dark);
+}
+.form-row input,
+.form-row select,
+.form-row textarea {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-dark);
+  background: #fff;
+}
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(232, 89, 12, 0.12);
+}
+
+/* Two-column form grid that collapses to one column on tablets —
+   apply directly, no extra media query needed in page CSS. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+/* ===============================================
+   Motion — shared entrance animation, same easing
+   family as the Login page's fade-up
+   =============================================== */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.45s ease both;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pop-in {
+  animation: popIn 0.35s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .pop-in {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===============================================
+   Shared responsive rules — every page.css should
+   also add its own specifics, but these cover the
+   most common breakage points app-wide.
+   Breakpoints match Login.css / Sidebar.css / Navbar.css:
+     Tablet: 960px   Phone: 600px   Small phone: 380px
+   =============================================== */
+
+@media (max-width: 960px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 16px;
+  }
+  .page-header h2 {
+    font-size: 21px;
+  }
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .btn-accent {
+    width: 100%;
+  }
+  .card {
+    padding: 18px;
+  }
 }

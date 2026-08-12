@@ -1,6 +1,6 @@
 .analytics-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
 }
 
@@ -9,12 +9,12 @@
 }
 .analytics-header h2 {
   font-size: 28px;
-  color: #1f2937;
+  color: var(--text-dark);
   margin: 0;
 }
 .analytics-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .summary-cards {
@@ -31,12 +31,12 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 .summary-card h4 {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 14px;
   margin: 0 0 10px;
 }
 .summary-card h2 {
-  color: #1f2937;
+  color: var(--text-dark);
   font-size: 26px;
   margin: 0;
 }
@@ -44,10 +44,10 @@
   color: #16a34a;
 }
 .summary-card.expense h2 {
-  color: #dc2626;
+  color: var(--danger);
 }
 .summary-card.profit h2 {
-  color: #2563eb;
+  color: var(--ink);
 }
 
 .charts-row {
@@ -65,7 +65,7 @@
 }
 .chart-card h3 {
   margin: 0 0 20px;
-  color: #1f2937;
+  color: var(--text-dark);
   font-size: 18px;
 }
 
@@ -84,5 +84,29 @@
   }
   .bottom-row {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.analytics-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+@media (max-width: 600px) {
+  .analytics-page {
+    padding: 16px;
+  }
+
+  .analytics-header h2 {
+    font-size: 20px;
   }
 }

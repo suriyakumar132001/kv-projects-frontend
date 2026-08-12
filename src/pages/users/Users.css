@@ -1,7 +1,8 @@
 .users-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
+  animation: fadeUp 0.4s ease both;
 }
 
 .users-header {
@@ -13,13 +14,14 @@
   gap: 12px;
 }
 .users-header h2 {
-  font-size: 28px;
-  color: #1f2937;
+  font-size: 26px;
+  color: var(--ink);
   margin: 0;
 }
 .users-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
+  font-size: 14px;
 }
 
 .users-add-btn {
@@ -28,48 +30,63 @@
   gap: 8px;
   padding: 12px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   color: #fff;
-  background: #2563eb;
+  background: var(--ink);
   cursor: pointer;
   font-weight: 600;
   text-decoration: none;
   font-size: 14px;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
 }
 .users-add-btn:hover {
-  background: #1d4ed8;
+  background: var(--ink-2);
+}
+.users-add-btn:active {
+  transform: scale(0.98);
 }
 
 .users-table-wrap {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .users-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px;
+  min-width: 760px;
 }
 
 .users-table th {
   text-align: left;
   padding: 16px 18px;
   background: #f8fafc;
-  color: #6b7280;
-  font-size: 12px;
+  color: var(--text-soft);
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-bottom: 1px solid #e5e7eb;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 .users-table td {
   padding: 16px 18px;
   border-bottom: 1px solid #f1f5f9;
-  color: #1f2937;
+  color: var(--text-dark);
   font-size: 14px;
   vertical-align: middle;
+}
+
+.users-table tr {
+  transition: background-color 0.12s ease;
+}
+.users-table tr:hover td {
+  background: #fafbfc;
 }
 
 .users-table tr:last-child td {
@@ -86,66 +103,70 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #2563eb;
-  color: #fff;
+  background: var(--ink);
+  color: var(--amber);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 14px;
   flex-shrink: 0;
+  font-family: var(--font-display);
 }
 
 .role-badge {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: capitalize;
+  letter-spacing: 0.02em;
 }
 .role-badge.owner {
   background: #ede9fe;
   color: #6d28d9;
 }
 .role-badge.admin {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--info-bg);
+  color: var(--info);
 }
 .role-badge.hr {
-  background: #fef3c7;
-  color: #b45309;
+  background: var(--warning-bg);
+  color: var(--warning);
 }
 .role-badge.siteengineer {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--success-bg);
+  color: var(--success);
 }
 
 .status-badge {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
 }
 .status-badge.Active {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--success-bg);
+  color: var(--success);
 }
 .status-badge.Inactive {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .status-toggle-btn {
   padding: 7px 14px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
   background: #fff;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-dark);
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
 }
 .status-toggle-btn:hover {
   background: #f3f4f6;
@@ -155,18 +176,18 @@
   opacity: 0.5;
 }
 .status-toggle-btn.deactivate {
-  color: #b91c1c;
+  color: var(--danger);
   border-color: #fecaca;
 }
 .status-toggle-btn.activate {
-  color: #15803d;
+  color: var(--success);
   border-color: #bbf7d0;
 }
 
 .delete-btn {
   color: #fff !important;
-  background: #dc2626 !important;
-  border-color: #dc2626 !important;
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
 }
 .delete-btn:hover {
   background: #b91c1c !important;
@@ -175,24 +196,25 @@
 .users-empty {
   padding: 60px 20px;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 /* ---------- Add User form ---------- */
 
 .user-form-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  animation: fadeUp 0.4s ease both;
 }
 
 .user-form-card {
-  background: #fff;
+  background: var(--card);
   padding: 32px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 520px;
   height: fit-content;
@@ -200,13 +222,13 @@
 
 .user-form-card h2 {
   margin: 0 0 4px;
-  color: #1f2937;
+  color: var(--ink);
   font-size: 22px;
 }
 
 .user-form-card > p {
   margin: 0 0 24px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 14px;
 }
 
@@ -218,25 +240,29 @@
 }
 
 .role-option {
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
   padding: 12px;
   text-align: center;
   cursor: pointer;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-dark);
   background: #fff;
   transition:
-    border-color 0.15s,
-    background 0.15s;
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.1s ease;
 }
 .role-option:hover {
-  border-color: #93c5fd;
+  border-color: var(--amber);
+}
+.role-option:active {
+  transform: scale(0.98);
 }
 .role-option.selected {
-  border-color: #2563eb;
-  background: #eff6ff;
-  color: #1d4ed8;
+  border-color: var(--orange);
+  background: #fff4ec;
+  color: var(--orange-dark);
 }
 
 .form-actions {
@@ -247,12 +273,13 @@
 
 .cancel-btn {
   padding: 12px 22px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
   background: #fff;
-  color: #374151;
+  color: var(--text-dark);
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 .cancel-btn:hover {
   background: #f3f4f6;
@@ -261,14 +288,21 @@
 .save-btn {
   padding: 12px 22px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   color: #fff;
-  background: #2563eb;
+  background: var(--ink);
   cursor: pointer;
   font-weight: 600;
+  flex: 1;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
 }
-.save-btn:hover {
-  background: #1d4ed8;
+.save-btn:hover:not(:disabled) {
+  background: var(--ink-2);
+}
+.save-btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 .save-btn:disabled {
   opacity: 0.7;
@@ -283,28 +317,91 @@
 .user-form-card .form-group label {
   margin-bottom: 8px;
   font-weight: 600;
-  color: #374151;
+  font-size: 13.5px;
+  color: var(--text-dark);
 }
 .user-form-card .form-group input {
   padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   font-size: 14px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .user-form-card .form-group input:focus {
   outline: none;
-  border-color: #93c5fd;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(232, 89, 12, 0.12);
 }
 
 .badge-error {
   display: block;
   margin-top: 6px;
-  color: #b91c1c;
+  color: var(--danger);
   font-size: 12px;
 }
 
-@media (max-width: 640px) {
+/* ===============================================
+   Responsive — breakpoints match Login/Sidebar/Navbar
+   =============================================== */
+
+@media (max-width: 960px) {
   .users-table {
-    min-width: 620px;
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 600px) {
+  .users-page,
+  .user-form-page {
+    padding: 16px;
+  }
+
+  .users-header h2 {
+    font-size: 21px;
+  }
+
+  .users-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .users-table {
+    min-width: 600px;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .user-form-card {
+    padding: 22px 18px;
+    border-radius: var(--radius);
+  }
+
+  .user-form-card h2 {
+    font-size: 19px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .cancel-btn,
+  .form-actions .save-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .users-table {
+    min-width: 560px;
+  }
+
+  .role-option-grid {
+    grid-template-columns: 1fr;
   }
 }

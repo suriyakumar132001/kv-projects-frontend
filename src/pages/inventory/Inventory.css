@@ -1,6 +1,6 @@
 .inventory-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
 }
 
@@ -14,12 +14,12 @@
 }
 .inventory-header h2 {
   font-size: 28px;
-  color: #1f2937;
+  color: var(--text-dark);
   margin: 0;
 }
 .inventory-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .inventory-toolbar {
@@ -41,7 +41,7 @@
   flex: 1;
   min-width: 240px;
   height: 48px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0 15px;
   background: #fff;
@@ -54,13 +54,13 @@
 }
 .search-icon {
   margin-right: 10px;
-  color: #64748b;
+  color: var(--text-soft);
 }
 
 .inventory-select {
   height: 48px;
   padding: 0 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
   min-width: 180px;
@@ -68,7 +68,7 @@
 .inventory-select:focus,
 .search-box:focus-within {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--ink);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -78,7 +78,7 @@
   border: none;
   border-radius: 10px;
   color: #fff;
-  background: #10b981;
+  background: var(--success);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -86,7 +86,7 @@
   font-weight: 600;
 }
 .refresh-btn:hover {
-  background: #059669;
+  background: var(--success-dark);
 }
 
 .table-wrapper {
@@ -100,7 +100,7 @@
   overflow: hidden;
 }
 .inventory-table thead {
-  background: #1e3a8a;
+  background: var(--ink);
   color: #fff;
 }
 .inventory-table th,
@@ -109,7 +109,7 @@
   text-align: left;
 }
 .inventory-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 .inventory-table tbody tr:hover {
   background: #f8fafc;
@@ -126,12 +126,12 @@
   font-weight: 600;
 }
 .stock-ok {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--success-bg);
+  color: var(--success-dark);
 }
 .stock-low {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 @media (max-width: 992px) {
@@ -143,5 +143,51 @@
   .inventory-select,
   .refresh-btn {
     width: 100%;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.inventory-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 900px) {
+  .inventory-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .inventory-page {
+    padding: 16px;
+  }
+
+  .inventory-header h2 {
+    font-size: 20px;
+  }
+
+  .inventory-table {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 380px) {
+  .inventory-table {
+    min-width: 560px;
   }
 }

@@ -2,71 +2,101 @@
    EMPLOYEE FORM
 ========================================== */
 
-.employee-form-page{
-    padding:30px;
-    background:#F8FAFC;
-    min-height:100vh;
+.employee-form-page {
+  padding: 30px;
+  background: #f8fafc;
+  min-height: 100vh;
 }
 
-.form-card{
-    background:#fff;
-    border-radius:15px;
-    padding:30px;
-    box-shadow:0 10px 20px rgba(0,0,0,.05);
+.form-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
-.form-card h2{
-    margin-bottom:25px;
-    color:#0F172A;
+.form-card h2 {
+  margin-bottom: 25px;
+  color: var(--ink);
 }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .form-grid input,
 .form-grid select,
-textarea{
-    width:100%;
-    padding:12px 15px;
-    border:1px solid #CBD5E1;
-    border-radius:10px;
-    font-size:15px;
-    outline:none;
-    transition:.3s;
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
 }
 
 .form-grid input:focus,
 .form-grid select:focus,
-textarea:focus{
-    border-color:#2563EB;
+textarea:focus {
+  border-color: var(--ink);
 }
 
-textarea{
-    margin-top:20px;
-    resize:none;
+textarea {
+  margin-top: 20px;
+  resize: none;
 }
 
-.submit-btn{
-    margin-top:25px;
-    background:#2563EB;
-    color:#fff;
-    border:none;
-    padding:14px 30px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    font-weight:600;
+.submit-btn {
+  margin-top: 25px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.submit-btn:hover{
-    background:#1D4ED8;
+.submit-btn:hover {
+  background: var(--ink-2);
 }
 
-@media(max-width:768px){
-    .form-grid{
-        grid-template-columns:1fr;
-    }
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.employee-form-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .employee-form-page {
+    padding: 16px;
+  }
+
+  .form-card {
+    padding: 18px;
+  }
 }

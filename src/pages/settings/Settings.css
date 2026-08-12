@@ -1,6 +1,6 @@
 .settings-page {
   padding: 25px;
-  background: #f4f7fc;
+  background: var(--bg);
   min-height: 100vh;
 }
 
@@ -9,12 +9,12 @@
 }
 .settings-header h2 {
   font-size: 28px;
-  color: #1f2937;
+  color: var(--text-dark);
   margin: 0;
 }
 .settings-header p {
   margin: 5px 0 0;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .settings-grid {
@@ -31,7 +31,7 @@
 }
 .settings-card h3 {
   margin: 0 0 20px;
-  color: #1f2937;
+  color: var(--text-dark);
   font-size: 18px;
 }
 
@@ -46,12 +46,12 @@
 }
 .form-group input {
   padding: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 .form-group input:disabled {
-  background: #f1f5f9;
-  color: #6b7280;
+  background: var(--bg);
+  color: var(--text-soft);
 }
 
 .save-btn {
@@ -59,16 +59,46 @@
   border: none;
   border-radius: 10px;
   color: #fff;
-  background: #2563eb;
+  background: var(--ink);
   cursor: pointer;
   font-weight: 600;
 }
 .save-btn:hover {
-  background: #1d4ed8;
+  background: var(--ink-2);
 }
 
 @media (max-width: 992px) {
   .settings-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+.settings-page {
+  animation: fadeUp 0.4s ease both;
+}
+
+@media (max-width: 900px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-page {
+    padding: 16px;
+  }
+
+  .settings-header h2 {
+    font-size: 20px;
   }
 }

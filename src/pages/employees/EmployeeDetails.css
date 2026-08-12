@@ -15,11 +15,11 @@
 }
 
 .details-header p {
-  color: #64748b;
+  color: var(--text-soft);
 }
 
 .edit-btn {
-  background: #2563eb;
+  background: var(--ink);
   color: white;
   border: none;
   padding: 10px 18px;
@@ -29,24 +29,24 @@
 }
 
 .edit-btn:hover {
-  background: #1d4ed8;
+  background: var(--ink-2);
 }
 
 .details-card {
   background: white;
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
 .details-grid strong {
-  color: #475569;
+  color: var(--text-dark);
 }
 
 .details-grid p {
@@ -61,7 +61,7 @@
   margin-top: 8px;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
   .details-grid {
     grid-template-columns: 1fr;
   }
@@ -70,5 +70,31 @@
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
+  }
+}
+
+/* ===============================================
+
+   Auto-added — entrance animation + mobile polish
+
+   Breakpoints match Login/Sidebar/Navbar:
+
+   Tablet: 900px   Phone: 600px   Small phone: 380px
+
+   ===============================================*/
+
+@media (max-width: 900px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .details-header h2 {
+    font-size: 20px;
+  }
+
+  .details-card {
+    padding: 18px;
   }
 }
