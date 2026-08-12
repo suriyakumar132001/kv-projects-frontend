@@ -24,19 +24,37 @@ const LeaveList = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [leaveType, setLeaveType] = useState("");
+  const [searchParams] = useSearchParams();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
-    loadLeaves();
-  }, []);
+    const statusParam = searchParams.get("status");
+
+    if (statusParam) {
+      setStatus(statusParam);
+      loadLeaves({ status: statusParam });
+    } else {
+      loadLeaves();
+    }
+  }, [searchParams]);
 
   // ===============================
   // Load Leaves
   // ===============================
-  const loadLeaves = async () => {
+  const loadLeaves = async (overrides = {}) => {
+    try {
+      setLoading(true);
+
+      const res = await leaveService.getLeaves({
+        page: 1,
+        limit: 10,
+        search: overrides.search ?? search,
+        status: overrides.status ?? status,
+        leaveType: overrides.leaveType ?? leaveType,
+      });
     try {
       setLoading(true);
 

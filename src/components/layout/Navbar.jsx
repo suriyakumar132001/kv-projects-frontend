@@ -39,13 +39,12 @@ const Navbar = ({ onMenuClick }) => {
     if (!user) return;
 
     const role = user.role?.toLowerCase();
-    const basePath = ["owner", "admin", "hr"].includes(role)
-      ? `/${role}/leave`
-      : "/";
 
-    if (basePath !== "/") {
-      navigate(`${basePath}?status=Pending`);
+    if (!["owner", "admin", "hr"].includes(role)) {
+      return;
     }
+
+    navigate(`/${role}/leave?status=Pending`);
   };
 
   useEffect(() => {
