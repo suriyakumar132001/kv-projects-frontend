@@ -106,6 +106,30 @@ const AttendanceList = () => {
   };
 
   // ==========================
+  // Delete Attendance
+  // ==========================
+  const handleDelete = async (attendance) => {
+    const confirmDelete = window.confirm(
+      "Delete this attendance record? This cannot be undone."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await attendanceService.deleteAttendance(attendance._id);
+
+      toast.success("Attendance record deleted successfully");
+
+      loadAttendance();
+    } catch (error) {
+      console.error("Delete attendance error:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to delete attendance"
+      );
+    }
+  };
+
+  // ==========================
   // Check Out
   // ==========================
   const handleCheckOut = async (attendance) => {
@@ -156,6 +180,8 @@ const AttendanceList = () => {
         attendance={attendance}
         onView={handleView}
         onCheckOut={handleCheckOut}
+        onDelete={handleDelete}
+        canDelete={role === "owner" || role === "admin"}
       />
 
     </div>

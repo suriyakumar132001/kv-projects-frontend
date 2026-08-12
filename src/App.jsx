@@ -1,492 +1,757 @@
+// ===============================================
+// KV Projects ERP
+// App.jsx
+// ===============================================
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-// ================= AUTH =================
+// ===============================================
+// AUTH
+// ===============================================
+
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 
-// ================= LAYOUT =================
+// ===============================================
+// LAYOUT
+// ===============================================
+
 import DashboardLayout from "./layouts/DashboardLayout";
-
-// ================= DASHBOARD =================
-import Dashboard from "./pages/dashboard/Dashboard";
-
-// ================= PROTECTED =================
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-// ================= EMPLOYEE =================
+// ===============================================
+// DASHBOARD
+// ===============================================
+
+import Dashboard from "./pages/dashboard/Dashboard";
+
+// ===============================================
+// EMPLOYEES
+// ===============================================
+
 import EmployeeList from "./pages/employees/EmployeeList";
 import AddEmployee from "./pages/employees/AddEmployee";
 import EditEmployee from "./pages/employees/EditEmployee";
 import EmployeeDetails from "./pages/employees/EmployeeDetails";
 
-// ================= ATTENDANCE =================
+// ===============================================
+// ATTENDANCE
+// ===============================================
+
 import AttendanceList from "./pages/attendance/AttendanceList";
 import MarkAttendance from "./pages/attendance/MarkAttendance";
 import AttendanceDetails from "./pages/attendance/AttendanceDetails";
 
-// ================= LEAVE =================
+// ===============================================
+// LEAVE
+// ===============================================
+
 import LeaveList from "./pages/leave/LeaveList";
 import ApplyLeave from "./pages/leave/ApplyLeave";
 import LeaveDetails from "./pages/leave/LeaveDetails";
 import EditLeave from "./pages/leave/EditLeave";
 
-// ================= PAYROLL =================
-import PayrollList from "./pages/payroll/PayrollList";
-import GeneratePayroll from "./pages/payroll/GeneratePayroll";
-import EditPayroll from "./pages/payroll/EditPayroll";
-import PayrollDetails from "./pages/payroll/PayrollDetails";
-import Payslip from "./pages/payroll/Payslip";
+// ===============================================
+// PAYROLL
+// ===============================================
 
-// ================= PROJECTS =================
-import ProjectDashboard from "./pages/projects/ProjectDashboard";
+import PayrollList from "./pages/payroll/PayrollList";
+import PayrollReport from "./pages/payroll/PayrollReport";
+
+// ===============================================
+// PROJECTS
+// ===============================================
+
 import ProjectList from "./pages/projects/ProjectList";
 import CreateProject from "./pages/projects/CreateProject";
 import ProjectDetails from "./pages/projects/ProjectDetails";
 import EditProject from "./pages/projects/EditProject";
+import ProjectDashboard from "./pages/projects/ProjectDashboard";
 
-// ================= CLIENTS =================
+// ===============================================
+// EXPENSES
+// ===============================================
+
+import ExpenseList from "./pages/expenses/ExpenseList";
+import CreateExpense from "./pages/expenses/CreateExpense";
+import ExpenseDetails from "./pages/expenses/ExpenseDetails";
+import EditExpense from "./pages/expenses/EditExpense";
+
+// ===============================================
+// SITES
+// ===============================================
+
+import SiteList from "./pages/sites/SiteList";
+import AddSite from "./pages/sites/AddSite";
+import EditSite from "./pages/sites/EditSite";
+import SiteDetails from "./pages/sites/SiteDetails";
+
+// ===============================================
+// DPR
+// ===============================================
+
+import DPRList from "./pages/dpr/DPRList";
+import CreateDPR from "./pages/dpr/CreateDPR";
+import DPRDetails from "./pages/dpr/DPRDetails";
+
+// ===============================================
+// MATERIALS
+// ===============================================
+
+import MaterialList from "./pages/materials/MaterialList";
+import AddMaterial from "./pages/materials/AddMaterial";
+import EditMaterial from "./pages/materials/EditMaterial";
+import MaterialDetails from "./pages/materials/MaterialDetails";
+
+// ===============================================
+// LABOUR
+// ===============================================
+
+import LabourList from "./pages/labour/LabourList";
+import AddLabour from "./pages/labour/AddLabour";
+import EditLabour from "./pages/labour/EditLabour";
+import LabourDetails from "./pages/labour/LabourDetails";
+
+// ===============================================
+// VENDORS
+// ===============================================
+
+import VendorList from "./pages/vendors/VendorList";
+import AddVendor from "./pages/vendors/AddVendor";
+import EditVendor from "./pages/vendors/EditVendor";
+import VendorDetails from "./pages/vendors/VendorDetails";
+
+// ===============================================
+// PURCHASE ORDERS
+// ===============================================
+
+import PurchaseOrderList from "./pages/purchaseOrders/PurchaseOrderList";
+import CreatePurchaseOrder from "./pages/purchaseOrders/CreatePurchaseOrder";
+import PurchaseOrderDetails from "./pages/purchaseOrders/PurchaseOrderDetails";
+
+// ===============================================
+// INVENTORY
+// ===============================================
+
+import InventoryList from "./pages/inventory/InventoryList";
+
+// ===============================================
+// MATERIAL ISSUES
+// ===============================================
+
+import MaterialIssueList from "./pages/materialIssues/MaterialIssueList";
+import CreateMaterialIssue from "./pages/materialIssues/CreateMaterialIssue";
+
+// ===============================================
+// ANALYTICS
+// ===============================================
+
+import AnalyticsDashboard from "./pages/analytics/AnalyticsDashboard";
+
+// ===============================================
+// USERS
+// ===============================================
+
+import UserList from "./pages/users/UserList";
+import AddUser from "./pages/users/AddUser";
+import EditUser from "./pages/users/EditUser";
+
+// ===============================================
+// CLIENTS
+// ===============================================
+
 import ClientList from "./pages/clients/ClientList";
 import CreateClient from "./pages/clients/CreateClient";
 import EditClient from "./pages/clients/EditClient";
 import ClientDetails from "./pages/clients/ClientDetails";
 
-// ================= QUOTATIONS =================
-import QuotationList from "./pages/quotations/QuotationList";
-import CreateQuotation from "./pages/quotations/CreateQuotation";
-import EditQuotation from "./pages/quotations/EditQuotation";
-import QuotationDetails from "./pages/quotations/QuotationDetails";
-
-// ================= Vendors =================
-
-import VendorList from "./pages/vendors/VendorList";
-import AddVendor from "./pages/vendors/AddVendor";
-
-// ================= Sites =================
-import SiteList from "./pages/sites/SiteList";
-import CreateSite from "./pages/sites/CreateSite";
-
-import InventoryList from "./pages/inventory/InventoryList";
+// ===============================================
+// ASSETS
+// ===============================================
 
 import AssetList from "./pages/assets/AssetList";
 import AddAsset from "./pages/assets/AddAsset";
 import EditAsset from "./pages/assets/EditAsset";
 import AssetDetails from "./pages/assets/AssetDetails";
 
+// ===============================================
+// QUOTATIONS
+// ===============================================
+
+import QuotationList from "./pages/quotations/QuotationList";
+import CreateQuotation from "./pages/quotations/CreateQuotation";
+import QuotationDetails from "./pages/quotations/QuotationDetails";
+
+// ===============================================
+// INVOICES
+// ===============================================
+
 import InvoiceList from "./pages/invoices/InvoiceList";
 import CreateInvoice from "./pages/invoices/CreateInvoice";
-import EditInvoice from "./pages/invoices/EditInvoice";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
-// ================= DPR =================
-import DPRList from "./pages/dpr/DPRList";
-import CreateDPR from "./pages/dpr/CreateDPR";
-import DPRDetails from "./pages/dpr/DPRDetails";
+// ===============================================
+// PAYMENTS
+// ===============================================
 
 import PaymentList from "./pages/payments/PaymentList";
 import AddPayment from "./pages/payments/AddPayment";
 import EditPayment from "./pages/payments/EditPayment";
 import PaymentDetails from "./pages/payments/PaymentDetails";
 
+// ===============================================
+// SETTINGS
+// ===============================================
+
 import Settings from "./pages/settings/Settings";
 
-import AnalyticsDashboard from "./pages/analytics/AnalyticsDashboard";
+// ===============================================
+// APP
+// ===============================================
 
-// ================= USERS (Owner/Admin only) =================
-import UserList from "./pages/users/UserList";
-import RegisterUser from "./pages/users/RegisterUser";
 function App() {
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
-
       <Routes>
-        {/* ================= LOGIN ================= */}
+        {/* =============================================
+            PUBLIC
+        ============================================= */}
 
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-        {/* =====================================================
-OWNER ROUTES
-===================================================== */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route
-          path="/owner"
-          element={
-            <ProtectedRoute allowedRoles={["owner"]}>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="dashboard" replace />} />
+        {/* =============================================
+            PROTECTED APPLICATION
+        ============================================= */}
 
-          {/* Dashboard */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            {/* =========================================
+                OWNER
+            ========================================= */}
 
-          <Route path="dashboard" element={<Dashboard />} />
+            <Route path="/owner">
+              <Route index element={<Navigate to="dashboard" replace />} />
 
-          {/* Employee */}
+              {/* Dashboard */}
 
-          <Route path="employees" element={<EmployeeList />} />
+              <Route path="dashboard" element={<Dashboard />} />
 
-          <Route path="employees/add" element={<AddEmployee />} />
+              {/* Employees */}
 
-          <Route path="employees/edit/:id" element={<EditEmployee />} />
+              <Route path="employees" element={<EmployeeList />} />
 
-          <Route path="employees/view/:id" element={<EmployeeDetails />} />
+              <Route path="employees/add" element={<AddEmployee />} />
 
-          {/* Attendance */}
+              <Route path="employees/edit/:id" element={<EditEmployee />} />
 
-          <Route path="attendance" element={<AttendanceList />} />
+              <Route path="employees/view/:id" element={<EmployeeDetails />} />
 
-          <Route path="attendance/mark" element={<MarkAttendance />} />
+              {/* Attendance */}
 
-          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route path="attendance" element={<AttendanceList />} />
 
-          {/* Leave */}
+              <Route path="attendance/mark" element={<MarkAttendance />} />
 
-          <Route path="leaves" element={<LeaveList />} />
+              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
 
-          <Route path="leaves/apply" element={<ApplyLeave />} />
+              {/* Payroll */}
 
-          <Route path="leaves/view/:id" element={<LeaveDetails />} />
+              <Route path="payroll" element={<PayrollList />} />
 
-          <Route path="leaves/edit/:id" element={<EditLeave />} />
+              <Route path="payroll/report" element={<PayrollReport />} />
 
-          {/* Payroll */}
+              {/* Leave */}
 
-          <Route path="payroll" element={<PayrollList />} />
+              <Route path="leave" element={<LeaveList />} />
 
-          <Route path="payroll/generate" element={<GeneratePayroll />} />
+              <Route path="leave/apply" element={<ApplyLeave />} />
 
-          <Route path="payroll/edit/:id" element={<EditPayroll />} />
+              <Route path="leave/view/:id" element={<LeaveDetails />} />
 
-          <Route path="payroll/view/:id" element={<PayrollDetails />} />
+              <Route path="leave/edit/:id" element={<EditLeave />} />
 
-          <Route path="payroll/payslip/:id" element={<Payslip />} />
+              {/* Projects */}
 
-          {/* ================= PROJECT MANAGEMENT ================= */}
+              <Route path="projects" element={<ProjectList />} />
 
-          <Route path="projects" element={<ProjectList />} />
+              <Route path="projects/create" element={<CreateProject />} />
 
-          <Route path="projects/dashboard" element={<ProjectDashboard />} />
+              <Route path="projects/view/:id" element={<ProjectDetails />} />
 
-          <Route path="projects/create" element={<CreateProject />} />
+              <Route path="projects/edit/:id" element={<EditProject />} />
 
-          <Route path="projects/view/:id" element={<ProjectDetails />} />
+              <Route path="projects/dashboard" element={<ProjectDashboard />} />
 
-          <Route path="projects/edit/:id" element={<EditProject />} />
+              {/* Expenses */}
 
-          {/* ================= CLIENT MANAGEMENT ================= */}
+              <Route path="expenses" element={<ExpenseList />} />
 
-          <Route path="clients" element={<ClientList />} />
+              <Route path="expenses/create" element={<CreateExpense />} />
 
-          <Route path="clients/create" element={<CreateClient />} />
+              <Route path="expenses/view/:id" element={<ExpenseDetails />} />
 
-          <Route path="clients/view/:id" element={<ClientDetails />} />
+              <Route path="expenses/edit/:id" element={<EditExpense />} />
 
-          <Route path="clients/edit/:id" element={<EditClient />} />
+              {/* Sites */}
 
-          {/* ================= QUOTATIONS ================= */}
+              <Route path="sites" element={<SiteList />} />
 
-          <Route path="quotations" element={<QuotationList />} />
+              <Route path="sites/add" element={<AddSite />} />
 
-          <Route path="quotations/create" element={<CreateQuotation />} />
+              <Route path="sites/edit/:id" element={<EditSite />} />
 
-          <Route path="quotations/view/:id" element={<QuotationDetails />} />
+              <Route path="sites/view/:id" element={<SiteDetails />} />
 
-          <Route path="quotations/edit/:id" element={<EditQuotation />} />
+              {/* Inventory */}
 
-          {/* Vendors */}
+              <Route path="inventory" element={<InventoryList />} />
 
-          <Route path="vendors" element={<VendorList />} />
+              {/* Assets */}
 
-          <Route path="vendors/add" element={<AddVendor />} />
+              <Route path="assets" element={<AssetList />} />
 
-          {/* Sites */}
-          <Route path="sites" element={<SiteList />} />
-          <Route path="sites/create" element={<CreateSite />} />
+              <Route path="assets/add" element={<AddAsset />} />
 
-          {/* Inventory */}
-          <Route path="inventory" element={<InventoryList />} />
+              <Route path="assets/edit/:id" element={<EditAsset />} />
 
-          {/* Assets */}
-          <Route path="assets" element={<AssetList />} />
-          <Route path="assets/add" element={<AddAsset />} />
-          <Route path="assets/edit/:id" element={<EditAsset />} />
-          <Route path="assets/view/:id" element={<AssetDetails />} />
+              <Route path="assets/view/:id" element={<AssetDetails />} />
 
-          {/* Invoices */}
+              {/* Vendors */}
 
-          <Route path="invoices" element={<InvoiceList />} />
-          <Route path="invoices/create" element={<CreateInvoice />} />
-          <Route path="invoices/edit/:id" element={<EditInvoice />} />
-          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+              <Route path="vendors" element={<VendorList />} />
 
-          {/* Payments */}
-          <Route path="payments" element={<PaymentList />} />
-          <Route path="payments/add" element={<AddPayment />} />
-          <Route path="payments/edit/:id" element={<EditPayment />} />
-          <Route path="payments/view/:id" element={<PaymentDetails />} />
+              <Route path="vendors/add" element={<AddVendor />} />
 
-          {/* Daily Progress Reports (view + delete only — creation is site-engineer only) */}
-          <Route path="dpr" element={<DPRList />} />
-          <Route path="dpr/view/:id" element={<DPRDetails />} />
+              <Route path="vendors/edit/:id" element={<EditVendor />} />
 
-          {/* Analytics */}
-          <Route path="analytics" element={<AnalyticsDashboard />} />
+              <Route path="vendors/view/:id" element={<VendorDetails />} />
 
-          {/* Users (Owner: create Admin, HR, Site Engineer) */}
-          <Route path="users" element={<UserList />} />
-          <Route path="users/add" element={<RegisterUser />} />
+              {/* Inventory */}
 
-          {/* Settings */}
-          <Route path="settings" element={<Settings />} />
+              <Route path="inventory" element={<InventoryList />} />
+
+              {/* Quotations */}
+
+              <Route path="quotations" element={<QuotationList />} />
+
+              <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route path="quotations/view/:id" element={<QuotationDetails />} />
+
+              {/* Invoices */}
+
+              <Route path="invoices" element={<InvoiceList />} />
+
+              <Route path="invoices/create" element={<CreateInvoice />} />
+
+              <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+              {/* Payments */}
+
+              <Route path="payments" element={<PaymentList />} />
+
+              <Route path="payments/add" element={<AddPayment />} />
+
+              <Route path="payments/edit/:id" element={<EditPayment />} />
+
+              <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+              {/* Clients */}
+
+              <Route path="clients" element={<ClientList />} />
+
+              <Route path="clients/add" element={<CreateClient />} />
+
+              <Route path="clients/edit/:id" element={<EditClient />} />
+
+              <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* Quotations */}
+
+              <Route path="quotations" element={<QuotationList />} />
+
+              <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route path="quotations/view/:id" element={<QuotationDetails />} />
+
+              {/* Clients */}
+
+              <Route path="clients" element={<ClientList />} />
+
+              <Route path="clients/add" element={<CreateClient />} />
+
+              <Route path="clients/edit/:id" element={<EditClient />} />
+
+              <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* DPR */}
+
+              <Route path="dpr" element={<DPRList />} />
+
+              <Route path="dpr/view/:id" element={<DPRDetails />} />
+
+              {/* Analytics */}
+
+              <Route path="analytics" element={<AnalyticsDashboard />} />
+
+              {/* Users */}
+
+              <Route path="users" element={<UserList />} />
+
+              <Route path="users/add" element={<AddUser />} />
+
+              <Route path="users/edit/:id" element={<EditUser />} />
+
+              {/* Settings */}
+
+              <Route path="settings" element={<Settings />} />
+            </Route>
+
+            {/* =========================================
+                ADMIN
+            ========================================= */}
+
+            <Route path="/admin">
+              <Route index element={<Navigate to="dashboard" replace />} />
+
+              <Route path="dashboard" element={<Dashboard />} />
+
+              <Route path="employees" element={<EmployeeList />} />
+
+              <Route path="employees/add" element={<AddEmployee />} />
+
+              <Route path="employees/edit/:id" element={<EditEmployee />} />
+
+              <Route path="employees/view/:id" element={<EmployeeDetails />} />
+
+              <Route path="attendance" element={<AttendanceList />} />
+
+              <Route path="attendance/mark" element={<MarkAttendance />} />
+              <Route path="attendance/mark" element={<MarkAttendance />} />
+
+              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route path="leave" element={<LeaveList />} />
+
+              <Route path="leave/view/:id" element={<LeaveDetails />} />
+
+              <Route path="payroll" element={<PayrollList />} />
+
+              <Route path="payroll/report" element={<PayrollReport />} />
+
+              {/* Projects */}
+
+              <Route path="projects" element={<ProjectList />} />
+
+              <Route path="projects/create" element={<CreateProject />} />
+
+              <Route path="projects/view/:id" element={<ProjectDetails />} />
+
+              <Route path="projects/edit/:id" element={<EditProject />} />
+
+              <Route path="projects/dashboard" element={<ProjectDashboard />} />
+
+              {/* Sites */}
+
+              <Route path="sites" element={<SiteList />} />
+
+              <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Materials */}
+
+              <Route path="materials" element={<MaterialList />} />
+
+              <Route path="materials/add" element={<AddMaterial />} />
+
+              <Route path="materials/edit/:id" element={<EditMaterial />} />
+
+              <Route path="materials/view/:id" element={<MaterialDetails />} />
+
+              {/* Labour */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/add" element={<AddLabour />} />
+
+              <Route path="labour/edit/:id" element={<EditLabour />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
+
+              {/* Inventory */}
+
+              <Route path="inventory" element={<InventoryList />} />
+
+              {/* Expenses */}
+
+              <Route path="expenses" element={<ExpenseList />} />
+
+              <Route path="expenses/view/:id" element={<ExpenseDetails />} />
+
+              <Route path="expenses/edit/:id" element={<EditExpense />} />
+
+              {/* DPR */}
+
+              <Route path="dpr" element={<DPRList />} />
+
+              <Route path="dpr/view/:id" element={<DPRDetails />} />
+
+              {/* Analytics */}
+
+              <Route path="analytics" element={<AnalyticsDashboard />} />
+
+              {/* Vendors */}
+
+              <Route path="vendors" element={<VendorList />} />
+
+              <Route path="vendors/add" element={<AddVendor />} />
+
+              <Route path="vendors/edit/:id" element={<EditVendor />} />
+
+              <Route path="vendors/view/:id" element={<VendorDetails />} />
+
+              {/* Assets */}
+
+              <Route path="assets" element={<AssetList />} />
+
+              <Route path="assets/add" element={<AddAsset />} />
+
+              <Route path="assets/edit/:id" element={<EditAsset />} />
+
+              <Route path="assets/view/:id" element={<AssetDetails />} />
+
+              {/* Quotations */}
+
+              <Route path="quotations" element={<QuotationList />} />
+
+              <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route path="quotations/view/:id" element={<QuotationDetails />} />
+
+              {/* Purchase Orders */}
+
+              <Route path="purchase-orders" element={<PurchaseOrderList />} />
+
+              <Route
+                path="purchase-orders/create"
+                element={<CreatePurchaseOrder />}
+              />
+
+              <Route
+                path="purchase-orders/view/:id"
+                element={<PurchaseOrderDetails />}
+              />
+
+              {/* Material Issues */}
+
+              <Route path="material-issues" element={<MaterialIssueList />} />
+
+              <Route
+                path="material-issues/create"
+                element={<CreateMaterialIssue />}
+              />
+            </Route>
+
+            {/* =========================================
+                HR
+            ========================================= */}
+
+            <Route path="/hr">
+              <Route index element={<Navigate to="dashboard" replace />} />
+
+              <Route path="dashboard" element={<Dashboard />} />
+
+              <Route path="employees" element={<EmployeeList />} />
+
+              <Route path="employees/add" element={<AddEmployee />} />
+
+              <Route path="employees/edit/:id" element={<EditEmployee />} />
+
+              <Route path="employees/view/:id" element={<EmployeeDetails />} />
+
+              <Route path="attendance" element={<AttendanceList />} />
+
+              <Route path="attendance/mark" element={<MarkAttendance />} />
+
+              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
+              <Route path="leave" element={<LeaveList />} />
+
+              <Route path="leave/apply" element={<ApplyLeave />} />
+
+              <Route path="leave/view/:id" element={<LeaveDetails />} />
+
+              <Route path="leave/edit/:id" element={<EditLeave />} />
+
+              <Route path="payroll" element={<PayrollList />} />
+
+              <Route path="payroll/report" element={<PayrollReport />} />
+
+              {/* Projects */}
+
+              <Route path="projects" element={<ProjectList />} />
+
+              <Route path="projects/view/:id" element={<ProjectDetails />} />
+
+              <Route path="projects/dashboard" element={<ProjectDashboard />} />
+
+              {/* Expenses */}
+
+              <Route path="expenses" element={<ExpenseList />} />
+
+              <Route path="expenses/view/:id" element={<ExpenseDetails />} />
+
+              <Route path="expenses/edit/:id" element={<EditExpense />} />
+
+              {/* Clients */}
+
+              <Route path="clients" element={<ClientList />} />
+
+              <Route path="clients/add" element={<CreateClient />} />
+
+              <Route path="clients/edit/:id" element={<EditClient />} />
+
+              <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* Quotations */}
+
+              <Route path="quotations" element={<QuotationList />} />
+
+              <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route
+                path="quotations/view/:id"
+                element={<QuotationDetails />}
+              />
+
+              {/* Invoices */}
+
+              <Route path="invoices" element={<InvoiceList />} />
+
+              <Route path="invoices/create" element={<CreateInvoice />} />
+
+              <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+              {/* Payments */}
+
+              <Route path="payments" element={<PaymentList />} />
+
+              <Route path="payments/add" element={<AddPayment />} />
+
+              <Route path="payments/edit/:id" element={<EditPayment />} />
+
+              <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+              {/* DPR */}
+
+              <Route path="dpr" element={<DPRList />} />
+
+              <Route path="dpr/create" element={<CreateDPR />} />
+
+              <Route path="dpr/view/:id" element={<DPRDetails />} />
+
+              {/* Analytics */}
+
+              <Route path="analytics" element={<AnalyticsDashboard />} />
+            </Route>
+
+            {/* =========================================
+                SITE ENGINEER
+            ========================================= */}
+
+            <Route path="/siteengineer">
+              <Route index element={<Navigate to="dashboard" replace />} />
+
+              <Route path="dashboard" element={<Dashboard />} />
+
+              {/* Projects */}
+
+              <Route path="projects" element={<ProjectList />} />
+
+              <Route path="projects/view/:id" element={<ProjectDetails />} />
+
+              <Route path="projects/dashboard" element={<ProjectDashboard />} />
+
+              {/* Attendance */}
+
+              <Route path="attendance" element={<AttendanceList />} />
+
+              <Route path="attendance/mark" element={<MarkAttendance />} />
+              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+
+              {/* Sites */}
+
+              <Route path="sites" element={<SiteList />} />
+
+              <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Materials */}
+
+              <Route path="materials" element={<MaterialList />} />
+
+              <Route path="materials/view/:id" element={<MaterialDetails />} />
+
+              {/* Labour */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
+
+              {/* Inventory */}
+
+              <Route path="inventory" element={<InventoryList />} />
+
+              {/* Expenses */}
+
+              <Route path="expenses" element={<ExpenseList />} />
+
+              <Route path="expenses/create" element={<CreateExpense />} />
+
+              <Route path="expenses/view/:id" element={<ExpenseDetails />} />
+
+              <Route path="expenses/edit/:id" element={<EditExpense />} />
+
+              {/* DPR */}
+
+              <Route path="dpr" element={<DPRList />} />
+
+              <Route path="dpr/create" element={<CreateDPR />} />
+
+              <Route path="dpr/view/:id" element={<DPRDetails />} />
+            </Route>
+          </Route>
         </Route>
 
-        {/* =====================================================
-ADMIN ROUTES
-===================================================== */}
-
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="dashboard" replace />} />
-
-          <Route path="dashboard" element={<Dashboard />} />
-
-          {/* Employee */}
-
-          <Route path="employees" element={<EmployeeList />} />
-
-          <Route path="employees/add" element={<AddEmployee />} />
-
-          <Route path="employees/edit/:id" element={<EditEmployee />} />
-
-          <Route path="employees/view/:id" element={<EmployeeDetails />} />
-
-          {/* Attendance */}
-
-          <Route path="attendance" element={<AttendanceList />} />
-
-          <Route path="attendance/mark" element={<MarkAttendance />} />
-
-          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
-
-          {/* Leave */}
-
-          <Route path="leaves" element={<LeaveList />} />
-
-          <Route path="leaves/apply" element={<ApplyLeave />} />
-
-          <Route path="leaves/view/:id" element={<LeaveDetails />} />
-
-          <Route path="leaves/edit/:id" element={<EditLeave />} />
-
-          {/* Payroll */}
-
-          <Route path="payroll" element={<PayrollList />} />
-
-          <Route path="payroll/generate" element={<GeneratePayroll />} />
-
-          <Route path="payroll/edit/:id" element={<EditPayroll />} />
-
-          <Route path="payroll/view/:id" element={<PayrollDetails />} />
-
-          <Route path="payroll/payslip/:id" element={<Payslip />} />
-
-          {/* Projects */}
-
-          <Route path="projects" element={<ProjectList />} />
-
-          <Route path="projects/dashboard" element={<ProjectDashboard />} />
-
-          <Route path="projects/create" element={<CreateProject />} />
-
-          <Route path="projects/view/:id" element={<ProjectDetails />} />
-
-          <Route path="projects/edit/:id" element={<EditProject />} />
-
-          {/* Clients */}
-
-          <Route path="clients" element={<ClientList />} />
-
-          <Route path="clients/create" element={<CreateClient />} />
-
-          <Route path="clients/view/:id" element={<ClientDetails />} />
-
-          <Route path="clients/edit/:id" element={<EditClient />} />
-
-          {/* Vendors */}
-
-          <Route path="vendors" element={<VendorList />} />
-          <Route path="vendors/add" element={<AddVendor />} />
-
-          {/* Sites */}
-          <Route path="sites" element={<SiteList />} />
-          <Route path="sites/create" element={<CreateSite />} />
-
-          {/* Inventory */}
-          <Route path="inventory" element={<InventoryList />} />
-
-          {/* Analytics */}
-
-          <Route path="analytics" element={<AnalyticsDashboard />} />
-
-          <Route path="assets" element={<AssetList />} />
-          <Route path="assets/add" element={<AddAsset />} />
-          <Route path="assets/edit/:id" element={<EditAsset />} />
-          <Route path="assets/view/:id" element={<AssetDetails />} />
-
-          <Route path="invoices" element={<InvoiceList />} />
-          <Route path="invoices/create" element={<CreateInvoice />} />
-          <Route path="invoices/edit/:id" element={<EditInvoice />} />
-          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
-
-          <Route path="payments" element={<PaymentList />} />
-          <Route path="payments/add" element={<AddPayment />} />
-          <Route path="payments/edit/:id" element={<EditPayment />} />
-          <Route path="payments/view/:id" element={<PaymentDetails />} />
-
-          {/* Daily Progress Reports (view + delete only — creation is site-engineer only) */}
-          <Route path="dpr" element={<DPRList />} />
-          <Route path="dpr/view/:id" element={<DPRDetails />} />
-
-          {/* Users (Admin: create HR, Site Engineer only) */}
-          <Route path="users" element={<UserList />} />
-          <Route path="users/add" element={<RegisterUser />} />
-        </Route>
-
-        {/* =====================================================
-HR ROUTES
-===================================================== */}
-
-        <Route
-          path="/hr"
-          element={
-            <ProtectedRoute allowedRoles={["hr"]}>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="dashboard" replace />} />
-
-          <Route path="dashboard" element={<Dashboard />} />
-
-          {/* Employee */}
-
-          <Route path="employees" element={<EmployeeList />} />
-
-          <Route path="employees/add" element={<AddEmployee />} />
-
-          <Route path="employees/edit/:id" element={<EditEmployee />} />
-
-          <Route path="employees/view/:id" element={<EmployeeDetails />} />
-
-          {/* Attendance */}
-
-          <Route path="attendance" element={<AttendanceList />} />
-
-          <Route path="attendance/mark" element={<MarkAttendance />} />
-
-          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
-
-          {/* Leave */}
-
-          <Route path="leaves" element={<LeaveList />} />
-
-          <Route path="leaves/apply" element={<ApplyLeave />} />
-
-          <Route path="leaves/view/:id" element={<LeaveDetails />} />
-
-          <Route path="leaves/edit/:id" element={<EditLeave />} />
-
-          {/* Payroll */}
-
-          <Route path="payroll" element={<PayrollList />} />
-
-          <Route path="payroll/generate" element={<GeneratePayroll />} />
-
-          <Route path="payroll/edit/:id" element={<EditPayroll />} />
-
-          <Route path="payroll/view/:id" element={<PayrollDetails />} />
-
-          <Route path="payroll/payslip/:id" element={<Payslip />} />
-
-          <Route path="invoices" element={<InvoiceList />} />
-          <Route path="invoices/view/:id" element={<InvoiceDetails />} />
-
-          <Route path="payments" element={<PaymentList />} />
-          <Route path="payments/view/:id" element={<PaymentDetails />} />
-
-          {/* Daily Progress Reports (view only — HR has no delete rights) */}
-          <Route path="dpr" element={<DPRList />} />
-          <Route path="dpr/view/:id" element={<DPRDetails />} />
-        </Route>
-
-        {/* =====================================================
-SITE ENGINEER ROUTES
-===================================================== */}
-
-        <Route
-          path="/siteengineer"
-          element={
-            <ProtectedRoute allowedRoles={["siteengineer"]}>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="dashboard" replace />} />
-
-          <Route path="dashboard" element={<Dashboard />} />
-
-          {/* Projects */}
-
-          <Route path="projects" element={<ProjectList />} />
-
-          <Route path="projects/dashboard" element={<ProjectDashboard />} />
-
-          <Route path="projects/create" element={<CreateProject />} />
-
-          <Route path="projects/view/:id" element={<ProjectDetails />} />
-
-          <Route path="projects/edit/:id" element={<EditProject />} />
-
-          {/* Attendance */}
-
-          <Route path="attendance" element={<AttendanceList />} />
-
-          <Route path="attendance/mark" element={<MarkAttendance />} />
-
-          <Route path="attendance/view/:id" element={<AttendanceDetails />} />
-
-          {/* Sites */}
-          <Route path="sites" element={<SiteList />} />
-
-          {/* Inventory */}
-          <Route path="inventory" element={<InventoryList />} />
-
-          {/* Daily Progress Reports — full access */}
-          <Route path="dpr" element={<DPRList />} />
-          <Route path="dpr/create" element={<CreateDPR />} />
-          <Route path="dpr/view/:id" element={<DPRDetails />} />
-        </Route>
-
-        {/* ================= 404 ================= */}
-
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* =============================================
+            FALLBACK
+        ============================================= */}
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+
+      {/* =============================================
+          TOAST
+      ============================================= */}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+      />
     </>
   );
 }
 
 export default App;
- 
+
+
+  

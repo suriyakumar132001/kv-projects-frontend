@@ -134,7 +134,7 @@ const ClientList = () => {
         <Button
           variant="contained"
           startIcon={<Add />}
-          onClick={() => navigate(`/${role}/clients/create`)}
+          onClick={() => navigate(`/${role}/clients/add`)}
         >
           Add Client
         </Button>

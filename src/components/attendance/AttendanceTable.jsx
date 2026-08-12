@@ -1,12 +1,15 @@
 import {
   FaSignOutAlt,
   FaEye,
+  FaTrash,
 } from "react-icons/fa";
 
 const AttendanceTable = ({
   attendance,
   onView,
   onCheckOut,
+  onDelete,
+  canDelete,
 }) => {
   return (
     <div className="attendance-table-container">
@@ -18,6 +21,7 @@ const AttendanceTable = ({
             <th>Employee ID</th>
             <th>Employee Name</th>
             <th>Department</th>
+            <th>Site</th>
             <th>Check In</th>
             <th>Check Out</th>
             <th>Working Hours</th>
@@ -39,6 +43,8 @@ const AttendanceTable = ({
                 <td>{item.employee?.name}</td>
 
                 <td>{item.employee?.department}</td>
+
+                <td>{item.site?.siteName || "--"}</td>
 
                 <td>
                   {item.checkIn
@@ -89,6 +95,16 @@ const AttendanceTable = ({
                       title="Check Out"
                     >
                       <FaSignOutAlt />
+                    </button>
+                  )}
+
+                  {canDelete && (
+                    <button
+                      className="action-btn delete"
+                      onClick={() => onDelete(item)}
+                      title="Delete"
+                    >
+                      <FaTrash />
                     </button>
                   )}
 

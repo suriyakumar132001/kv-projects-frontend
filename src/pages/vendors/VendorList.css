@@ -1,0 +1,9 @@
+/* VendorList specific styles */
+.vendor-list-header { display: flex; align-items: center; gap: 12px; }
+.vendor-kpi { min-height: 84px; }
+.vendor-table thead th { text-transform: none; font-size: 0.95rem; }
+.vendor-table tbody tr:hover { background-color: #fbfdff; }
+.vendor-table .action-btn { transition: transform .12s ease; }
+.vendor-table .action-btn:active { transform: translateY(1px); }
+.vendor-search { max-width: 420px; }
+.vendor-empty { padding: 28px 12px; }

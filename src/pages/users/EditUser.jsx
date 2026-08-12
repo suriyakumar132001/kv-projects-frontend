@@ -1,33 +1,34 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 
 import { useAuth } from "../../context/AuthContext";
 import userService from "../../services/userService";
 
 import "./Users.css";
 
-// Owner can create Admin, HR or Site Engineer.
-// Admin can only create HR or Site Engineer (can't create another Admin).
 const ROLE_OPTIONS = [
   { value: "admin", label: "Admin", ownerOnly: true },
   { value: "hr", label: "HR" },
   { value: "siteengineer", label: "Site Engineer" },
 ];
 
-const RegisterUser = () => {
+const EditUser = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [selectedRole, setSelectedRole] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -35,45 +36,64 @@ const RegisterUser = () => {
     (opt) => !opt.ownerOnly || role === "owner",
   );
 
+  useEffect(() => {
+    loadUser();
+  }, [id]);
+
+  const loadUser = async () => {
+    try {
+      setFetching(true);
+      const res = await userService.getUserById(id);
+      const u = res.user || res;
+
+      reset({
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+      });
+      setSelectedRole(u.role?.toLowerCase() || "");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to load user");
+      navigate(`/${role}/users`);
+    } finally {
+      setFetching(false);
+    }
+  };
+
   const onSubmit = async (data) => {
     if (!selectedRole) {
       toast.error("Please choose a role for this user");
       return;
     }
 
+    const payload = { ...data, role: selectedRole };
+    if (!payload.password) delete payload.password;
+
     try {
       setLoading(true);
+      await userService.updateUser(id, payload);
 
-      const res = await userService.registerUser({
-        ...data,
-        role: selectedRole,
-      });
-
-      toast.success(
-        res.employeeLinked
-          ? "User created. Their login details are being emailed to them."
-          : "User created (employee profile couldn't be auto-linked — check Users page). Login details are being emailed to them.",
-      );
-
+      toast.success("User updated successfully");
       navigate(`/${role}/users`);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to register user");
+      toast.error(err.response?.data?.message || "Failed to update user");
     } finally {
       setLoading(false);
     }
   };
 
+  if (fetching) {
+    return <h2>Loading user...</h2>;
+  }
+
   return (
     <div className="user-form-page">
       <div className="user-form-card">
         <h2>
-          <FaUserPlus style={{ marginRight: 8, verticalAlign: "-2px" }} />
-          Add User
+          <FaUserEdit style={{ marginRight: 8, verticalAlign: "-2px" }} />
+          Edit User
         </h2>
-        <p>
-          Create a login for a new Admin, HR, or Site Engineer. They'll sign in
-          with the email and password you set here.
-        </p>
+        <p>Update this user's details, role, or reset their password.</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
@@ -123,12 +143,11 @@ const RegisterUser = () => {
           </div>
 
           <div className="form-group">
-            <label>Temporary Password</label>
+            <label>New Password</label>
             <input
               type="password"
-              placeholder="At least 6 characters"
+              placeholder="Leave blank to keep current password"
               {...register("password", {
-                required: "Password is required",
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters",
@@ -149,7 +168,7 @@ const RegisterUser = () => {
               Cancel
             </button>
             <button type="submit" className="save-btn" disabled={loading}>
-              {loading ? "Creating..." : "Create User"}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
@@ -158,4 +177,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default EditUser;

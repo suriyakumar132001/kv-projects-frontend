@@ -23,12 +23,19 @@ const InventoryList = () => {
     try {
       setLoading(true);
 
+      console.debug("InventoryList: API baseURL", import.meta.env.VITE_API_URL, "token", localStorage.getItem("token"));
+
       const res = await inventoryService.getInventory();
+
+      console.debug("InventoryList: response", res);
 
       setInventory(res.inventory || []);
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to load inventory");
+      console.error("InventoryList error:", error);
+      if (error.response) {
+        console.error("InventoryList error response:", error.response.status, error.response.data);
+      }
+      toast.error(error.response?.data?.message || "Failed to load inventory");
     } finally {
       setLoading(false);
     }

@@ -1,254 +1,112 @@
+/* ===============================================
+   KV Projects ERP — Vendor module
+   Complements the Tailwind utility classes already
+   used in AddVendor / EditVendor / VendorDetails /
+   VendorList. Only covers what Tailwind utilities
+   don't handle well: scrollbars, transitions,
+   focus/disabled polish, and print output.
+   =============================================== */
+
+/* Smooth color/shadow transitions on interactive elements */
+.vendor-page button,
+.vendor-page input,
+.vendor-page select,
+.vendor-page textarea,
+.vendor-page tr {
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+/* Custom scrollbar for the vendor table's horizontal overflow */
+.vendor-page .overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.vendor-page .overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.vendor-page .overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vendor-page .overflow-x-auto::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 999px;
+}
+
+.vendor-page .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* Disabled form fields — Tailwind's disabled: variants only cover
+   opacity/cursor on buttons in these files, inputs need this explicitly */
+.vendor-page input:disabled,
+.vendor-page select:disabled,
+.vendor-page textarea:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Keyboard-only focus ring, cleaner than the default browser outline */
+.vendor-page input:focus-visible,
+.vendor-page select:focus-visible,
+.vendor-page textarea:focus-visible,
+.vendor-page button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Status pill hover affordance where the pill is interactive */
+.vendor-page .status-pill,
+.vendor-page span[class*="rounded-full"] {
+  white-space: nowrap;
+}
+
+/* Row action icon buttons — slight lift on hover for affordance */
+.vendor-page table tbody tr td .p-2:hover {
+  transform: translateY(-1px);
+}
+
+/* Empty-state icon, dimmed to match text-gray-300 usage in JSX */
+.vendor-page svg.text-gray-300 {
+  opacity: 0.9;
+}
+
+/* Prevent layout shift while vendor data loads */
 .vendor-page {
-  padding: 25px;
-  background: var(--bg);
   min-height: 100vh;
 }
 
-.vendor-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.vendor-header h2 {
-  font-size: 28px;
-  color: var(--text-dark);
-  margin: 0;
-}
-.vendor-header p {
-  margin: 5px 0 0;
-  color: var(--text-soft);
-}
-
-.vendor-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  margin-bottom: 25px;
-}
-
-.search-box {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  min-width: 240px;
-  height: 48px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0 15px;
-  background: #fff;
-}
-.search-box input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-}
-.search-icon {
-  margin-right: 10px;
-  color: var(--text-soft);
-}
-
-.vendor-select {
-  height: 48px;
-  padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  min-width: 160px;
-}
-.vendor-select:focus,
-.search-box:focus-within {
-  outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.add-btn {
-  height: 48px;
-  padding: 0 20px;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  background: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.add-btn:hover {
-  background: var(--ink-2);
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-.vendor-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-}
-.vendor-table thead {
-  background: var(--ink);
-  color: #fff;
-}
-.vendor-table th,
-.vendor-table td {
-  padding: 15px;
-  text-align: left;
-}
-.vendor-table tbody tr {
-  border-bottom: 1px solid var(--border);
-}
-.vendor-table tbody tr:hover {
-  background: #f8fafc;
-}
-
-.status-active,
-.status-inactive {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.status-active {
-  background: var(--success-bg);
-  color: var(--success-dark);
-}
-.status-inactive {
-  background: var(--danger-bg);
-  color: var(--danger);
-}
-
-.vendor-form-page {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-}
-.vendor-form-card {
-  width: 100%;
-  max-width: 700px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-.form-group label {
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.form-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 20px;
-}
-.cancel-btn,
-.save-btn {
-  padding: 12px 22px;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-}
-.cancel-btn {
-  background: var(--text-soft);
-}
-.save-btn {
-  background: var(--ink);
-}
-
-@media (max-width: 992px) {
-  .vendor-toolbar {
-    flex-direction: column;
-    align-items: stretch;
+/* Print: hide actions/toolbar, expand table to full width */
+@media print {
+  .vendor-page button,
+  .vendor-page .search-box,
+  .vendor-page input[type="text"] {
+    display: none !important;
   }
-  .search-box,
-  .vendor-select,
-  .add-btn {
-    width: 100%;
+
+  .vendor-page table {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .vendor-page .rounded-xl {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
   }
 }
 
-/* ===============================================
-
-   Auto-added — entrance animation + mobile polish
-
-   Breakpoints match Login/Sidebar/Navbar:
-
-   Tablet: 900px   Phone: 600px   Small phone: 380px
-
-   ===============================================*/
-
-.vendor-page,
-.vendor-form-page {
-  animation: fadeUp 0.4s ease both;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-@media (max-width: 900px) {
-  .vendor-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-@media (max-width: 600px) {
-  .vendor-page,
-  .vendor-form-page {
-    padding: 16px;
-  }
-
-  .vendor-header h2 {
-    font-size: 20px;
-  }
-
-  .vendor-table {
-    min-width: 640px;
-  }
-
-  .vendor-form-card {
-    padding: 18px;
-  }
-
-  .form-buttons {
-    flex-direction: column-reverse;
-  }
-
-  .form-buttons button {
-    width: 100%;
-  }
-}
-
-@media (max-width: 380px) {
-  .vendor-table {
-    min-width: 560px;
+/* Small screens: let the address textarea breathe a bit more */
+@media (max-width: 640px) {
+  .vendor-page textarea {
+    rows: 6;
+    min-height: 120px;
   }
 }

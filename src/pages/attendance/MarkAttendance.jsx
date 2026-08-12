@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import attendanceService from "../../services/attendanceService";
 import employeeService from "../../services/employeeService";
+import siteService from "../../services/siteService";
 
 import "./Attendance.css";
 
@@ -17,11 +18,13 @@ const MarkAttendance = () => {
   const isSiteEngineer = role === "siteengineer";
 
   const [employees, setEmployees] = useState([]);
+  const [sites, setSites] = useState([]);
   const [myEmployee, setMyEmployee] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(isSiteEngineer);
 
   const [formData, setFormData] = useState({
     employee: "",
+    site: "",
     remarks: "",
   });
 
@@ -33,7 +36,23 @@ const MarkAttendance = () => {
     } else {
       loadEmployees();
     }
+
+    loadSites();
   }, []);
+
+  const loadSites = async () => {
+    try {
+      const res = await siteService.getSites();
+      const siteOptions = res.sites || [];
+      setSites(siteOptions);
+
+      if (siteOptions.length && !formData.site) {
+        setFormData((prev) => ({ ...prev, site: siteOptions[0]._id }));
+      }
+    } catch (error) {
+      toast.error("Unable to load sites");
+    }
+  };
 
   // Site Engineers only ever check themselves in — load their own
   // linked employee profile instead of a full picker.
@@ -84,15 +103,30 @@ const MarkAttendance = () => {
       );
     }
 
+    const payload = { ...formData };
+
+    if (isSiteEngineer && !payload.site && sites.length) {
+      payload.site = sites[0]._id;
+    }
+
+    if (!payload.site && sites.length) {
+      return toast.error("Please select a site");
+    }
+
     try {
       setLoading(true);
 
-      await attendanceService.checkIn(formData);
+      console.debug("MarkAttendance payload:", payload);
+
+      const res = await attendanceService.checkIn(payload);
+
+      console.debug("MarkAttendance response:", res);
 
       toast.success("Attendance marked successfully");
 
       navigate(`/${role}/attendance`);
     } catch (error) {
+      console.error("MarkAttendance error:", error);
       toast.error(error.response?.data?.message || "Attendance failed");
     } finally {
       setLoading(false);
@@ -140,6 +174,31 @@ const MarkAttendance = () => {
                   </option>
                 ))}
               </select>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>Site</label>
+
+            {sites.length ? (
+              <select
+                name="site"
+                value={formData.site}
+                onChange={handleChange}
+                disabled={isSiteEngineer && sites.length === 1}
+              >
+                <option value="">Select Site</option>
+
+                {sites.map((site) => (
+                  <option key={site._id} value={site._id}>
+                    {site.siteName} - {site.projectName}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <p style={{ color: "#b91c1c", margin: 0 }}>
+                No site is assigned to your account. Contact your Admin/Owner.
+              </p>
             )}
           </div>
 

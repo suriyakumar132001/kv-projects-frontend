@@ -154,7 +154,7 @@ const LeaveDetails = () => {
 
           <button
             className="cancel-btn"
-            onClick={() => navigate(`/${role}/leaves`)}
+            onClick={() => navigate(`/${role}/leave`)}
           >
             Back
           </button>
@@ -179,9 +179,7 @@ const LeaveDetails = () => {
 
           <button
             className="save-btn"
-            onClick={() =>
-              navigate(`/${role}/leaves/edit/${leave._id}`)
-            }
+            onClick={() => navigate(`/${role}/leave/edit/${leave._id}`)}
           >
             Edit
           </button>

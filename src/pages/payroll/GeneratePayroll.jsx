@@ -126,12 +126,19 @@ const GeneratePayroll = () => {
         netSalary,
       };
 
-      await payrollService.createPayroll(payload);
+
+      console.debug("GeneratePayroll payload:", payload);
+      console.debug("API baseURL:", import.meta.env.VITE_API_URL, "token:", localStorage.getItem("token"));
+
+      const res = await payrollService.createPayroll(payload);
+
+      console.debug("GeneratePayroll response:", res);
 
       toast.success("Payroll Generated Successfully");
 
       navigate(`/${role}/payroll`);
     } catch (error) {
+      console.error("GeneratePayroll error:", error);
       toast.error(
         error.response?.data?.message ||
           "Failed to generate payroll"

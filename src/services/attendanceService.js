@@ -11,19 +11,18 @@ const attendanceService = {
 
   // ==========================
   // Get Single Attendance
-  // (Temporary - until backend API exists)
   // ==========================
   getAttendanceById: async (id) => {
-    const response = await api.get("/attendance");
+    const response = await api.get(`/attendance/${id}`);
+    return response.data;
+  },
 
-    const attendance = response.data.attendance.find(
-      (item) => item._id === id
-    );
-
-    return {
-      success: true,
-      attendance,
-    };
+  // ==========================
+  // Update Attendance
+  // ==========================
+  updateAttendance: async (id, data) => {
+    const response = await api.put(`/attendance/${id}`, data);
+    return response.data;
   },
 
   // ==========================
@@ -39,6 +38,14 @@ const attendanceService = {
   // ==========================
   checkOut: async (id) => {
     const response = await api.put(`/attendance/checkout/${id}`);
+    return response.data;
+  },
+
+  // ==========================
+  // Delete Attendance
+  // ==========================
+  deleteAttendance: async (id) => {
+    const response = await api.delete(`/attendance/${id}`);
     return response.data;
   },
 };

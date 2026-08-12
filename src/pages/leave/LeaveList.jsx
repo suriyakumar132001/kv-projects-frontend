@@ -209,17 +209,13 @@ const LeaveList = () => {
         setLeaveType={handleType}
         onSearch={handleSearch}
         onRefresh={loadLeaves}
-        onApplyLeave={() => navigate(`/${role}/leaves/apply`)}
+        onApplyLeave={() => navigate(`/${role}/leave/apply`)}
       />
 
       <LeaveTable
         leaves={leaves}
-        onView={(leave) =>
-          navigate(`/${role}/leaves/view/${leave._id}`)
-        }
-        onEdit={(leave) =>
-          navigate(`/${role}/leaves/edit/${leave._id}`)
-        }
+        onView={(leave) => navigate(`/${role}/leave/view/${leave._id}`)}
+        onEdit={(leave) => navigate(`/${role}/leave/edit/${leave._id}`)}
         onDelete={openDeleteModal}
         onApprove={handleApprove}
         onReject={handleReject}

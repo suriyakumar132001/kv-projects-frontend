@@ -105,7 +105,7 @@ const EditLeave = () => {
 
       toast.success("Leave Updated Successfully");
 
-      navigate(`/${role}/leaves`);
+      navigate(`/${role}/leave`);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Update Failed"
@@ -245,7 +245,7 @@ const EditLeave = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate(`/${role}/leaves`)}
+              onClick={() => navigate(`/${role}/leave`)}
             >
               Cancel
             </button>

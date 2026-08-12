@@ -85,7 +85,7 @@ const ApplyLeave = () => {
 
       toast.success("Leave Applied Successfully");
 
-      navigate(`/${role}/leaves`);
+      navigate(`/${role}/leave`);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -188,7 +188,7 @@ const ApplyLeave = () => {
             <button
               type="button"
               className="cancel-btn"
-              onClick={() => navigate(`/${role}/leaves`)}
+              onClick={() => navigate(`/${role}/leave`)}
             >
               Cancel
             </button>
