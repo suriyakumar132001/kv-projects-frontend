@@ -33,6 +33,18 @@ const leaveService = {
     return response.data;
   },
 
+  // Get pending leave count for notification badge
+  getPendingLeaveCount: async () => {
+    const response = await api.get("/leaves", {
+      params: {
+        status: "Pending",
+        page: 1,
+        limit: 1,
+      },
+    });
+    return response.data.total || 0;
+  },
+
   // Approve Leave
   approveLeave: async (id, remarks = "") => {
     const response = await api.put(`/leaves/approve/${id}`, {

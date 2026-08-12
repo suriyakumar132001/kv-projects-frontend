@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
 import ChangePasswordModal from "../common/ChangePasswordModal";
+import leaveService from "../../services/leaveService";
 
 import {
   FaBell,
@@ -21,6 +22,7 @@ const Navbar = ({ onMenuClick }) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [pendingLeaveCount, setPendingLeaveCount] = useState(0);
 
   const menuRef = useRef(null);
 
@@ -32,6 +34,41 @@ const Navbar = ({ onMenuClick }) => {
   });
 
   const initial = user?.name?.charAt(0)?.toUpperCase() || "U";
+
+  const handleNotificationClick = () => {
+    if (!user) return;
+
+    const role = user.role?.toLowerCase();
+    const basePath = ["owner", "admin", "hr"].includes(role)
+      ? `/${role}/leave`
+      : "/";
+
+    if (basePath !== "/") {
+      navigate(`${basePath}?status=Pending`);
+    }
+  };
+
+  useEffect(() => {
+    const loadPendingCount = async () => {
+      if (!user) return;
+
+      const role = user.role?.toLowerCase();
+
+      if (!["owner", "admin", "hr"].includes(role)) {
+        setPendingLeaveCount(0);
+        return;
+      }
+
+      try {
+        const count = await leaveService.getPendingLeaveCount();
+        setPendingLeaveCount(count);
+      } catch (error) {
+        console.error("Failed to load leave notification count", error);
+      }
+    };
+
+    loadPendingCount();
+  }, [user]);
 
   // Close the dropdown when clicking anywhere outside of it
   useEffect(() => {
@@ -72,10 +109,20 @@ const Navbar = ({ onMenuClick }) => {
       <div className="navbar-right">
         <span className="today">{today}</span>
 
-        <button className="notification-btn">
+        <button
+          className="notification-btn"
+          onClick={handleNotificationClick}
+          title={
+            pendingLeaveCount > 0
+              ? `${pendingLeaveCount} pending leave request(s)`
+              : "No pending leave requests"
+          }
+        >
           <FaBell />
 
-          <span className="badge">3</span>
+          {pendingLeaveCount > 0 && (
+            <span className="badge">{pendingLeaveCount}</span>
+          )}
         </button>
 
         <div className="profile-menu-wrap" ref={menuRef}>
