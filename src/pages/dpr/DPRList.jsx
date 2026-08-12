@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useAuth } from "../../context/AuthContext";
@@ -14,18 +14,25 @@ const DPRList = () => {
 
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const [todayOnly, setTodayOnly] = useState(false);
 
-  const canCreate = role === "siteengineer";
+  const canCreate = role === "siteengineer" || role === "hr";
   const canDelete = role === "owner" || role === "admin";
 
   useEffect(() => {
-    loadReports();
-  }, []);
+    const today = searchParams.get("today");
+    const shouldShowToday = today === "true";
+    setTodayOnly(shouldShowToday);
+    loadReports(shouldShowToday);
+  }, [searchParams]);
 
-  const loadReports = async () => {
+  const loadReports = async (today = false) => {
     try {
       setLoading(true);
-      const res = await dprService.getReports();
+      const res = await dprService.getReports({
+        today: today ? "true" : undefined,
+      });
       setReports(res.reports || []);
     } catch (error) {
       console.error(error);
@@ -54,6 +61,22 @@ const DPRList = () => {
     <div className="dpr-page">
       <div className="dpr-header">
         <h2>Daily Progress Reports</h2>
+
+        <div className="dpr-header-actions">
+          <button
+            className={`dpr-filter-btn ${todayOnly ? "active" : ""}`}
+            onClick={() => navigate(`/${role}/dpr?today=true`)}
+          >
+            Todays Work
+          </button>
+
+          <button
+            className={`dpr-filter-btn ${!todayOnly ? "active" : ""}`}
+            onClick={() => navigate(`/${role}/dpr`)}
+          >
+            All Reports
+          </button>
+        </div>
 
         {canCreate && (
           <button

@@ -1,8 +1,10 @@
 import api from "./api";
 
 const dprService = {
-  getReports: async () => {
-    const response = await api.get("/dpr");
+  getReports: async (params = {}) => {
+    const response = await api.get("/dpr", {
+      params,
+    });
     return response.data;
   },
 
