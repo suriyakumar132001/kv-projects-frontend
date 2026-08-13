@@ -1,5 +1,0 @@
-/* Vendor details view helpers */
-.vendor-profile .profile-badge { width:56px; height:56px; border-radius:12px; }
-.vendor-profile .detail-row { display:flex; gap:12px; align-items:flex-start; }
-.vendor-profile .detail-row p { margin:0; }
-.vendor-profile .status-chip { padding:6px 10px; border-radius:999px; font-size:0.8rem; }

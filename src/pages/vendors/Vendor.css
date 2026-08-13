@@ -1,112 +1,464 @@
 /* ===============================================
-   KV Projects ERP — Vendor module
-   Complements the Tailwind utility classes already
-   used in AddVendor / EditVendor / VendorDetails /
-   VendorList. Only covers what Tailwind utilities
-   don't handle well: scrollbars, transitions,
-   focus/disabled polish, and print output.
+   Vendor Module — single stylesheet for
+   VendorList, AddVendor, EditVendor, VendorDetails
    =============================================== */
 
-/* Smooth color/shadow transitions on interactive elements */
-.vendor-page button,
-.vendor-page input,
-.vendor-page select,
-.vendor-page textarea,
-.vendor-page tr {
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    color 0.15s ease,
-    opacity 0.15s ease;
-}
-
-/* Custom scrollbar for the vendor table's horizontal overflow */
-.vendor-page .overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
-}
-
-.vendor-page .overflow-x-auto::-webkit-scrollbar {
-  height: 8px;
-}
-
-.vendor-page .overflow-x-auto::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.vendor-page .overflow-x-auto::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 999px;
-}
-
-.vendor-page .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
-}
-
-/* Disabled form fields — Tailwind's disabled: variants only cover
-   opacity/cursor on buttons in these files, inputs need this explicitly */
-.vendor-page input:disabled,
-.vendor-page select:disabled,
-.vendor-page textarea:disabled {
-  background-color: #f9fafb;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* Keyboard-only focus ring, cleaner than the default browser outline */
-.vendor-page input:focus-visible,
-.vendor-page select:focus-visible,
-.vendor-page textarea:focus-visible,
-.vendor-page button:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Status pill hover affordance where the pill is interactive */
-.vendor-page .status-pill,
-.vendor-page span[class*="rounded-full"] {
-  white-space: nowrap;
-}
-
-/* Row action icon buttons — slight lift on hover for affordance */
-.vendor-page table tbody tr td .p-2:hover {
-  transform: translateY(-1px);
-}
-
-/* Empty-state icon, dimmed to match text-gray-300 usage in JSX */
-.vendor-page svg.text-gray-300 {
-  opacity: 0.9;
-}
-
-/* Prevent layout shift while vendor data loads */
 .vendor-page {
+  padding: 25px;
+  background: #f4f7fc;
   min-height: 100vh;
 }
 
-/* Print: hide actions/toolbar, expand table to full width */
-@media print {
-  .vendor-page button,
-  .vendor-page .search-box,
-  .vendor-page input[type="text"] {
-    display: none !important;
-  }
-
-  .vendor-page table {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .vendor-page .rounded-xl {
-    box-shadow: none !important;
-    border: 1px solid #e5e7eb !important;
-  }
+/* Header */
+.vendor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.vendor-header-left h1 {
+  font-size: 26px;
+  color: #1f2937;
+  margin: 0;
+}
+.vendor-header-left p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+.vendor-header-actions {
+  display: flex;
+  gap: 10px;
 }
 
-/* Small screens: let the address textarea breathe a bit more */
-@media (max-width: 640px) {
-  .vendor-page textarea {
-    rows: 6;
-    min-height: 120px;
+/* Buttons (shared) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+.btn-outline {
+  background: #fff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+.btn-outline:hover:not(:disabled) {
+  background: #f9fafb;
+}
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.btn-icon.view {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.btn-icon.view:hover {
+  background: #dbeafe;
+}
+.btn-icon.edit {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.btn-icon.edit:hover {
+  background: #dcfce7;
+}
+
+/* KPI cards */
+.vendor-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+.kpi-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.kpi-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.kpi-label {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0;
+}
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 4px 0 0;
+}
+
+/* Search box */
+.vendor-search-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  margin-bottom: 25px;
+}
+.vendor-search-box {
+  position: relative;
+  max-width: 420px;
+}
+.vendor-search-box svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+.vendor-search-box input {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.vendor-search-box input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Table */
+.vendor-table-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.table-wrapper {
+  overflow-x: auto;
+}
+.vendor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.vendor-table thead {
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+.vendor-table th {
+  text-align: left;
+  padding: 16px;
+  font-weight: 600;
+  color: #6b7280;
+}
+.vendor-table th.text-right,
+.vendor-table td.text-right {
+  text-align: right;
+}
+.vendor-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #374151;
+}
+.vendor-table tbody tr:hover {
+  background: #f9fafb;
+}
+.vendor-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+.vendor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.table-empty,
+.table-loading {
+  text-align: center;
+  padding: 50px 20px;
+  color: #6b7280;
+}
+.table-empty svg {
+  color: #d1d5db;
+  margin-bottom: 12px;
+}
+.table-empty p:first-of-type {
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+.table-empty p:last-of-type {
+  font-size: 13px;
+  margin: 6px 0 0;
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-pill.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+.status-pill.inactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* ===============================================
+   Form pages (Add / Edit)
+   =============================================== */
+.vendor-form-page {
+  display: flex;
+  justify-content: center;
+}
+.vendor-form-card {
+  width: 100%;
+  max-width: 850px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.form-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 26px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.form-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.form-card-header h2 {
+  margin: 0;
+  font-size: 17px;
+  color: #1f2937;
+}
+.form-card-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 26px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+.form-group label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 11px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+}
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 26px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+/* ===============================================
+   Details page
+   =============================================== */
+.vendor-details-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.details-profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 26px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+.details-profile-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.details-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.details-profile-left h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+.details-profile-left p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  padding: 26px;
+}
+.details-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.details-item.full-width {
+  grid-column: 1 / -1;
+}
+.details-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.details-item label {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+.details-item p {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: pre-wrap;
+}
+
+.empty-state-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  padding: 60px 20px;
+  text-align: center;
+}
+.empty-state-card svg {
+  color: #d1d5db;
+}
+.empty-state-card p {
+  font-weight: 600;
+  color: #374151;
+  margin: 12px 0 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .vendor-kpis {
+    grid-template-columns: 1fr;
+  }
+  .form-grid,
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-group.full-width,
+  .details-item.full-width {
+    grid-column: auto;
+  }
+  .details-profile-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

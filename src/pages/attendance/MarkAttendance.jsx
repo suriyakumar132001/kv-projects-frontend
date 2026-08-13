@@ -15,12 +15,12 @@ const MarkAttendance = () => {
 
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
-  const isSiteEngineer = role === "siteengineer";
+  const isSelfCheckIn = role === "admin" || role === "hr" || role === "siteengineer";
 
   const [employees, setEmployees] = useState([]);
   const [sites, setSites] = useState([]);
   const [myEmployee, setMyEmployee] = useState(null);
-  const [loadingProfile, setLoadingProfile] = useState(isSiteEngineer);
+  const [loadingProfile, setLoadingProfile] = useState(isSelfCheckIn);
 
   const [formData, setFormData] = useState({
     employee: "",
@@ -31,7 +31,7 @@ const MarkAttendance = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isSiteEngineer) {
+    if (isSelfCheckIn) {
       loadMyEmployee();
     } else {
       loadEmployees();
@@ -54,7 +54,7 @@ const MarkAttendance = () => {
     }
   };
 
-  // Site Engineers only ever check themselves in — load their own
+  // Admin, HR, and Site Engineers only ever check themselves in — load their own
   // linked employee profile instead of a full picker.
   const loadMyEmployee = async () => {
     try {
@@ -97,7 +97,7 @@ const MarkAttendance = () => {
 
     if (!formData.employee) {
       return toast.error(
-        isSiteEngineer
+        isSelfCheckIn
           ? "No employee profile linked to your account"
           : "Please select employee",
       );
@@ -105,7 +105,7 @@ const MarkAttendance = () => {
 
     const payload = { ...formData };
 
-    if (isSiteEngineer && !payload.site && sites.length) {
+    if (isSelfCheckIn && !payload.site && sites.length) {
       payload.site = sites[0]._id;
     }
 
@@ -146,7 +146,7 @@ const MarkAttendance = () => {
           <div className="form-group">
             <label>Employee</label>
 
-            {isSiteEngineer ? (
+            {isSelfCheckIn ? (
               myEmployee ? (
                 <input
                   type="text"
@@ -185,7 +185,7 @@ const MarkAttendance = () => {
                 name="site"
                 value={formData.site}
                 onChange={handleChange}
-                disabled={isSiteEngineer && sites.length === 1}
+                disabled={isSelfCheckIn && sites.length === 1}
               >
                 <option value="">Select Site</option>
 
@@ -226,7 +226,7 @@ const MarkAttendance = () => {
             <button
               type="submit"
               className="save-btn"
-              disabled={loading || (isSiteEngineer && !myEmployee)}
+              disabled={loading || (isSelfCheckIn && !myEmployee)}
             >
               {loading ? "Saving..." : "Check In"}
             </button>

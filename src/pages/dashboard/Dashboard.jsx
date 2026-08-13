@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
+import attendanceService from "../../services/attendanceService";
 
 import "./Dashboard.css";
 
@@ -41,6 +42,10 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [ringReady, setRingReady] = useState(false);
+  const [todayAttendance, setTodayAttendance] = useState(null);
+  const [todayAttendanceLoading, setTodayAttendanceLoading] = useState(false);
+
+  const role = authUser?.role?.toLowerCase();
 
   useEffect(() => {
     getDashboard();
@@ -48,7 +53,6 @@ const Dashboard = () => {
 
   const getDashboard = async () => {
     try {
-      const role = authUser?.role?.toLowerCase();
       const res = await api.get(`/dashboard/${role}`);
 
       setUser(res.data.user);
@@ -57,6 +61,23 @@ const Dashboard = () => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+
+    // Load today's attendance for Owner and Admin
+    if (role === "owner" || role === "admin") {
+      getTodayAttendanceData();
+    }
+  };
+
+  const getTodayAttendanceData = async () => {
+    try {
+      setTodayAttendanceLoading(true);
+      const res = await attendanceService.getTodayAttendance();
+      setTodayAttendance(res);
+    } catch (error) {
+      console.log("Failed to load today's attendance:", error);
+    } finally {
+      setTodayAttendanceLoading(false);
     }
   };
 
@@ -165,6 +186,116 @@ const Dashboard = () => {
           <div className="accent-bar" />
         </div>
       </div>
+
+      {/* Today's Attendance Status — visible only for Owner and Admin */}
+      {(role === "owner" || role === "admin") && (
+        <div className="today-attendance-section">
+          <h2>Today's Attendance Status</h2>
+
+          {todayAttendanceLoading ? (
+            <p>Loading attendance data...</p>
+          ) : todayAttendance ? (
+            <>
+              {/* Summary Stats */}
+              <div className="attendance-summary">
+                <div className="summary-item">
+                  <label>Total Employees</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.totalEmployees}
+                  </span>
+                </div>
+
+                <div className="summary-item present">
+                  <label>Present</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.presentCount}
+                  </span>
+                </div>
+
+                <div className="summary-item absent">
+                  <label>Absent</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.absentCount}
+                  </span>
+                </div>
+
+                <div className="summary-item half-day">
+                  <label>Half Day</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.halfDayCount}
+                  </span>
+                </div>
+
+                <div className="summary-item leave">
+                  <label>On Leave</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.leaveCount}
+                  </span>
+                </div>
+
+                <div className="summary-item not-marked">
+                  <label>Not Marked</label>
+                  <span className="stat-value">
+                    {todayAttendance.stats.notMarkedCount}
+                  </span>
+                </div>
+              </div>
+
+              {/* Attendance Records Table */}
+              <div className="attendance-table-wrapper">
+                <table className="attendance-table">
+                  <thead>
+                    <tr>
+                      <th>Employee ID</th>
+                      <th>Name</th>
+                      <th>Department</th>
+                      <th>Status</th>
+                      <th>Check-In Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {todayAttendance.records.slice(0, 10).map((record, idx) => (
+                      <tr key={idx}>
+                        <td>{record.employeeId}</td>
+                        <td>{record.name}</td>
+                        <td>{record.department}</td>
+                        <td>
+                          <span
+                            className={`status-badge status-${record.status
+                              .toLowerCase()
+                              .replace(" ", "-")}`}
+                          >
+                            {record.status}
+                          </span>
+                        </td>
+                        <td>
+                          {record.checkIn
+                            ? new Date(record.checkIn).toLocaleTimeString(
+                                "en-IN",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )
+                            : "-"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {todayAttendance.records.length > 10 && (
+                  <p className="table-footer">
+                    Showing 10 of {todayAttendance.records.length} employees
+                  </p>
+                )}
+              </div>
+            </>
+          ) : (
+            <p>Unable to load attendance data</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };

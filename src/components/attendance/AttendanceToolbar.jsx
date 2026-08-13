@@ -10,6 +10,7 @@ const AttendanceToolbar = ({
   onSearch,
   onRefresh,
   onMarkAttendance,
+  canMarkAttendance = true,
 }) => {
   return (
     <div className="attendance-toolbar">
@@ -57,14 +58,16 @@ const AttendanceToolbar = ({
         Refresh
       </button>
 
-      {/* Mark Attendance */}
-      <button
-        className="add-btn"
-        onClick={onMarkAttendance}
-      >
-        <FaPlus />
-        Mark Attendance
-      </button>
+      {/* Mark Attendance — hidden for Owner */}
+      {canMarkAttendance && (
+        <button
+          className="add-btn"
+          onClick={onMarkAttendance}
+        >
+          <FaPlus />
+          Mark Attendance
+        </button>
+      )}
 
     </div>
   );

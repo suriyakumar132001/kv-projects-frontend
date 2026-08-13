@@ -358,3 +358,256 @@
     height: 120px;
   }
 }
+
+/* ===============================================
+   Today's Attendance Status Section
+   =============================================== */
+
+.today-attendance-section {
+  margin-top: 40px;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 5px 15px rgba(13, 21, 34, 0.05);
+}
+
+.today-attendance-section h2 {
+  margin: 0 0 24px;
+  color: #1b2432;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* Summary Stats Grid */
+.attendance-summary {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.summary-item {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8f9fb;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.summary-item:hover {
+  background: #f1f3f7;
+  border-color: #d1d8e0;
+}
+
+.summary-item label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.summary-item .stat-value {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1b2432;
+}
+
+.summary-item.present {
+  border-left: 4px solid #3ccb6e;
+}
+
+.summary-item.present .stat-value {
+  color: #2e7d4f;
+}
+
+.summary-item.absent {
+  border-left: 4px solid #ff6b6b;
+}
+
+.summary-item.absent .stat-value {
+  color: #c92a2a;
+}
+
+.summary-item.half-day {
+  border-left: 4px solid #ffa94d;
+}
+
+.summary-item.half-day .stat-value {
+  color: #d9480f;
+}
+
+.summary-item.leave {
+  border-left: 4px solid #339af0;
+}
+
+.summary-item.leave .stat-value {
+  color: #1c7ed6;
+}
+
+.summary-item.not-marked {
+  border-left: 4px solid #9ca3af;
+}
+
+.summary-item.not-marked .stat-value {
+  color: #6b7280;
+}
+
+/* Attendance Table */
+.attendance-table-wrapper {
+  overflow-x: auto;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.attendance-table thead {
+  background: #f8f9fb;
+  border-bottom: 2px solid var(--border);
+}
+
+.attendance-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: #1b2432;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.attendance-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.attendance-table tbody tr:hover {
+  background: #f8f9fb;
+}
+
+.attendance-table td {
+  padding: 14px 16px;
+  color: #4a5568;
+}
+
+.attendance-table td:first-child {
+  font-family: "JetBrains Mono", monospace;
+  color: #1b2432;
+  font-weight: 600;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.status-badge.status-present {
+  background: #d3f9d8;
+  color: #2e7d4f;
+}
+
+.status-badge.status-absent {
+  background: #ffe0e0;
+  color: #c92a2a;
+}
+
+.status-badge.status-half-day {
+  background: #ffe8cc;
+  color: #d9480f;
+}
+
+.status-badge.status-leave {
+  background: #d0ebff;
+  color: #1c7ed6;
+}
+
+.status-badge.status-not-marked {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+.table-footer {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .attendance-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .attendance-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .today-attendance-section {
+    padding: 20px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .attendance-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .summary-item {
+    padding: 12px;
+  }
+
+  .summary-item label {
+    font-size: 11px;
+  }
+
+  .summary-item .stat-value {
+    font-size: 20px;
+  }
+
+  .today-attendance-section {
+    padding: 16px;
+    margin-top: 24px;
+  }
+
+  .today-attendance-section h2 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .status-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}

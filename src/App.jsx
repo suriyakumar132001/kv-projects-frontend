@@ -258,8 +258,6 @@ function App() {
 
               <Route path="attendance" element={<AttendanceList />} />
 
-              <Route path="attendance/mark" element={<MarkAttendance />} />
-
               <Route path="attendance/view/:id" element={<AttendanceDetails />} />
 
               {/* Payroll */}

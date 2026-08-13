@@ -174,6 +174,7 @@ const AttendanceList = () => {
         onMarkAttendance={() =>
           navigate(`/${role}/attendance/mark`)
         }
+        canMarkAttendance={role !== "owner"}
       />
 
       <AttendanceTable

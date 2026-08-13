@@ -55,16 +55,6 @@ const LeaveList = () => {
         status: overrides.status ?? status,
         leaveType: overrides.leaveType ?? leaveType,
       });
-    try {
-      setLoading(true);
-
-      const res = await leaveService.getLeaves({
-        page: 1,
-        limit: 10,
-        search,
-        status,
-        leaveType,
-      });
 
       setLeaves(res.leaves || []);
     } catch (error) {

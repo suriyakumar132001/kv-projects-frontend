@@ -42,6 +42,14 @@ const attendanceService = {
   },
 
   // ==========================
+  // Get Today's Attendance Summary
+  // ==========================
+  getTodayAttendance: async () => {
+    const response = await api.get("/attendance/today");
+    return response.data;
+  },
+
+  // ==========================
   // Delete Attendance
   // ==========================
   deleteAttendance: async (id) => {
