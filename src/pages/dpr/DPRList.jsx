@@ -60,7 +60,10 @@ const DPRList = () => {
   return (
     <div className="dpr-page">
       <div className="dpr-header">
-        <h2>Daily Progress Reports</h2>
+        <div>
+          <h2>Daily Progress Reports</h2>
+          <p className="dpr-header-subtitle">Track daily site work, labour and materials</p>
+        </div>
 
         <div className="dpr-header-actions">
           <button
@@ -106,9 +109,18 @@ const DPRList = () => {
               reports.map((report) => (
                 <tr key={report._id}>
                   <td>
-                    {report.reportDate
-                      ? new Date(report.reportDate).toLocaleDateString()
-                      : "-"}
+                    <div className="dpr-date-cell">
+                      {report.reportDate && (
+                        <span className="dow">
+                          {new Date(report.reportDate).toLocaleDateString(undefined, {
+                            weekday: "short",
+                          })}
+                        </span>
+                      )}
+                      {report.reportDate
+                        ? new Date(report.reportDate).toLocaleDateString()
+                        : "-"}
+                    </div>
                   </td>
 
                   <td>{report.site?.siteName || "-"}</td>
@@ -118,7 +130,15 @@ const DPRList = () => {
                   <td>{report.weather}</td>
 
                   <td>
-                    <span className="dpr-progress-pill">
+                    <span
+                      className={`dpr-progress-pill ${
+                        (report.progress || 0) >= 70
+                          ? ""
+                          : (report.progress || 0) >= 35
+                          ? "mid"
+                          : "low"
+                      }`}
+                    >
                       {report.progress || 0}%
                     </span>
                   </td>
@@ -126,18 +146,27 @@ const DPRList = () => {
                   <td>
                     <div className="dpr-actions-cell">
                       <button
-                        className="dpr-view-btn"
+                        className="dpr-icon-btn dpr-view-btn"
+                        title="View"
                         onClick={() => navigate(`/${role}/dpr/view/${report._id}`)}
                       >
-                        View
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
                       </button>
 
                       {canDelete && (
                         <button
-                          className="dpr-delete-btn"
+                          className="dpr-icon-btn dpr-delete-btn"
+                          title="Delete"
                           onClick={() => handleDelete(report._id)}
                         >
-                          Delete
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M3 6h18" />
+                            <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          </svg>
                         </button>
                       )}
                     </div>

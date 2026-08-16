@@ -31,6 +31,8 @@ import { Add, Visibility, Edit, Delete } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const STATUS_OPTIONS = ["Draft", "Sent", "Approved", "Rejected"];
 
 const statusColor = (status) => {
@@ -48,6 +50,13 @@ const statusColor = (status) => {
 
 const QuotationList = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
+
+  const canManage =
+    role === "owner" || role === "admin" || role === "accountant";
+  const canDelete = role === "owner";
 
   const [quotations, setQuotations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -155,13 +164,15 @@ const QuotationList = () => {
           Quotations
         </Typography>
 
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => navigate("/owner/quotations/create")}
-        >
-          New Quotation
-        </Button>
+        {canManage && (
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => navigate(`/${role}/quotations/create`)}
+          >
+            New Quotation
+          </Button>
+        )}
       </Box>
 
       <Paper sx={{ p: 3, mb: 3 }}>
@@ -232,51 +243,63 @@ const QuotationList = () => {
                     </TableCell>
 
                     <TableCell>
-                      <Select
-                        size="small"
-                        value={item.status}
-                        onChange={(e) =>
-                          handleStatusChange(item._id, e.target.value)
-                        }
-                        renderValue={(value) => (
-                          <Chip
-                            label={value}
-                            color={statusColor(value)}
-                            size="small"
-                          />
-                        )}
-                      >
-                        {STATUS_OPTIONS.map((s) => (
-                          <MenuItem key={s} value={s}>
-                            {s}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      {canManage ? (
+                        <Select
+                          size="small"
+                          value={item.status}
+                          onChange={(e) =>
+                            handleStatusChange(item._id, e.target.value)
+                          }
+                          renderValue={(value) => (
+                            <Chip
+                              label={value}
+                              color={statusColor(value)}
+                              size="small"
+                            />
+                          )}
+                        >
+                          {STATUS_OPTIONS.map((s) => (
+                            <MenuItem key={s} value={s}>
+                              {s}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      ) : (
+                        <Chip
+                          label={item.status}
+                          color={statusColor(item.status)}
+                          size="small"
+                        />
+                      )}
                     </TableCell>
 
                     <TableCell>
                       <IconButton
                         onClick={() =>
-                          navigate(`/owner/quotations/view/${item._id}`)
+                          navigate(`/${role}/quotations/view/${item._id}`)
                         }
                       >
                         <Visibility />
                       </IconButton>
 
-                      <IconButton
-                        onClick={() =>
-                          navigate(`/owner/quotations/edit/${item._id}`)
-                        }
-                      >
-                        <Edit />
-                      </IconButton>
+                      {canManage && (
+                        <IconButton
+                          onClick={() =>
+                            navigate(`/${role}/quotations/edit/${item._id}`)
+                          }
+                        >
+                          <Edit />
+                        </IconButton>
+                      )}
 
-                      <IconButton
-                        color="error"
-                        onClick={() => deleteQuotation(item._id)}
-                      >
-                        <Delete />
-                      </IconButton>
+                      {canDelete && (
+                        <IconButton
+                          color="error"
+                          onClick={() => deleteQuotation(item._id)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

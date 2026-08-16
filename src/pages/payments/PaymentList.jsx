@@ -18,6 +18,8 @@ const PaymentList = () => {
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
+  const canManage =
+    role === "owner" || role === "admin" || role === "accountant";
   const canDelete = role === "owner";
 
   const [payments, setPayments] = useState([]);
@@ -70,9 +72,7 @@ const PaymentList = () => {
       closeDeleteModal();
       loadPayments();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Delete Failed"
-      );
+      toast.error(error.response?.data?.message || "Delete Failed");
     } finally {
       setDeleteLoading(false);
     }
@@ -80,7 +80,9 @@ const PaymentList = () => {
 
   const filteredPayments = payments.filter((item) => {
     const searchMatch =
-      item.invoice?.invoiceNumber?.toLowerCase().includes(search.toLowerCase()) ||
+      item.invoice?.invoiceNumber
+        ?.toLowerCase()
+        .includes(search.toLowerCase()) ||
       item.client?.clientName?.toLowerCase().includes(search.toLowerCase());
 
     const methodMatch = method ? item.paymentMethod === method : true;
@@ -94,7 +96,6 @@ const PaymentList = () => {
 
   return (
     <div className="payment-page">
-
       <div className="payment-header">
         <div>
           <h2>Payments</h2>
@@ -108,6 +109,7 @@ const PaymentList = () => {
         method={method}
         setMethod={setMethod}
         onAddPayment={() => navigate(`/${role}/payments/add`)}
+        canCreate={canManage}
       />
 
       <PaymentTable
@@ -115,6 +117,7 @@ const PaymentList = () => {
         onView={(p) => navigate(`/${role}/payments/view/${p._id}`)}
         onEdit={(p) => navigate(`/${role}/payments/edit/${p._id}`)}
         onDelete={openDeleteModal}
+        canEdit={canManage}
         canDelete={canDelete}
       />
 
@@ -126,7 +129,6 @@ const PaymentList = () => {
         onClose={closeDeleteModal}
         onConfirm={handleDelete}
       />
-
     </div>
   );
 };

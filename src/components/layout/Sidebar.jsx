@@ -22,6 +22,9 @@ import {
   FaTimes,
   FaClipboardList,
   FaUserShield,
+  FaDolly,
+  FaShoppingCart,
+  FaClipboardCheck,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -53,6 +56,21 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Vendors", icon: <FaTruck />, path: "/owner/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/owner/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/owner/inventory" },
+      {
+        name: "Material Requests",
+        icon: <FaDolly />,
+        path: "/owner/material-requests",
+      },
+      {
+        name: "Purchase Orders",
+        icon: <FaShoppingCart />,
+        path: "/owner/purchase-orders",
+      },
+      {
+        name: "Goods Receipts",
+        icon: <FaClipboardCheck />,
+        path: "/owner/grn",
+      },
       { name: "Assets", icon: <FaLaptop />, path: "/owner/assets" },
       {
         name: "Quotations",
@@ -90,6 +108,21 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Vendors", icon: <FaTruck />, path: "/admin/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/admin/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/admin/inventory" },
+      {
+        name: "Material Requests",
+        icon: <FaDolly />,
+        path: "/admin/material-requests",
+      },
+      {
+        name: "Purchase Orders",
+        icon: <FaShoppingCart />,
+        path: "/admin/purchase-orders",
+      },
+      {
+        name: "Goods Receipts",
+        icon: <FaClipboardCheck />,
+        path: "/admin/grn",
+      },
       { name: "Analytics", icon: <FaChartBar />, path: "/admin/analytics" },
       {
         name: "Assets",
@@ -125,6 +158,11 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Leave", icon: <FaCalendarAlt />, path: "/hr/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/hr/payroll" },
       {
+        name: "Material Requests",
+        icon: <FaDolly />,
+        path: "/hr/material-requests",
+      },
+      {
         name: "Invoices",
         icon: <FaFileInvoiceDollar />,
         path: "/hr/invoices",
@@ -138,6 +176,55 @@ const Sidebar = ({ isOpen, onClose }) => {
         name: "DPR",
         icon: <FaClipboardList />,
         path: "/hr/dpr",
+      },
+    ],
+    // =====================================================
+    // ACCOUNTANT
+    // =====================================================
+
+    accountant: [
+      {
+        name: "Dashboard",
+        icon: <FaTachometerAlt />,
+        path: "/accountant/dashboard",
+      },
+
+      { name: "Leave", icon: <FaCalendarAlt />, path: "/accountant/leave" },
+
+      {
+        name: "Invoices",
+        icon: <FaFileInvoiceDollar />,
+        path: "/accountant/invoices",
+      },
+
+      {
+        name: "Payments",
+        icon: <FaCreditCard />,
+        path: "/accountant/payments",
+      },
+
+      {
+        name: "Expenses",
+        icon: <FaFileInvoice />,
+        path: "/accountant/expenses",
+      },
+
+      {
+        name: "Quotations",
+        icon: <FaFileInvoice />,
+        path: "/accountant/quotations",
+      },
+
+      {
+        name: "Clients",
+        icon: <FaUserTie />,
+        path: "/accountant/clients",
+      },
+
+      {
+        name: "Analytics",
+        icon: <FaChartBar />,
+        path: "/accountant/analytics",
       },
     ],
 
@@ -157,8 +244,24 @@ const Sidebar = ({ isOpen, onClose }) => {
         icon: <FaCalendarCheck />,
         path: "/siteengineer/attendance",
       },
+      { name: "Leave", icon: <FaCalendarAlt />, path: "/siteengineer/leave" },
       { name: "Sites", icon: <FaBuilding />, path: "/siteengineer/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/siteengineer/inventory" },
+      {
+        name: "Material Requests",
+        icon: <FaDolly />,
+        path: "/siteengineer/material-requests",
+      },
+      {
+        name: "Purchase Orders",
+        icon: <FaShoppingCart />,
+        path: "/siteengineer/purchase-orders",
+      },
+      {
+        name: "Goods Receipts",
+        icon: <FaClipboardCheck />,
+        path: "/siteengineer/grn",
+      },
       {
         name: "DPR",
         icon: <FaClipboardList />,

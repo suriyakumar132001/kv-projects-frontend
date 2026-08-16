@@ -71,6 +71,7 @@ import CreateProject from "./pages/projects/CreateProject";
 import ProjectDetails from "./pages/projects/ProjectDetails";
 import EditProject from "./pages/projects/EditProject";
 import ProjectDashboard from "./pages/projects/ProjectDashboard";
+import ProjectProfitability from "./pages/projects/ProjectProfitability";
 
 // ===============================================
 // EXPENSES
@@ -106,6 +107,25 @@ import MaterialList from "./pages/materials/MaterialList";
 import AddMaterial from "./pages/materials/AddMaterial";
 import EditMaterial from "./pages/materials/EditMaterial";
 import MaterialDetails from "./pages/materials/MaterialDetails";
+
+// ===============================================
+// MATERIAL REQUESTS
+// ===============================================
+// NOTE: adjust this folder path if your project places
+// these files somewhere other than ./pages/materialRequests/
+// (they were provided alongside MaterialRequest.css, so this
+// assumes all three live in the same folder as that stylesheet).
+
+import MaterialRequestList from "./pages/materialRequests/MaterialRequestList";
+import CreateMaterialRequest from "./pages/materialRequests/CreateMaterialRequest";
+import ConvertToPO from "./pages/materialRequests/ConvertToPO";
+
+// ===============================================
+// GOODS RECEIPT (GRN)
+// ===============================================
+
+import GRNList from "./pages/grn/GRNList";
+import CreateGRN from "./pages/grn/CreateGRN";
 
 // ===============================================
 // LABOUR
@@ -184,6 +204,7 @@ import AssetDetails from "./pages/assets/AssetDetails";
 
 import QuotationList from "./pages/quotations/QuotationList";
 import CreateQuotation from "./pages/quotations/CreateQuotation";
+import EditQuotation from "./pages/quotations/EditQuotation";
 import QuotationDetails from "./pages/quotations/QuotationDetails";
 
 // ===============================================
@@ -202,6 +223,15 @@ import PaymentList from "./pages/payments/PaymentList";
 import AddPayment from "./pages/payments/AddPayment";
 import EditPayment from "./pages/payments/EditPayment";
 import PaymentDetails from "./pages/payments/PaymentDetails";
+
+// ===============================================
+// TASKS
+// ===============================================
+
+import TaskList from "./pages/tasks/TaskList";
+import CreateTask from "./pages/tasks/CreateTask";
+import EditTask from "./pages/tasks/EditTask";
+import TaskDetails from "./pages/tasks/TaskDetails";
 
 // ===============================================
 // SETTINGS
@@ -258,7 +288,10 @@ function App() {
 
               <Route path="attendance" element={<AttendanceList />} />
 
-              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route
+                path="attendance/view/:id"
+                element={<AttendanceDetails />}
+              />
 
               {/* Payroll */}
 
@@ -288,6 +321,11 @@ function App() {
 
               <Route path="projects/dashboard" element={<ProjectDashboard />} />
 
+              <Route
+                path="projects/:id/profitability"
+                element={<ProjectProfitability />}
+              />
+
               {/* Expenses */}
 
               <Route path="expenses" element={<ExpenseList />} />
@@ -307,6 +345,16 @@ function App() {
               <Route path="sites/edit/:id" element={<EditSite />} />
 
               <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Tasks */}
+
+              <Route path="tasks" element={<TaskList />} />
+
+              <Route path="tasks/create" element={<CreateTask />} />
+
+              <Route path="tasks/edit/:id" element={<EditTask />} />
+
+              <Route path="tasks/view/:id" element={<TaskDetails />} />
 
               {/* Inventory */}
 
@@ -332,17 +380,18 @@ function App() {
 
               <Route path="vendors/view/:id" element={<VendorDetails />} />
 
-              {/* Inventory */}
-
-              <Route path="inventory" element={<InventoryList />} />
-
               {/* Quotations */}
 
               <Route path="quotations" element={<QuotationList />} />
 
               <Route path="quotations/create" element={<CreateQuotation />} />
 
-              <Route path="quotations/view/:id" element={<QuotationDetails />} />
+              <Route path="quotations/edit/:id" element={<EditQuotation />} />
+
+              <Route
+                path="quotations/view/:id"
+                element={<QuotationDetails />}
+              />
 
               {/* Invoices */}
 
@@ -372,29 +421,51 @@ function App() {
 
               <Route path="clients/view/:id" element={<ClientDetails />} />
 
-              {/* Quotations */}
-
-              <Route path="quotations" element={<QuotationList />} />
-
-              <Route path="quotations/create" element={<CreateQuotation />} />
-
-              <Route path="quotations/view/:id" element={<QuotationDetails />} />
-
-              {/* Clients */}
-
-              <Route path="clients" element={<ClientList />} />
-
-              <Route path="clients/add" element={<CreateClient />} />
-
-              <Route path="clients/edit/:id" element={<EditClient />} />
-
-              <Route path="clients/view/:id" element={<ClientDetails />} />
-
               {/* DPR */}
 
               <Route path="dpr" element={<DPRList />} />
 
               <Route path="dpr/view/:id" element={<DPRDetails />} />
+
+              {/* Material Requests */}
+
+              <Route
+                path="material-requests"
+                element={<MaterialRequestList />}
+              />
+
+              <Route
+                path="material-requests/create"
+                element={<CreateMaterialRequest />}
+              />
+
+              <Route
+                path="material-requests/:id/convert-to-po"
+                element={<ConvertToPO />}
+              />
+
+              {/* Purchase Orders */}
+
+              <Route path="purchase-orders" element={<PurchaseOrderList />} />
+
+              <Route
+                path="purchase-orders/create"
+                element={<CreatePurchaseOrder />}
+              />
+
+              <Route
+                path="purchase-orders/view/:id"
+                element={<PurchaseOrderDetails />}
+              />
+
+              <Route
+                path="purchase-orders/:id/receive"
+                element={<CreateGRN />}
+              />
+
+              {/* Goods Receipts (GRN) */}
+
+              <Route path="grn" element={<GRNList />} />
 
               {/* Analytics */}
 
@@ -411,6 +482,84 @@ function App() {
               {/* Settings */}
 
               <Route path="settings" element={<Settings />} />
+            </Route>
+
+            {/* =========================================
+                ACCOUNTANT
+            ========================================= */}
+
+            <Route path="/accountant">
+              <Route index element={<Navigate to="dashboard" replace />} />
+
+              <Route path="dashboard" element={<Dashboard />} />
+
+              {/* Leave */}
+
+              <Route path="leave" element={<LeaveList />} />
+
+              <Route path="leave/apply" element={<ApplyLeave />} />
+
+              <Route path="leave/view/:id" element={<LeaveDetails />} />
+
+              {/* Invoices */}
+
+              <Route path="invoices" element={<InvoiceList />} />
+
+              <Route path="invoices/create" element={<CreateInvoice />} />
+
+              <Route path="invoices/view/:id" element={<InvoiceDetails />} />
+
+              {/* Payments */}
+
+              <Route path="payments" element={<PaymentList />} />
+
+              <Route path="payments/add" element={<AddPayment />} />
+
+              <Route path="payments/edit/:id" element={<EditPayment />} />
+
+              <Route path="payments/view/:id" element={<PaymentDetails />} />
+
+              {/* Expenses */}
+
+              <Route path="expenses" element={<ExpenseList />} />
+
+              <Route path="expenses/create" element={<CreateExpense />} />
+
+              <Route path="expenses/view/:id" element={<ExpenseDetails />} />
+
+              <Route path="expenses/edit/:id" element={<EditExpense />} />
+
+              {/* Quotations */}
+
+              <Route path="quotations" element={<QuotationList />} />
+
+              <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route path="quotations/edit/:id" element={<EditQuotation />} />
+
+              <Route
+                path="quotations/view/:id"
+                element={<QuotationDetails />}
+              />
+
+              {/* Clients */}
+
+              <Route path="clients" element={<ClientList />} />
+
+              <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* Analytics */}
+
+              <Route path="analytics" element={<AnalyticsDashboard />} />
+
+              {/* Projects — profitability only (accountant has no
+                  project list/detail routes above, so this is the
+                  entry point) */}
+
+              <Route
+                path="projects/:id/profitability"
+                element={<ProjectProfitability />}
+              />
             </Route>
 
             {/* =========================================
@@ -433,12 +582,21 @@ function App() {
               <Route path="attendance" element={<AttendanceList />} />
 
               <Route path="attendance/mark" element={<MarkAttendance />} />
-              <Route path="attendance/mark" element={<MarkAttendance />} />
 
-              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route
+                path="attendance/view/:id"
+                element={<AttendanceDetails />}
+              />
+
+              {/* Leave */}
+
               <Route path="leave" element={<LeaveList />} />
 
+              <Route path="leave/apply" element={<ApplyLeave />} />
+
               <Route path="leave/view/:id" element={<LeaveDetails />} />
+
+              <Route path="leave/edit/:id" element={<EditLeave />} />
 
               <Route path="payroll" element={<PayrollList />} />
 
@@ -456,11 +614,26 @@ function App() {
 
               <Route path="projects/dashboard" element={<ProjectDashboard />} />
 
+              <Route
+                path="projects/:id/profitability"
+                element={<ProjectProfitability />}
+              />
+
               {/* Sites */}
 
               <Route path="sites" element={<SiteList />} />
 
               <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Tasks */}
+
+              <Route path="tasks" element={<TaskList />} />
+
+              <Route path="tasks/create" element={<CreateTask />} />
+
+              <Route path="tasks/edit/:id" element={<EditTask />} />
+
+              <Route path="tasks/view/:id" element={<TaskDetails />} />
 
               {/* Materials */}
 
@@ -471,6 +644,23 @@ function App() {
               <Route path="materials/edit/:id" element={<EditMaterial />} />
 
               <Route path="materials/view/:id" element={<MaterialDetails />} />
+
+              {/* Material Requests */}
+
+              <Route
+                path="material-requests"
+                element={<MaterialRequestList />}
+              />
+
+              <Route
+                path="material-requests/create"
+                element={<CreateMaterialRequest />}
+              />
+
+              <Route
+                path="material-requests/:id/convert-to-po"
+                element={<ConvertToPO />}
+              />
 
               {/* Labour */}
 
@@ -530,7 +720,12 @@ function App() {
 
               <Route path="quotations/create" element={<CreateQuotation />} />
 
-              <Route path="quotations/view/:id" element={<QuotationDetails />} />
+              <Route path="quotations/edit/:id" element={<EditQuotation />} />
+
+              <Route
+                path="quotations/view/:id"
+                element={<QuotationDetails />}
+              />
 
               {/* Purchase Orders */}
 
@@ -545,6 +740,15 @@ function App() {
                 path="purchase-orders/view/:id"
                 element={<PurchaseOrderDetails />}
               />
+
+              <Route
+                path="purchase-orders/:id/receive"
+                element={<CreateGRN />}
+              />
+
+              {/* Goods Receipts (GRN) */}
+
+              <Route path="grn" element={<GRNList />} />
 
               {/* Material Issues */}
 
@@ -577,7 +781,10 @@ function App() {
 
               <Route path="attendance/mark" element={<MarkAttendance />} />
 
-              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route
+                path="attendance/view/:id"
+                element={<AttendanceDetails />}
+              />
 
               <Route path="leave" element={<LeaveList />} />
 
@@ -607,6 +814,18 @@ function App() {
 
               <Route path="expenses/edit/:id" element={<EditExpense />} />
 
+              {/* Material Requests */}
+
+              <Route
+                path="material-requests"
+                element={<MaterialRequestList />}
+              />
+
+              <Route
+                path="material-requests/create"
+                element={<CreateMaterialRequest />}
+              />
+
               {/* Clients */}
 
               <Route path="clients" element={<ClientList />} />
@@ -622,6 +841,8 @@ function App() {
               <Route path="quotations" element={<QuotationList />} />
 
               <Route path="quotations/create" element={<CreateQuotation />} />
+
+              <Route path="quotations/edit/:id" element={<EditQuotation />} />
 
               <Route
                 path="quotations/view/:id"
@@ -681,8 +902,18 @@ function App() {
               <Route path="attendance" element={<AttendanceList />} />
 
               <Route path="attendance/mark" element={<MarkAttendance />} />
-              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
-              <Route path="attendance/view/:id" element={<AttendanceDetails />} />
+              <Route
+                path="attendance/view/:id"
+                element={<AttendanceDetails />}
+              />
+
+              {/* Leave */}
+
+              <Route path="leave" element={<LeaveList />} />
+
+              <Route path="leave/apply" element={<ApplyLeave />} />
+
+              <Route path="leave/view/:id" element={<LeaveDetails />} />
 
               {/* Sites */}
 
@@ -690,11 +921,47 @@ function App() {
 
               <Route path="sites/view/:id" element={<SiteDetails />} />
 
+              {/* Tasks */}
+
+              <Route path="tasks" element={<TaskList />} />
+
+              <Route path="tasks/view/:id" element={<TaskDetails />} />
+
               {/* Materials */}
 
               <Route path="materials" element={<MaterialList />} />
 
               <Route path="materials/view/:id" element={<MaterialDetails />} />
+
+              {/* Material Requests */}
+
+              <Route
+                path="material-requests"
+                element={<MaterialRequestList />}
+              />
+
+              <Route
+                path="material-requests/create"
+                element={<CreateMaterialRequest />}
+              />
+
+              {/* Purchase Orders (view + receive only) */}
+
+              <Route path="purchase-orders" element={<PurchaseOrderList />} />
+
+              <Route
+                path="purchase-orders/view/:id"
+                element={<PurchaseOrderDetails />}
+              />
+
+              <Route
+                path="purchase-orders/:id/receive"
+                element={<CreateGRN />}
+              />
+
+              {/* Goods Receipts (GRN) */}
+
+              <Route path="grn" element={<GRNList />} />
 
               {/* Labour */}
 
@@ -750,6 +1017,3 @@ function App() {
 }
 
 export default App;
-
-
-  

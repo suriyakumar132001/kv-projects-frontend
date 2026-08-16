@@ -63,6 +63,8 @@ const DPRDetails = () => {
       </div>
 
       <div className="dpr-details-card">
+        <span className="dpr-status-pill">Submitted</span>
+
         <div className="dpr-details-grid">
           <div>
             <label>Date</label>

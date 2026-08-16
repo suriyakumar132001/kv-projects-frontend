@@ -1,6 +1,6 @@
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
-const PaymentTable = ({ payments, onView, onEdit, onDelete, canDelete }) => {
+const PaymentTable = ({ payments, onView, onEdit, onDelete, canEdit, canDelete }) => {
   return (
     <div className="table-wrapper">
 
@@ -46,13 +46,15 @@ const PaymentTable = ({ payments, onView, onEdit, onDelete, canDelete }) => {
                       <FaEye />
                     </button>
 
-                    <button
-                      className="action-btn edit-btn"
-                      onClick={() => onEdit(item)}
-                      title="Edit"
-                    >
-                      <FaEdit />
-                    </button>
+                    {canEdit && (
+                      <button
+                        className="action-btn edit-btn"
+                        onClick={() => onEdit(item)}
+                        title="Edit"
+                      >
+                        <FaEdit />
+                      </button>
+                    )}
 
                     {canDelete && (
                       <button

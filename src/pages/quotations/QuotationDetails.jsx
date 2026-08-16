@@ -28,6 +28,8 @@ import {
 
 import { useParams, useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 const STATUS_OPTIONS = ["Draft", "Sent", "Approved", "Rejected"];
 
 const statusColor = (status) => {
@@ -46,6 +48,12 @@ const statusColor = (status) => {
 const QuotationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
+
+  const canManage =
+    role === "owner" || role === "admin" || role === "accountant";
 
   const [quotation, setQuotation] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -127,7 +135,7 @@ const QuotationDetails = () => {
 
         <Button
           variant="outlined"
-          onClick={() => navigate("/owner/quotations")}
+          onClick={() => navigate(`/${role}/quotations`)}
         >
           Back
         </Button>
@@ -144,20 +152,28 @@ const QuotationDetails = () => {
             {quotation.projectName}
           </Typography>
 
-          <Select
-            size="small"
-            value={quotation.status}
-            onChange={(e) => handleStatusChange(e.target.value)}
-            renderValue={(value) => (
-              <Chip label={value} color={statusColor(value)} size="small" />
-            )}
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <MenuItem key={s} value={s}>
-                {s}
-              </MenuItem>
-            ))}
-          </Select>
+          {canManage ? (
+            <Select
+              size="small"
+              value={quotation.status}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              renderValue={(value) => (
+                <Chip label={value} color={statusColor(value)} size="small" />
+              )}
+            >
+              {STATUS_OPTIONS.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            <Chip
+              label={quotation.status}
+              color={statusColor(quotation.status)}
+              size="small"
+            />
+          )}
         </Box>
 
         <Grid container spacing={3}>

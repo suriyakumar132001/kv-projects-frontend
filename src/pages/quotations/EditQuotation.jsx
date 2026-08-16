@@ -30,6 +30,8 @@ import { Add, Delete } from "@mui/icons-material";
 
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 let rowId = 0;
 const newRow = () => ({
   rowId: rowId++,
@@ -41,6 +43,9 @@ const newRow = () => ({
 const EditQuotation = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
@@ -179,7 +184,7 @@ const EditQuotation = () => {
       setSuccess("Quotation updated successfully");
 
       setTimeout(() => {
-        navigate("/owner/quotations");
+        navigate(`/${role}/quotations`);
       }, 1000);
     } catch (err) {
       console.log(err);
@@ -436,7 +441,7 @@ const EditQuotation = () => {
             <Button
               sx={{ ml: 2 }}
               variant="outlined"
-              onClick={() => navigate("/owner/quotations")}
+              onClick={() => navigate(`/${role}/quotations`)}
             >
               Cancel
             </Button>

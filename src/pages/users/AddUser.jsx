@@ -9,10 +9,11 @@ import userService from "../../services/userService";
 
 import "./Users.css";
 
-// Owner can create Admin, HR or Site Engineer.
-// Admin can only create HR or Site Engineer (can't create another Admin).
+// Owner can create Admin, Accountant, HR, or Site Engineer.
+// Admin can create Accountant, HR, or Site Engineer (can't create another Admin).
 const ROLE_OPTIONS = [
   { value: "admin", label: "Admin", ownerOnly: true },
+  { value: "accountant", label: "Accountant" },
   { value: "hr", label: "HR" },
   { value: "siteengineer", label: "Site Engineer" },
 ];
@@ -71,7 +72,7 @@ const AddUser = () => {
           Add User
         </h2>
         <p>
-          Create a login for a new Admin, HR, or Site Engineer. They'll sign in
+          Create a login for a new Admin, Accountant, HR, or Site Engineer. They'll sign in
           with the email and password you set here.
         </p>
 

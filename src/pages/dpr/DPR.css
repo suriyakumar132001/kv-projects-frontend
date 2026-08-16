@@ -1,77 +1,219 @@
 /* ===============================================
    DPR.css
-   Daily Progress Reports
+   Daily Progress Reports — matches the app's
+   existing card / dark-table / pill-badge system
+   (same language as Payments, Invoices, etc.)
    =============================================== */
 
-.dpr-page {
-  padding: 24px;
+:root {
+  --dpr-navy: #0b1b2b;
+  --dpr-navy-2: #14273b;
+  --dpr-accent: #f59e0b;
+  --dpr-accent-dark: #b45309;
+  --dpr-ink: #111827;
+  --dpr-text-soft: #6b7280;
+  --dpr-border: #e5e7eb;
+  --dpr-bg: #f3f4f6;
+  --dpr-card: #ffffff;
+
+  --dpr-purple-bg: #ede9fe;
+  --dpr-purple-text: #6d28d9;
+  --dpr-green-bg: #dcfce7;
+  --dpr-green-text: #15803d;
+  --dpr-amber-bg: #fef3c7;
+  --dpr-amber-text: #92400e;
+  --dpr-red-bg: #fee2e2;
+  --dpr-red-text: #b91c1c;
+
+  --dpr-view: #f59e0b;
+  --dpr-edit: #b45309;
+  --dpr-delete: #dc2626;
 }
+
+.dpr-page {
+  padding: 28px 32px;
+  background: var(--dpr-bg);
+  min-height: 100%;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--dpr-ink);
+}
+
+.dpr-page * {
+  box-sizing: border-box;
+}
+
+/* ===============================================
+   Header
+   =============================================== */
 
 .dpr-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: flex-start;
+  margin-bottom: 24px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
 .dpr-header h2 {
-  font-size: 24px;
-  color: var(--ink);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--dpr-ink);
+  margin-bottom: 4px;
+}
+
+.dpr-header-subtitle {
+  font-size: 14px;
+  color: var(--dpr-text-soft);
+}
+
+.dpr-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dpr-filter-btn {
+  padding: 10px 18px;
+  border: 1px solid var(--dpr-border);
+  background: var(--dpr-card);
+  color: var(--dpr-text-soft);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.15s;
+}
+
+.dpr-filter-btn.active {
+  background: var(--dpr-navy);
+  color: #fff;
+  border-color: var(--dpr-navy);
+}
+
+.dpr-filter-btn:not(.active):hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
 }
 
 .dpr-add-btn {
-  padding: 12px 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 20px;
   border: none;
   border-radius: 10px;
-  background: var(--ink);
+  background: var(--dpr-navy);
   color: #fff;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.dpr-add-btn::before {
+  content: "+";
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dpr-accent);
 }
 
 .dpr-add-btn:hover {
-  background: var(--ink-2);
+  background: var(--dpr-navy-2);
 }
 
-/* Table */
+/* ===============================================
+   Table card
+   =============================================== */
 
 .dpr-table-wrapper {
-  background: #fff;
-  border-radius: 12px;
-  overflow-x: auto;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  background: var(--dpr-card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .dpr-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 720px;
 }
 
 .dpr-table th,
 .dpr-table td {
-  padding: 14px 16px;
+  padding: 15px 20px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
   font-size: 14px;
 }
 
-.dpr-table th {
-  background: #f8fafc;
-  color: var(--text-dark);
-  font-weight: 600;
+.dpr-table thead tr {
+  background: var(--dpr-navy);
 }
 
+.dpr-table th {
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+.dpr-table tbody tr {
+  border-bottom: 1px solid var(--dpr-border);
+}
+
+.dpr-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.dpr-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.dpr-table td {
+  color: var(--dpr-ink);
+}
+
+.dpr-date-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dpr-date-cell .dow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--dpr-accent-dark);
+  background: var(--dpr-amber-bg);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* progress % pill, colour-coded like the Method pill on Payments */
 .dpr-progress-pill {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  background: var(--success-bg);
-  color: var(--success-dark);
+  background: var(--dpr-green-bg);
+  color: var(--dpr-green-text);
+}
+
+.dpr-progress-pill.low {
+  background: var(--dpr-red-bg);
+  color: var(--dpr-red-text);
+}
+
+.dpr-progress-pill.mid {
+  background: var(--dpr-amber-bg);
+  color: var(--dpr-amber-text);
 }
 
 .dpr-actions-cell {
@@ -79,57 +221,77 @@
   gap: 8px;
 }
 
-.dpr-view-btn,
-.dpr-delete-btn {
-  padding: 7px 14px;
+.dpr-icon-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
   cursor: pointer;
+  color: #fff;
+}
+
+.dpr-icon-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .dpr-view-btn {
-  background: var(--info-bg);
-  color: #3730a3;
+  background: var(--dpr-view);
 }
 
 .dpr-view-btn:hover {
-  background: #c7d2fe;
+  background: #d97706;
 }
 
 .dpr-delete-btn {
-  background: var(--danger-bg);
-  color: var(--danger-dark);
+  background: var(--dpr-delete);
 }
 
 .dpr-delete-btn:hover {
-  background: #fecaca;
+  background: #b91c1c;
 }
 
 .dpr-empty {
   text-align: center;
-  padding: 40px;
-  color: var(--text-soft);
+  padding: 48px;
+  color: var(--dpr-text-soft);
 }
 
-/* Form */
+/* Submission status pill, e.g. on DPR details */
+.dpr-status-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--dpr-green-bg);
+  color: var(--dpr-green-text);
+  margin-bottom: 20px;
+}
 
-.dpr-form-card {
-  background: #fff;
+/* ===============================================
+   Form + Details cards
+   =============================================== */
+
+.dpr-form-card,
+.dpr-details-card {
+  background: var(--dpr-card);
   border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  max-width: 900px;
+  padding: 28px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  max-width: 960px;
 }
 
 .dpr-form-section-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--ink);
-  margin: 22px 0 12px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+  color: var(--dpr-ink);
+  margin: 24px 0 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--dpr-border);
 }
 
 .dpr-form-section-title:first-child {
@@ -161,17 +323,19 @@
 .dpr-form-group label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--dpr-ink);
 }
 
 .dpr-form-group input,
 .dpr-form-group select,
 .dpr-form-group textarea {
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--dpr-border);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
+  background: #fff;
+  color: var(--dpr-ink);
 }
 
 .dpr-form-group textarea {
@@ -183,7 +347,23 @@
 .dpr-form-group select:focus,
 .dpr-form-group textarea:focus {
   outline: none;
-  border-color: var(--ink);
+  border-color: var(--dpr-accent);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.dpr-progress-track {
+  margin-top: 8px;
+  height: 8px;
+  background: var(--dpr-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dpr-progress-fill {
+  height: 100%;
+  background: var(--dpr-accent);
+  border-radius: 999px;
+  transition: width 0.15s ease;
 }
 
 .dpr-image-preview-row {
@@ -198,69 +378,73 @@
   height: 80px;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--dpr-border);
 }
 
 .dpr-form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 14px;
+  gap: 12px;
   margin-top: 26px;
 }
 
 .dpr-submit-btn {
-  padding: 12px 26px;
+  padding: 11px 24px;
   border: none;
   border-radius: 10px;
-  background: var(--ink);
+  background: var(--dpr-navy);
   color: #fff;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
 }
 
+.dpr-submit-btn:hover {
+  background: var(--dpr-navy-2);
+}
+
 .dpr-submit-btn:disabled {
-  background: #93c5fd;
+  background: #9ca3af;
   cursor: not-allowed;
 }
 
 .dpr-cancel-btn {
-  padding: 12px 26px;
-  border: 1px solid var(--border);
+  padding: 11px 24px;
+  border: 1px solid var(--dpr-border);
   border-radius: 10px;
   background: #fff;
-  color: var(--text-dark);
+  color: var(--dpr-ink);
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
 }
 
-/* Details */
-
-.dpr-details-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  max-width: 900px;
+.dpr-cancel-btn:hover {
+  background: #f9fafb;
 }
+
+/* ===============================================
+   Details grid
+   =============================================== */
 
 .dpr-details-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .dpr-details-grid div label {
   display: block;
   font-size: 12.5px;
-  color: var(--text-soft);
+  color: var(--dpr-text-soft);
   margin-bottom: 4px;
 }
 
 .dpr-details-grid div p {
   font-size: 15px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--dpr-ink);
 }
 
 .dpr-image-gallery {
@@ -275,7 +459,7 @@
   height: 140px;
   object-fit: cover;
   border-radius: 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--dpr-border);
   cursor: pointer;
 }
 
@@ -293,12 +477,12 @@
 
 @media (max-width: 600px) {
   .dpr-page {
-    padding: 16px;
+    padding: 18px 16px;
   }
 
   .dpr-form-card,
   .dpr-details-card {
-    padding: 18px;
+    padding: 20px;
   }
 
   .dpr-form-grid,
@@ -321,55 +505,17 @@
     align-items: stretch;
   }
 
+  .dpr-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .dpr-add-btn {
     width: 100%;
-  }
-}
-
-/* ===============================================
-
-   Auto-added — entrance animation + mobile polish
-
-   Breakpoints match Login/Sidebar/Navbar:
-
-   Tablet: 900px   Phone: 600px   Small phone: 380px
-
-   ===============================================*/
-
-.dpr-page {
-  animation: fadeUp 0.4s ease both;
-}
-
-@media (max-width: 900px) {
-  .dpr-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dpr-details-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .dpr-page {
-    padding: 16px;
-  }
-
-  .dpr-header h2 {
-    font-size: 20px;
+    justify-content: center;
   }
 
   .dpr-table {
     min-width: 640px;
-  }
-
-  .dpr-form-card {
-    padding: 18px;
-  }
-}
-
-@media (max-width: 380px) {
-  .dpr-table {
-    min-width: 560px;
   }
 }

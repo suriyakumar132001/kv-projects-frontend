@@ -148,6 +148,15 @@ const ExpenseList = () => {
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
+  const canManage =
+    role === "owner" ||
+    role === "admin" ||
+    role === "siteengineer" ||
+    role === "accountant";
+
+  const canDelete =
+    role === "owner" || role === "admin" || role === "accountant";
+
   // =============================================
   // State
   // =============================================
@@ -460,16 +469,18 @@ const ExpenseList = () => {
             Refresh
           </Button>
 
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => navigate(`/${role}/expenses/create`)}
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Add Expense
-          </Button>
+          {canManage && (
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => navigate(`/${role}/expenses/create`)}
+              sx={{
+                textTransform: "none",
+              }}
+            >
+              Add Expense
+            </Button>
+          )}
         </Stack>
       </Box>
 
@@ -868,17 +879,19 @@ const ExpenseList = () => {
                       Try changing your filters or add a new expense.
                     </Typography>
 
-                    <Button
-                      variant="contained"
-                      startIcon={<Add />}
-                      onClick={() => navigate(`/${role}/expenses/create`)}
-                      sx={{
-                        mt: 2,
-                        textTransform: "none",
-                      }}
-                    >
-                      Add Expense
-                    </Button>
+                    {canManage && (
+                      <Button
+                        variant="contained"
+                        startIcon={<Add />}
+                        onClick={() => navigate(`/${role}/expenses/create`)}
+                        sx={{
+                          mt: 2,
+                          textTransform: "none",
+                        }}
+                      >
+                        Add Expense
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               )}
@@ -954,34 +967,40 @@ const ExpenseList = () => {
                           </IconButton>
                         </Tooltip>
 
-                        <Tooltip title="Edit">
-                          <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() =>
-                              navigate(`/${role}/expenses/edit/${expense._id}`)
-                            }
-                          >
-                            <EditOutlined fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Delete">
-                          <span>
+                        {canManage && (
+                          <Tooltip title="Edit">
                             <IconButton
                               size="small"
-                              color="error"
-                              disabled={deletingId === expense._id}
-                              onClick={() => handleDelete(expense._id)}
+                              color="secondary"
+                              onClick={() =>
+                                navigate(
+                                  `/${role}/expenses/edit/${expense._id}`,
+                                )
+                              }
                             >
-                              {deletingId === expense._id ? (
-                                <CircularProgress size={18} />
-                              ) : (
-                                <DeleteOutline fontSize="small" />
-                              )}
+                              <EditOutlined fontSize="small" />
                             </IconButton>
-                          </span>
-                        </Tooltip>
+                          </Tooltip>
+                        )}
+
+                        {canDelete && (
+                          <Tooltip title="Delete">
+                            <span>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                disabled={deletingId === expense._id}
+                                onClick={() => handleDelete(expense._id)}
+                              >
+                                {deletingId === expense._id ? (
+                                  <CircularProgress size={18} />
+                                ) : (
+                                  <DeleteOutline fontSize="small" />
+                                )}
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+                        )}
                       </Stack>
                     </TableCell>
                   </TableRow>

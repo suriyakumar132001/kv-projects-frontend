@@ -44,6 +44,8 @@ const Dashboard = () => {
   const [ringReady, setRingReady] = useState(false);
   const [todayAttendance, setTodayAttendance] = useState(null);
   const [todayAttendanceLoading, setTodayAttendanceLoading] = useState(false);
+  const [companyOverview, setCompanyOverview] = useState(null);
+  const [companyOverviewLoading, setCompanyOverviewLoading] = useState(false);
 
   const role = authUser?.role?.toLowerCase();
 
@@ -66,6 +68,20 @@ const Dashboard = () => {
     // Load today's attendance for Owner and Admin
     if (role === "owner" || role === "admin") {
       getTodayAttendanceData();
+      getCompanyOverviewData();
+    }
+  };
+
+  const getCompanyOverviewData = async () => {
+    try {
+      setCompanyOverviewLoading(true);
+      const res = await api.get("/projects/reports/company-profitability");
+      setCompanyOverview(res?.data?.companyOverview || null);
+    } catch (error) {
+      console.log("Failed to load company overview:", error);
+      setCompanyOverview(null);
+    } finally {
+      setCompanyOverviewLoading(false);
     }
   };
 
@@ -275,7 +291,7 @@ const Dashboard = () => {
                                 {
                                   hour: "2-digit",
                                   minute: "2-digit",
-                                }
+                                },
                               )
                             : "-"}
                         </td>
@@ -293,6 +309,87 @@ const Dashboard = () => {
             </>
           ) : (
             <p>Unable to load attendance data</p>
+          )}
+        </div>
+      )}
+
+      {/* Company Financial Overview — visible only for Owner and Admin */}
+      {(role === "owner" || role === "admin") && (
+        <div className="finance-overview-section">
+          <h2>Company Financial Overview</h2>
+
+          {companyOverviewLoading ? (
+            <p>Loading financial overview...</p>
+          ) : companyOverview ? (
+            <>
+              <div className="finance-summary">
+                <div className="finance-item">
+                  <label>Total Invoiced</label>
+                  <span className="stat-value">
+                    ₹{companyOverview.totalInvoiced.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div className="finance-item received">
+                  <label>Amount Received</label>
+                  <span className="stat-value">
+                    ₹{companyOverview.totalReceived.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div className="finance-item outstanding">
+                  <label>Outstanding</label>
+                  <span className="stat-value">
+                    ₹{companyOverview.totalOutstanding.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div className="finance-item expense">
+                  <label>Total Expense</label>
+                  <span className="stat-value">
+                    ₹{companyOverview.totalExpense.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div
+                  className={`finance-item ${
+                    companyOverview.totalProfit >= 0 ? "profit" : "loss"
+                  }`}
+                >
+                  <label>Profit ({companyOverview.profitMargin}% margin)</label>
+                  <span className="stat-value">
+                    ₹{companyOverview.totalProfit.toLocaleString("en-IN")}
+                  </span>
+                </div>
+              </div>
+
+              {(companyOverview.overdueInvoices.count > 0 ||
+                companyOverview.overBudgetProjects.length > 0) && (
+                <div className="finance-alerts">
+                  {companyOverview.overdueInvoices.count > 0 && (
+                    <div className="finance-alert-item alert-overdue">
+                      {companyOverview.overdueInvoices.count} overdue invoice(s)
+                      totaling ₹
+                      {companyOverview.overdueInvoices.amount.toLocaleString(
+                        "en-IN",
+                      )}
+                    </div>
+                  )}
+
+                  {companyOverview.overBudgetProjects.length > 0 && (
+                    <div className="finance-alert-item alert-over-budget">
+                      {companyOverview.overBudgetProjects.length} project(s)
+                      over budget:{" "}
+                      {companyOverview.overBudgetProjects
+                        .map((p) => p.projectName)
+                        .join(", ")}
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <p>Unable to load financial overview</p>
           )}
         </div>
       )}

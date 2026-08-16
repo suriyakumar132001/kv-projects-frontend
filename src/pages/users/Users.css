@@ -13,6 +13,10 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+.role-badge.accountant {
+  background: #fce7f3;
+  color: #be185d;
+}
 .users-header h2 {
   font-size: 26px;
   color: var(--ink);

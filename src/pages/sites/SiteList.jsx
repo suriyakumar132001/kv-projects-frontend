@@ -60,7 +60,7 @@ const SiteList = () => {
       const res = await userService.getUsers();
 
       const siteEngineers = (res.users || []).filter(
-        (u) => u.role === "siteengineer"
+        (u) => u.role === "siteengineer",
       );
 
       setEngineers(siteEngineers);
@@ -90,9 +90,7 @@ const SiteList = () => {
       closeAssignModal();
       loadSites();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Assignment Failed"
-      );
+      toast.error(error.response?.data?.message || "Assignment Failed");
     } finally {
       setAssignLoading(false);
     }
@@ -114,7 +112,6 @@ const SiteList = () => {
 
   return (
     <div className="site-page">
-
       <div className="site-header">
         <div>
           <h2>Sites</h2>
@@ -131,7 +128,7 @@ const SiteList = () => {
         setSearch={setSearch}
         status={status}
         setStatus={setStatus}
-        onAddSite={() => navigate(`/${role}/sites/create`)}
+        onAddSite={() => navigate(`/${role}/sites/add`)}
         canCreate={canManage}
       />
 
@@ -149,7 +146,6 @@ const SiteList = () => {
         onClose={closeAssignModal}
         onConfirm={handleAssign}
       />
-
     </div>
   );
 };

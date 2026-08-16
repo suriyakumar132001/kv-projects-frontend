@@ -108,6 +108,8 @@ const ProjectDashboard = () => {
 
   const [expenses, setExpenses] = useState([]);
 
+  const [profitability, setProfitability] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState("");
@@ -146,6 +148,23 @@ const ProjectDashboard = () => {
   };
 
   // =============================================
+  // Load Profitability
+  // =============================================
+
+  const loadProfitability = async () => {
+    try {
+      const response = await api.get(`/projects/${id}/profitability`);
+
+      setProfitability(response?.data?.profitability || null);
+    } catch (err) {
+      console.error("Load profitability error:", err);
+
+      // Don't block the dashboard if this fails
+      setProfitability(null);
+    }
+  };
+
+  // =============================================
   // Initial Load
   // =============================================
 
@@ -155,7 +174,7 @@ const ProjectDashboard = () => {
         setLoading(true);
         setError("");
 
-        await Promise.all([loadProject(), loadExpenses()]);
+        await Promise.all([loadProject(), loadExpenses(), loadProfitability()]);
       } catch (err) {
         console.error("Project dashboard error:", err);
 
@@ -645,6 +664,150 @@ const ProjectDashboard = () => {
                 </Typography>
               </Box>
             </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      {/* =========================================
+          PROFITABILITY
+      ========================================= */}
+
+      <Grid container spacing={3} mb={3}>
+        <Grid item xs={12}>
+          <Paper
+            sx={{
+              p: 3,
+              borderRadius: 2,
+            }}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={2}
+            >
+              <Typography variant="h6" fontWeight={700}>
+                Profitability
+              </Typography>
+
+              {profitability && (
+                <Chip
+                  label={
+                    profitability.isOverBudget ? "Over Budget" : "Within Budget"
+                  }
+                  color={profitability.isOverBudget ? "error" : "success"}
+                  size="small"
+                  sx={{ fontWeight: 600 }}
+                />
+              )}
+            </Box>
+
+            {!profitability ? (
+              <Typography color="text.secondary">
+                No invoices linked to this project yet, so revenue and profit
+                cannot be calculated.
+              </Typography>
+            ) : (
+              <Grid container spacing={2}>
+                {/* Total Invoiced */}
+
+                <Grid item xs={12} sm={6} md={2.4}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Total Invoiced
+                    </Typography>
+
+                    <Typography variant="h6" fontWeight={700}>
+                      {formatCurrency(profitability.totalInvoiced)}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                {/* Total Received */}
+
+                <Grid item xs={12} sm={6} md={2.4}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Amount Received
+                    </Typography>
+
+                    <Typography
+                      variant="h6"
+                      fontWeight={700}
+                      color="success.main"
+                    >
+                      {formatCurrency(profitability.totalReceived)}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                {/* Outstanding */}
+
+                <Grid item xs={12} sm={6} md={2.4}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Outstanding
+                    </Typography>
+
+                    <Typography
+                      variant="h6"
+                      fontWeight={700}
+                      color={
+                        profitability.outstandingAmount > 0
+                          ? "warning.main"
+                          : "text.primary"
+                      }
+                    >
+                      {formatCurrency(profitability.outstandingAmount)}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                {/* Actual Cost */}
+
+                <Grid item xs={12} sm={6} md={2.4}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Actual Cost
+                    </Typography>
+
+                    <Typography
+                      variant="h6"
+                      fontWeight={700}
+                      color="error.main"
+                    >
+                      {formatCurrency(profitability.actualCost)}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                {/* Profit */}
+
+                <Grid item xs={12} sm={6} md={2.4}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Profit (Billed − Cost)
+                    </Typography>
+
+                    <Typography
+                      variant="h6"
+                      fontWeight={700}
+                      color={
+                        profitability.accrualProfit >= 0
+                          ? "success.main"
+                          : "error.main"
+                      }
+                    >
+                      {formatCurrency(profitability.accrualProfit)}
+                    </Typography>
+
+                    <Typography variant="caption" color="text.secondary">
+                      {profitability.profitMargin}% margin
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            )}
           </Paper>
         </Grid>
       </Grid>

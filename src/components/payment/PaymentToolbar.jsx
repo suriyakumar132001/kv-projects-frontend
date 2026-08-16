@@ -6,6 +6,7 @@ const PaymentToolbar = ({
   method,
   setMethod,
   onAddPayment,
+  canCreate,
 }) => {
   return (
     <div className="payment-toolbar">
@@ -33,10 +34,12 @@ const PaymentToolbar = ({
         <option value="UPI">UPI</option>
       </select>
 
-      <button className="add-btn" onClick={onAddPayment}>
-        <FaPlus />
-        Add Payment
-      </button>
+      {canCreate && (
+        <button className="add-btn" onClick={onAddPayment}>
+          <FaPlus />
+          Add Payment
+        </button>
+      )}
 
     </div>
   );

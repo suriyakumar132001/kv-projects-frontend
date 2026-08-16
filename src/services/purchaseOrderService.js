@@ -2,11 +2,6 @@
 // KV Projects ERP
 // Purchase Order Service
 // ===============================================
-//
-// NOTE: Mirrors materialService.js / vendorService.js.
-// IMPORTANT: fix the import path below to match your real
-// axios instance (see materialService.js for the correct path)
-// before this file will resolve.
 
 import api from "./api";
 
@@ -32,6 +27,12 @@ const purchaseOrderService = {
   // Update an existing purchase order
   updatePurchaseOrder: async (id, payload) => {
     const response = await api.put(`/purchase-orders/${id}`, payload);
+    return response.data;
+  },
+
+  // Cancel a purchase order
+  cancelPurchaseOrder: async (id) => {
+    const response = await api.put(`/purchase-orders/${id}/cancel`);
     return response.data;
   },
 

@@ -9,13 +9,20 @@ import leaveService from "../../services/leaveService";
 
 import "./Leave.css";
 
+// Roles allowed to file leave on behalf of any employee.
+// Everyone else can only apply for themselves.
+const MANAGEMENT_ROLES = ["owner", "admin", "hr"];
+
 const ApplyLeave = () => {
   const navigate = useNavigate();
 
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
+  const isManagement = MANAGEMENT_ROLES.includes(role);
 
   const [employees, setEmployees] = useState([]);
+  const [myEmployee, setMyEmployee] = useState(null);
+  const [loadingEmployees, setLoadingEmployees] = useState(true);
 
   const [formData, setFormData] = useState({
     employee: "",
@@ -34,14 +41,41 @@ const ApplyLeave = () => {
 
   const loadEmployees = async () => {
     try {
+      setLoadingEmployees(true);
+
       const res = await employeeService.getEmployees({
         page: 1,
         limit: 1000,
       });
 
-      setEmployees(res.employees || []);
+      const list = res.employees || [];
+      setEmployees(list);
+
+      if (!isManagement) {
+        // Match the logged-in user to their own employee record.
+        // Primary match: email (always set on both User and Employee).
+        // Fallback: linked "user" id, if that was ever set.
+        const myEmail = user?.email?.toLowerCase();
+
+        const own = list.find(
+          (emp) =>
+            emp.email?.toLowerCase() === myEmail ||
+            (emp.user && String(emp.user) === String(user?._id)),
+        );
+
+        if (own) {
+          setMyEmployee(own);
+          setFormData((prev) => ({ ...prev, employee: own._id }));
+        } else {
+          toast.error(
+            "No employee record is linked to your account. Contact HR/Admin.",
+          );
+        }
+      }
     } catch (error) {
       toast.error("Failed to load employees");
+    } finally {
+      setLoadingEmployees(false);
     }
   };
 
@@ -51,8 +85,7 @@ const ApplyLeave = () => {
     const start = new Date(from);
     const end = new Date(to);
 
-    const diff =
-      Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
     return diff > 0 ? diff : "";
   };
@@ -66,10 +99,7 @@ const ApplyLeave = () => {
     };
 
     if (name === "fromDate" || name === "toDate") {
-      updated.totalDays = calculateDays(
-        updated.fromDate,
-        updated.toDate
-      );
+      updated.totalDays = calculateDays(updated.fromDate, updated.toDate);
     }
 
     setFormData(updated);
@@ -77,6 +107,13 @@ const ApplyLeave = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isManagement && !myEmployee) {
+      toast.error(
+        "No employee record is linked to your account. Contact HR/Admin.",
+      );
+      return;
+    }
 
     try {
       setLoading(true);
@@ -87,10 +124,7 @@ const ApplyLeave = () => {
 
       navigate(`/${role}/leave`);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to Apply Leave"
-      );
+      toast.error(error.response?.data?.message || "Failed to Apply Leave");
     } finally {
       setLoading(false);
     }
@@ -105,20 +139,35 @@ const ApplyLeave = () => {
           <div className="form-group">
             <label>Employee</label>
 
-            <select
-              name="employee"
-              value={formData.employee}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Employee</option>
+            {isManagement ? (
+              <select
+                name="employee"
+                value={formData.employee}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Employee</option>
 
-              {employees.map((emp) => (
-                <option key={emp._id} value={emp._id}>
-                  {emp.employeeId} - {emp.name}
-                </option>
-              ))}
-            </select>
+                {employees.map((emp) => (
+                  <option key={emp._id} value={emp._id}>
+                    {emp.employeeId} - {emp.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={
+                  loadingEmployees
+                    ? "Loading..."
+                    : myEmployee
+                      ? `${myEmployee.employeeId} - ${myEmployee.name}`
+                      : "No employee record linked"
+                }
+                readOnly
+                disabled
+              />
+            )}
           </div>
 
           <div className="form-group">
@@ -165,11 +214,7 @@ const ApplyLeave = () => {
           <div className="form-group">
             <label>Total Days</label>
 
-            <input
-              type="number"
-              value={formData.totalDays}
-              readOnly
-            />
+            <input type="number" value={formData.totalDays} readOnly />
           </div>
 
           <div className="form-group">
@@ -196,7 +241,7 @@ const ApplyLeave = () => {
             <button
               type="submit"
               className="save-btn"
-              disabled={loading}
+              disabled={loading || (!isManagement && !myEmployee)}
             >
               {loading ? "Applying..." : "Apply Leave"}
             </button>

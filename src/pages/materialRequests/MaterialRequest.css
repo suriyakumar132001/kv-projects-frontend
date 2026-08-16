@@ -1,0 +1,433 @@
+/* ===============================================
+   MaterialRequest.css
+   Same visual system as DPR.css / Payments —
+   dark table header, white cards, pill badges.
+   =============================================== */
+
+:root {
+  --mr-navy: #0b1b2b;
+  --mr-navy-2: #14273b;
+  --mr-accent: #f59e0b;
+  --mr-ink: #111827;
+  --mr-text-soft: #6b7280;
+  --mr-border: #e5e7eb;
+  --mr-bg: #f3f4f6;
+  --mr-card: #ffffff;
+
+  --mr-green-bg: #dcfce7;
+  --mr-green-text: #15803d;
+  --mr-red-bg: #fee2e2;
+  --mr-red-text: #b91c1c;
+  --mr-amber-bg: #fef3c7;
+  --mr-amber-text: #92400e;
+  --mr-blue-bg: #dbeafe;
+  --mr-blue-text: #1d4ed8;
+}
+
+.mr-page {
+  padding: 28px 32px;
+  background: var(--mr-bg);
+  min-height: 100%;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--mr-ink);
+}
+
+.mr-page * {
+  box-sizing: border-box;
+}
+
+/* Header */
+
+.mr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.mr-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--mr-ink);
+  margin-bottom: 4px;
+}
+
+.mr-header-subtitle {
+  font-size: 14px;
+  color: var(--mr-text-soft);
+}
+
+.mr-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mr-filter-btn {
+  padding: 10px 18px;
+  border: 1px solid var(--mr-border);
+  background: var(--mr-card);
+  color: var(--mr-text-soft);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.15s;
+}
+
+.mr-filter-btn.active {
+  background: var(--mr-navy);
+  color: #fff;
+  border-color: var(--mr-navy);
+}
+
+.mr-filter-btn:not(.active):hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.mr-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 10px;
+  background: var(--mr-navy);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mr-add-btn::before {
+  content: "+";
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mr-accent);
+}
+
+.mr-add-btn:hover {
+  background: var(--mr-navy-2);
+}
+
+/* Table card */
+
+.mr-table-wrapper {
+  background: var(--mr-card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.mr-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.mr-table th,
+.mr-table td {
+  padding: 15px 18px;
+  text-align: left;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.mr-table thead tr {
+  background: var(--mr-navy);
+}
+
+.mr-table th {
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+.mr-table tbody tr {
+  border-bottom: 1px solid var(--mr-border);
+}
+
+.mr-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.mr-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* Status pills */
+
+.mr-status-pill {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.mr-status-pill.Pending {
+  background: var(--mr-amber-bg);
+  color: var(--mr-amber-text);
+}
+
+.mr-status-pill.Approved {
+  background: var(--mr-green-bg);
+  color: var(--mr-green-text);
+}
+
+.mr-status-pill.Rejected {
+  background: var(--mr-red-bg);
+  color: var(--mr-red-text);
+}
+
+.mr-status-pill.Ordered {
+  background: var(--mr-blue-bg);
+  color: var(--mr-blue-text);
+}
+
+/* Urgency pill */
+
+.mr-urgency-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f3f4f6;
+  color: var(--mr-text-soft);
+  border: 1px solid var(--mr-border);
+}
+
+.mr-urgency-pill.High,
+.mr-urgency-pill.Urgent {
+  background: var(--mr-red-bg);
+  color: var(--mr-red-text);
+  border-color: transparent;
+}
+
+/* Action buttons */
+
+.mr-actions-cell {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mr-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+.mr-btn-approve {
+  background: var(--mr-green-bg);
+  color: var(--mr-green-text);
+}
+
+.mr-btn-approve:hover {
+  background: #bbf7d0;
+}
+
+.mr-btn-reject {
+  background: var(--mr-red-bg);
+  color: var(--mr-red-text);
+}
+
+.mr-btn-reject:hover {
+  background: #fecaca;
+}
+
+.mr-btn-convert {
+  background: var(--mr-blue-bg);
+  color: var(--mr-blue-text);
+}
+
+.mr-btn-convert:hover {
+  background: #bfdbfe;
+}
+
+.mr-btn-view {
+  background: #f3f4f6;
+  color: var(--mr-ink);
+  border: 1px solid var(--mr-border);
+}
+
+.mr-btn-view:hover {
+  background: #e5e7eb;
+}
+
+.mr-empty {
+  text-align: center;
+  padding: 48px;
+  color: var(--mr-text-soft);
+}
+
+/* Form card (Create Request / Convert to PO) */
+
+.mr-form-card {
+  background: var(--mr-card);
+  border-radius: 14px;
+  padding: 28px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  max-width: 720px;
+}
+
+.mr-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.mr-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mr-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.mr-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mr-ink);
+}
+
+.mr-form-group input,
+.mr-form-group select,
+.mr-form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--mr-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--mr-ink);
+}
+
+.mr-form-group textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.mr-form-group input:focus,
+.mr-form-group select:focus,
+.mr-form-group textarea:focus {
+  outline: none;
+  border-color: var(--mr-accent);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.mr-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.mr-submit-btn {
+  padding: 11px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--mr-navy);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mr-submit-btn:hover {
+  background: var(--mr-navy-2);
+}
+
+.mr-submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.mr-cancel-btn {
+  padding: 11px 24px;
+  border: 1px solid var(--mr-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--mr-ink);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mr-cancel-btn:hover {
+  background: #f9fafb;
+}
+
+.mr-note {
+  font-size: 13px;
+  color: var(--mr-text-soft);
+  background: #f9fafb;
+  border: 1px solid var(--mr-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .mr-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .mr-page {
+    padding: 18px 16px;
+  }
+
+  .mr-form-card {
+    padding: 20px;
+  }
+
+  .mr-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .mr-submit-btn,
+  .mr-cancel-btn {
+    width: 100%;
+  }
+
+  .mr-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mr-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mr-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mr-table {
+    min-width: 760px;
+  }
+}

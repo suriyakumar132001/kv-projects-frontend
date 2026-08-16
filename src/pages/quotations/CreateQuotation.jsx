@@ -29,6 +29,8 @@ import { Add, Delete } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 let rowId = 0;
 const newRow = () => ({
   rowId: rowId++,
@@ -39,6 +41,9 @@ const newRow = () => ({
 
 const CreateQuotation = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   const [clients, setClients] = useState([]);
   const [error, setError] = useState("");
@@ -137,7 +142,7 @@ const CreateQuotation = () => {
       setSuccess("Quotation created successfully");
 
       setTimeout(() => {
-        navigate("/owner/quotations");
+        navigate(`/${role}/quotations`);
       }, 1000);
     } catch (err) {
       console.log(err);
@@ -370,7 +375,7 @@ const CreateQuotation = () => {
             <Button
               sx={{ ml: 2 }}
               variant="outlined"
-              onClick={() => navigate("/owner/quotations")}
+              onClick={() => navigate(`/${role}/quotations`)}
             >
               Cancel
             </Button>

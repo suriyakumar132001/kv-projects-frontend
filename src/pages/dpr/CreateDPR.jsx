@@ -8,7 +8,14 @@ import siteService from "../../services/siteService";
 
 import "./DPR.css";
 
-const LABOUR_FIELDS = ["mason", "helper", "carpenter", "electrician", "plumber", "painter"];
+const LABOUR_FIELDS = [
+  "mason",
+  "helper",
+  "carpenter",
+  "electrician",
+  "plumber",
+  "painter",
+];
 const MATERIAL_FIELDS = ["cement", "steel", "sand", "bricks", "jelly"];
 
 const CreateDPR = () => {
@@ -134,7 +141,12 @@ const CreateDPR = () => {
           <div className="dpr-form-grid">
             <div className="dpr-form-group">
               <label>Site</label>
-              <select name="site" value={formData.site} onChange={handleChange} required>
+              <select
+                name="site"
+                value={formData.site}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Select Site</option>
                 {sites.map((s) => (
                   <option key={s._id} value={s._id}>
@@ -146,7 +158,11 @@ const CreateDPR = () => {
 
             <div className="dpr-form-group">
               <label>Weather</label>
-              <select name="weather" value={formData.weather} onChange={handleChange}>
+              <select
+                name="weather"
+                value={formData.weather}
+                onChange={handleChange}
+              >
                 <option value="Sunny">Sunny</option>
                 <option value="Cloudy">Cloudy</option>
                 <option value="Rainy">Rainy</option>
@@ -163,6 +179,14 @@ const CreateDPR = () => {
                 value={formData.progress}
                 onChange={handleChange}
               />
+              <div className="dpr-progress-track">
+                <div
+                  className="dpr-progress-fill"
+                  style={{
+                    width: `${Math.min(100, Math.max(0, Number(formData.progress) || 0))}%`,
+                  }}
+                />
+              </div>
             </div>
           </div>
 
@@ -241,7 +265,12 @@ const CreateDPR = () => {
 
             <div className="dpr-form-group full-width">
               <label>Site Photos (up to 10)</label>
-              <input type="file" multiple accept="image/*" onChange={handleImageChange} />
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+              />
 
               {previews.length > 0 && (
                 <div className="dpr-image-preview-row">
@@ -262,7 +291,11 @@ const CreateDPR = () => {
               Cancel
             </button>
 
-            <button type="submit" className="dpr-submit-btn" disabled={submitting}>
+            <button
+              type="submit"
+              className="dpr-submit-btn"
+              disabled={submitting}
+            >
               {submitting ? "Submitting..." : "Submit Report"}
             </button>
           </div>

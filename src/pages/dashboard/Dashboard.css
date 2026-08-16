@@ -611,3 +611,172 @@
     font-size: 10px;
   }
 }
+
+/* ===============================================
+   Company Financial Overview Section
+   =============================================== */
+
+.finance-overview-section {
+  margin-top: 24px;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 5px 15px rgba(13, 21, 34, 0.05);
+}
+
+.finance-overview-section h2 {
+  margin: 0 0 24px;
+  color: #1b2432;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.finance-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.finance-item {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8f9fb;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.finance-item:hover {
+  background: #f1f3f7;
+  border-color: #d1d8e0;
+}
+
+.finance-item label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.finance-item .stat-value {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1b2432;
+}
+
+.finance-item.received {
+  border-left: 4px solid #3ccb6e;
+}
+
+.finance-item.received .stat-value {
+  color: #2e7d4f;
+}
+
+.finance-item.outstanding {
+  border-left: 4px solid #ffa94d;
+}
+
+.finance-item.outstanding .stat-value {
+  color: #d9480f;
+}
+
+.finance-item.expense {
+  border-left: 4px solid #ff6b6b;
+}
+
+.finance-item.expense .stat-value {
+  color: #c92a2a;
+}
+
+.finance-item.profit {
+  border-left: 4px solid #3ccb6e;
+}
+
+.finance-item.profit .stat-value {
+  color: #2e7d4f;
+}
+
+.finance-item.loss {
+  border-left: 4px solid #ff6b6b;
+}
+
+.finance-item.loss .stat-value {
+  color: #c92a2a;
+}
+
+.finance-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.finance-alert-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.finance-alert-item.alert-overdue {
+  background: #ffe8cc;
+  color: #d9480f;
+}
+
+.finance-alert-item.alert-over-budget {
+  background: #ffe0e0;
+  color: #c92a2a;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .finance-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .finance-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .finance-overview-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .finance-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .finance-item {
+    padding: 12px;
+  }
+
+  .finance-item label {
+    font-size: 11px;
+  }
+
+  .finance-item .stat-value {
+    font-size: 18px;
+  }
+
+  .finance-overview-section {
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .finance-overview-section h2 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+}

@@ -1,10 +1,4 @@
-import {
-  FaEye,
-  FaEdit,
-  FaTrash,
-  FaCheck,
-  FaTimes,
-} from "react-icons/fa";
+import { FaEye, FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
 const LeaveTable = ({
   leaves,
@@ -30,7 +24,6 @@ const LeaveTable = ({
   return (
     <div className="table-wrapper">
       <table className="leave-table">
-
         <thead>
           <tr>
             <th>Employee ID</th>
@@ -46,13 +39,9 @@ const LeaveTable = ({
         </thead>
 
         <tbody>
-
           {leaves.length > 0 ? (
-
             leaves.map((leave) => (
-
               <tr key={leave._id}>
-
                 <td>{leave.employee?.employeeId}</td>
 
                 <td>{leave.employee?.name}</td>
@@ -61,13 +50,9 @@ const LeaveTable = ({
 
                 <td>{leave.leaveType}</td>
 
-                <td>
-                  {new Date(leave.fromDate).toLocaleDateString()}
-                </td>
+                <td>{new Date(leave.fromDate).toLocaleDateString()}</td>
 
-                <td>
-                  {new Date(leave.toDate).toLocaleDateString()}
-                </td>
+                <td>{new Date(leave.toDate).toLocaleDateString()}</td>
 
                 <td>{leave.totalDays}</td>
 
@@ -78,20 +63,12 @@ const LeaveTable = ({
                 </td>
 
                 <td>
-
                   <div className="action-buttons">
-
-                    <button
-                      className="view-btn"
-                      onClick={() => onView(leave)}
-                    >
+                    <button className="view-btn" onClick={() => onView(leave)}>
                       <FaEye />
                     </button>
 
-                    <button
-                      className="edit-btn"
-                      onClick={() => onEdit(leave)}
-                    >
+                    <button className="edit-btn" onClick={() => onEdit(leave)}>
                       <FaEdit />
                     </button>
 
@@ -119,17 +96,11 @@ const LeaveTable = ({
                         </button>
                       </>
                     )}
-
                   </div>
-
                 </td>
-
               </tr>
-
             ))
-
           ) : (
-
             <tr>
               <td
                 colSpan="9"
@@ -141,11 +112,8 @@ const LeaveTable = ({
                 No Leave Records Found
               </td>
             </tr>
-
           )}
-
         </tbody>
-
       </table>
     </div>
   );

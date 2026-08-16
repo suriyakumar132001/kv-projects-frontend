@@ -11,6 +11,7 @@ import "./Users.css";
 
 const ROLE_OPTIONS = [
   { value: "admin", label: "Admin", ownerOnly: true },
+  { value: "accountant", label: "Accountant" },
   { value: "hr", label: "HR" },
   { value: "siteengineer", label: "Site Engineer" },
 ];

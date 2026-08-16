@@ -11,6 +11,7 @@ import "./Users.css";
 const roleLabels = {
   owner: "Owner",
   admin: "Admin",
+  accountant: "Accountant",
   hr: "HR",
   siteengineer: "Site Engineer",
 };

@@ -1,547 +1,268 @@
-// ===============================================
-// KV Projects ERP
-// Create / Edit Purchase Order
-// ===============================================
-
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, FileText, Plus, Trash2, Save } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
 import purchaseOrderService from "../../services/purchaseOrderService";
+import siteService from "../../services/siteService";
+// ASSUMPTION: same shape as siteService — a getVendors()
+// method returning { vendors: [...] }. Adjust if different.
 import vendorService from "../../services/vendorService";
-import materialService from "../../services/materialService";
 
-const emptyItem = () => ({
-  material: "",
-  quantity: "",
-  unitPrice: "",
-});
+import "./PurchaseOrder.css";
+
+const UNIT_OPTIONS = ["Bag", "Kg", "Ton", "Nos", "Feet", "Meter", "Litre", "CFT"];
 
 const CreatePurchaseOrder = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const isEditMode = Boolean(id);
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
-  const [loading, setLoading] = useState(isEditMode);
-  const [saving, setSaving] = useState(false);
-
+  const [sites, setSites] = useState([]);
   const [vendors, setVendors] = useState([]);
-  const [materials, setMaterials] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
-    vendorId: "",
-    orderDate: "",
-    expectedDeliveryDate: "",
-    status: "Pending",
-    notes: "",
+    poNumber: "",
+    site: "",
+    vendor: "",
+    materialName: "",
+    quantity: "",
+    unit: "Bag",
+    unitPrice: "",
+    expectedDelivery: "",
   });
 
-  const [items, setItems] = useState([emptyItem()]);
-
-  // ============================================
-  // Load Vendors + Materials for dropdowns
-  // ============================================
-
   useEffect(() => {
-    const loadDropdownData = async () => {
-      try {
-        const [vendorResponse, materialResponse] = await Promise.all([
-          vendorService.getVendors(),
-          materialService.getMaterials(),
-        ]);
-
-        const vendorData =
-          vendorResponse?.vendors || vendorResponse?.data || [];
-
-        const materialData =
-          materialResponse?.materials || materialResponse?.data || [];
-
-        setVendors(Array.isArray(vendorData) ? vendorData : []);
-        setMaterials(Array.isArray(materialData) ? materialData : []);
-      } catch (error) {
-        console.error("Failed to load vendors/materials:", error);
-
-        toast.error("Failed to load vendors or materials list");
-      }
-    };
-
-    loadDropdownData();
+    loadOptions();
   }, []);
 
-  // ============================================
-  // Load Purchase Order (edit mode)
-  // ============================================
-
-  useEffect(() => {
-    const loadOrder = async () => {
-      try {
-        setLoading(true);
-
-        const response = await purchaseOrderService.getPurchaseOrderById(id);
-
-        const order =
-          response?.purchaseOrder ||
-          response?.data?.purchaseOrder ||
-          response?.data ||
-          response;
-
-        setFormData({
-          vendorId: order?.vendor?._id || order?.vendorId || "",
-
-          orderDate: order?.orderDate
-            ? String(order.orderDate).slice(0, 10)
-            : "",
-
-          expectedDeliveryDate: order?.expectedDeliveryDate
-            ? String(order.expectedDeliveryDate).slice(0, 10)
-            : "",
-
-          status: order?.status || "Pending",
-
-          notes: order?.notes || "",
-        });
-
-        const loadedItems =
-          Array.isArray(order?.items) && order.items.length
-            ? order.items.map((item) => ({
-                material:
-                  item?.material?._id ||
-                  item?.materialId ||
-                  item?.materialName ||
-                  "",
-                quantity: item?.quantity ?? "",
-                unitPrice: item?.unitPrice ?? "",
-              }))
-            : [emptyItem()];
-
-        setItems(loadedItems);
-      } catch (error) {
-        console.error("Failed to load purchase order:", error);
-
-        toast.error(
-          error?.response?.data?.message || "Failed to load purchase order",
-        );
-
-        navigate("..");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isEditMode) {
-      loadOrder();
+  const loadOptions = async () => {
+    try {
+      const [siteRes, vendorRes] = await Promise.all([
+        siteService.getSites(),
+        vendorService.getVendors().catch(() => ({ vendors: [] })),
+      ]);
+      setSites(siteRes.sites || []);
+      setVendors(vendorRes.vendors || []);
+    } catch (error) {
+      console.error(error);
     }
-  }, [id, isEditMode, navigate]);
-
-  // ============================================
-  // Handlers
-  // ============================================
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleItemChange = (index, field, value) => {
-    setItems((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
-    );
-  };
-
-  const addItemRow = () => {
-    setItems((prev) => [...prev, emptyItem()]);
-  };
-
-  const removeItemRow = (index) => {
-    setItems((prev) =>
-      prev.length === 1 ? prev : prev.filter((_, i) => i !== index),
-    );
-  };
-
-  const calculateTotal = () =>
-    items.reduce(
-      (total, item) =>
-        total + Number(item.quantity || 0) * Number(item.unitPrice || 0),
-      0,
-    );
-
-  const formatAmount = (amount) => {
-    const value = Number(amount || 0);
-
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 2,
-    }).format(value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.vendorId) {
+    if (!formData.poNumber) {
+      toast.error("Please enter a PO number");
+      return;
+    }
+
+    if (!formData.site) {
+      toast.error("Please select a site");
+      return;
+    }
+
+    if (!formData.vendor) {
       toast.error("Please select a vendor");
       return;
     }
 
-    const validItems = items.filter(
-      (item) => item.material && Number(item.quantity) > 0,
-    );
+    if (!formData.materialName) {
+      toast.error("Please enter the material name");
+      return;
+    }
 
-    if (validItems.length === 0) {
-      toast.error("Please add at least one valid item");
+    if (!formData.quantity || Number(formData.quantity) <= 0) {
+      toast.error("Please enter a valid quantity");
+      return;
+    }
+
+    if (!formData.unitPrice || Number(formData.unitPrice) <= 0) {
+      toast.error("Please enter a valid unit price");
       return;
     }
 
     try {
-      setSaving(true);
+      setSubmitting(true);
 
-      const payload = {
-        vendorId: formData.vendorId,
-        orderDate: formData.orderDate || undefined,
-        expectedDeliveryDate: formData.expectedDeliveryDate || undefined,
-        status: formData.status,
-        notes: formData.notes.trim(),
-        items: validItems.map((item) => ({
-          material: item.material,
-          quantity: Number(item.quantity),
-          unitPrice: Number(item.unitPrice || 0),
-        })),
-        totalAmount: calculateTotal(),
-      };
+      await purchaseOrderService.createPurchaseOrder({
+        ...formData,
+        quantity: Number(formData.quantity),
+        unitPrice: Number(formData.unitPrice),
+      });
 
-      if (isEditMode) {
-        await purchaseOrderService.updatePurchaseOrder(id, payload);
-        toast.success("Purchase order updated successfully");
-      } else {
-        await purchaseOrderService.createPurchaseOrder(payload);
-        toast.success("Purchase order created successfully");
-      }
+      toast.success("Purchase Order created");
 
-      navigate("..");
+      setTimeout(() => {
+        navigate(`/${role}/purchase-orders`);
+      }, 800);
     } catch (error) {
-      console.error("Save purchase order error:", error);
-
-      toast.error(
-        error?.response?.data?.message || "Failed to save purchase order",
-      );
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to create PO");
     } finally {
-      setSaving(false);
+      setSubmitting(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <p className="text-gray-500">Loading purchase order...</p>
-      </div>
-    );
-  }
+  const estimatedTotal =
+    formData.quantity && formData.unitPrice
+      ? (Number(formData.quantity) * Number(formData.unitPrice)).toLocaleString(
+          "en-IN",
+        )
+      : null;
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate("..")}
-            className="p-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50"
-          >
-            <ArrowLeft size={20} />
-          </button>
-
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {isEditMode ? "Edit Purchase Order" : "Create Purchase Order"}
-            </h1>
-
-            <p className="text-sm text-gray-500 mt-1">
-              {isEditMode
-                ? "Update purchase order details."
-                : "Raise a new purchase order to a vendor."}
-            </p>
-          </div>
+    <div className="pc-page">
+      <div className="pc-header">
+        <div>
+          <h2>New Purchase Order</h2>
+          <p className="pc-header-subtitle">
+            Raise a direct purchase order — not tied to a Material Request
+          </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Order Details */}
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div className="px-6 py-5 border-b border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                <FileText size={21} className="text-blue-600" />
-              </div>
-
-              <div>
-                <h2 className="font-semibold text-gray-900">
-                  Order Information
-                </h2>
-
-                <p className="text-sm text-gray-500">
-                  Vendor and order details.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Vendor */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vendor *
-              </label>
-
-              <select
-                name="vendorId"
-                value={formData.vendorId}
+      <div className="pc-form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="pc-form-grid">
+            <div className="pc-form-group">
+              <label>PO Number *</label>
+              <input
+                type="text"
+                name="poNumber"
+                value={formData.poNumber}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select vendor</option>
+                placeholder="e.g. PO-2026-014"
+                required
+              />
+            </div>
 
-                {vendors.map((vendor) => (
-                  <option
-                    key={vendor._id || vendor.id}
-                    value={vendor._id || vendor.id}
-                  >
-                    {vendor.name || vendor.vendorName}
+            <div className="pc-form-group">
+              <label>Site *</label>
+              <select
+                name="site"
+                value={formData.site}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Site</option>
+                {sites.map((s) => (
+                  <option key={s._id} value={s._id}>
+                    {s.siteName}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Status */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
-
+            <div className="pc-form-group">
+              <label>Vendor *</label>
               <select
-                name="status"
-                value={formData.status}
+                name="vendor"
+                value={formData.vendor}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500"
+                required
               >
-                <option value="Pending">Pending</option>
-
-                <option value="Approved">Approved</option>
-
-                <option value="Received">Received</option>
-
-                <option value="Cancelled">Cancelled</option>
+                <option value="">Select Vendor</option>
+                {vendors.map((v) => (
+                  <option key={v._id} value={v._id}>
+                    {v.vendorName}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* Order Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Order Date
-              </label>
-
+            <div className="pc-form-group">
+              <label>Expected Delivery</label>
               <input
                 type="date"
-                name="orderDate"
-                value={formData.orderDate}
+                name="expectedDelivery"
+                value={formData.expectedDelivery}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            {/* Expected Delivery Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Expected Delivery Date
-              </label>
-
+            <div className="pc-form-group full-width">
+              <label>Material Name *</label>
               <input
-                type="date"
-                name="expectedDeliveryDate"
-                value={formData.expectedDeliveryDate}
+                type="text"
+                name="materialName"
+                value={formData.materialName}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g. OPC 53 Grade Cement"
+                required
               />
             </div>
 
-            {/* Notes */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Notes
-              </label>
-
-              <textarea
-                name="notes"
-                value={formData.notes}
+            <div className="pc-form-group">
+              <label>Quantity *</label>
+              <input
+                type="number"
+                name="quantity"
+                min="1"
+                value={formData.quantity}
                 onChange={handleChange}
-                rows="3"
-                placeholder="Enter any additional notes..."
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none resize-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
+
+            <div className="pc-form-group">
+              <label>Unit</label>
+              <select name="unit" value={formData.unit} onChange={handleChange}>
+                {UNIT_OPTIONS.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="pc-form-group">
+              <label>Unit Price *</label>
+              <input
+                type="number"
+                name="unitPrice"
+                min="0"
+                step="0.01"
+                value={formData.unitPrice}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {estimatedTotal && (
+              <div className="pc-form-group full-width">
+                <label>Estimated Total</label>
+                <div style={{ fontSize: 20, fontWeight: 700 }}>
+                  ₹{estimatedTotal}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Items */}
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
-            <div>
-              <h2 className="font-semibold text-gray-900">Order Items</h2>
-
-              <p className="text-sm text-gray-500">
-                Add the materials being ordered.
-              </p>
-            </div>
-
+          <div className="pc-form-actions">
             <button
               type="button"
-              onClick={addItemRow}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 text-sm"
+              className="pc-cancel-btn"
+              onClick={() => navigate(`/${role}/purchase-orders`)}
             >
-              <Plus size={16} />
-              Add Item
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="pc-submit-btn"
+              disabled={submitting}
+            >
+              {submitting ? "Creating..." : "Create Purchase Order"}
             </button>
           </div>
-
-          <div className="p-6 space-y-4">
-            {items.map((item, index) => {
-              const lineTotal =
-                Number(item.quantity || 0) * Number(item.unitPrice || 0);
-
-              return (
-                <div
-                  key={index}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end border-b border-gray-100 pb-4 last:border-b-0 last:pb-0"
-                >
-                  <div className="md:col-span-5">
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Material
-                    </label>
-
-                    <select
-                      value={item.material}
-                      onChange={(e) =>
-                        handleItemChange(index, "material", e.target.value)
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    >
-                      <option value="">Select material</option>
-
-                      {materials.map((material) => (
-                        <option
-                          key={material._id || material.id}
-                          value={material._id || material.id}
-                        >
-                          {material.name || material.materialName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Quantity
-                    </label>
-
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleItemChange(index, "quantity", e.target.value)
-                      }
-                      placeholder="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Unit Price
-                    </label>
-
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={item.unitPrice}
-                      onChange={(e) =>
-                        handleItemChange(index, "unitPrice", e.target.value)
-                      }
-                      placeholder="0.00"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Line Total
-                    </label>
-
-                    <div className="px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm font-medium text-gray-900">
-                      {formatAmount(lineTotal)}
-                    </div>
-                  </div>
-
-                  <div className="md:col-span-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => removeItemRow(index)}
-                      disabled={items.length === 1}
-                      className="p-2 rounded-lg text-red-500 hover:bg-red-50 disabled:opacity-30 disabled:cursor-not-allowed"
-                      title="Remove item"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Total */}
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
-            <div className="text-right">
-              <p className="text-sm text-gray-500">Order Total</p>
-
-              <p className="text-xl font-bold text-gray-900">
-                {formatAmount(calculateTotal())}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={() => navigate("..")}
-            disabled={saving}
-            className="px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
-          >
-            <Save size={18} />
-
-            {saving
-              ? "Saving..."
-              : isEditMode
-                ? "Update Purchase Order"
-                : "Create Purchase Order"}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
