@@ -151,7 +151,6 @@ import VendorDetails from "./pages/vendors/VendorDetails";
 
 import PurchaseOrderList from "./pages/purchaseOrders/PurchaseOrderList";
 import CreatePurchaseOrder from "./pages/purchaseOrders/CreatePurchaseOrder";
-import PurchaseOrderDetails from "./pages/purchaseOrders/PurchaseOrderDetails";
 
 // ===============================================
 // INVENTORY
@@ -454,11 +453,6 @@ function App() {
               />
 
               <Route
-                path="purchase-orders/view/:id"
-                element={<PurchaseOrderDetails />}
-              />
-
-              <Route
                 path="purchase-orders/:id/receive"
                 element={<CreateGRN />}
               />
@@ -737,11 +731,6 @@ function App() {
               />
 
               <Route
-                path="purchase-orders/view/:id"
-                element={<PurchaseOrderDetails />}
-              />
-
-              <Route
                 path="purchase-orders/:id/receive"
                 element={<CreateGRN />}
               />
@@ -915,6 +904,8 @@ function App() {
 
               <Route path="leave/view/:id" element={<LeaveDetails />} />
 
+              <Route path="leave/edit/:id" element={<EditLeave />} />
+
               {/* Sites */}
 
               <Route path="sites" element={<SiteList />} />
@@ -948,11 +939,6 @@ function App() {
               {/* Purchase Orders (view + receive only) */}
 
               <Route path="purchase-orders" element={<PurchaseOrderList />} />
-
-              <Route
-                path="purchase-orders/view/:id"
-                element={<PurchaseOrderDetails />}
-              />
 
               <Route
                 path="purchase-orders/:id/receive"
