@@ -1,21 +1,19 @@
-// =========================================
+// ===============================================
 // KV Projects ERP
 // FaceCapture — reusable webcam capture component
-// =========================================
+// ===============================================
 //
 // Used in two places:
-//   - Add/Edit Employee → enrollment (captures the reference descriptor)
-//   - Mark Attendance   → check-in (captures the descriptor to verify)
+//   - Add/Edit Employee → enrollment
+//   - Mark Attendance   → check-in verification
 //
-// This component only ever hands the *caller* a 128-number
-// descriptor via onCapture(descriptor) — it never decides
-// match/no-match itself. That decision happens server-side
-// (see verifyFace() in attendanceController.js), same trust
-// pattern as GPS: browser reports raw data, backend decides.
-// =========================================
+// This component captures a face descriptor and
+// sends it to the parent through onCapture().
+// ===============================================
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { loadFaceApiModels, getFaceDescriptor } from "../utils/faceApiLoader";
+
 import "./FaceCapture.css";
 
 const STATUS = {
@@ -35,98 +33,199 @@ const FaceCapture = ({
 }) => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+
   const [status, setStatus] = useState(STATUS.LOADING_MODELS);
   const [message, setMessage] = useState("");
 
+  // ===============================================
+  // STOP CAMERA
+  // ===============================================
+
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current.getTracks().forEach((track) => {
+        track.stop();
+      });
+
       streamRef.current = null;
     }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
   }, []);
+
+  // ===============================================
+  // START CAMERA
+  // ===============================================
 
   const startCamera = useCallback(async () => {
     setStatus(STATUS.STARTING_CAMERA);
     setMessage("");
+
     try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error("Camera API is not supported.");
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user", width: 480, height: 360 },
+        video: {
+          facingMode: "user",
+          width: {
+            ideal: 480,
+          },
+          height: {
+            ideal: 360,
+          },
+        },
         audio: false,
       });
+
       streamRef.current = stream;
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+
+        try {
+          await videoRef.current.play();
+        } catch {
+          // Browser may automatically handle playback.
+        }
       }
+
       setStatus(STATUS.READY);
-    } catch (err) {
+    } catch (error) {
+      console.error("Camera error:", error);
+
       setStatus(STATUS.CAMERA_ERROR);
+
       setMessage(
         "Could not access the camera. Please allow camera permission and try again.",
       );
     }
   }, []);
 
+  // ===============================================
+  // LOAD FACE API MODELS + START CAMERA
+  // ===============================================
+
   useEffect(() => {
     let cancelled = false;
 
-    setStatus(STATUS.LOADING_MODELS);
-    loadFaceApiModels()
-      .then(() => {
-        if (!cancelled) startCamera();
-      })
-      .catch(() => {
+    const initialize = async () => {
+      setStatus(STATUS.LOADING_MODELS);
+      setMessage("");
+
+      try {
+        await loadFaceApiModels();
+
+        if (!cancelled) {
+          await startCamera();
+        }
+      } catch (error) {
+        console.error("Face API model error:", error);
+
         if (!cancelled) {
           setStatus(STATUS.MODEL_ERROR);
+
           setMessage(
             "Could not load face recognition models. Check your connection and try again.",
           );
         }
-      });
+      }
+    };
+
+    initialize();
 
     return () => {
       cancelled = true;
       stopCamera();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [startCamera, stopCamera]);
+
+  // ===============================================
+  // CAPTURE FACE
+  // ===============================================
 
   const handleCapture = async () => {
-    if (!videoRef.current) return;
+    if (!videoRef.current) {
+      return;
+    }
 
     setStatus(STATUS.CAPTURING);
     setMessage("");
 
-    const { descriptor, error } = await getFaceDescriptor(videoRef.current);
+    try {
+      const { descriptor, error } = await getFaceDescriptor(videoRef.current);
 
-    if (error === "no-face") {
+      if (error === "no-face") {
+        setStatus(STATUS.READY);
+
+        setMessage(
+          "No face detected. Make sure your face is clearly visible and well lit.",
+        );
+
+        return;
+      }
+
+      if (error === "multiple-faces") {
+        setStatus(STATUS.READY);
+
+        setMessage(
+          "Multiple faces detected. Make sure only one person is in frame.",
+        );
+
+        return;
+      }
+
+      if (error || !descriptor) {
+        setStatus(STATUS.READY);
+
+        setMessage(
+          "Unable to capture your face. Please position your face clearly and try again.",
+        );
+
+        return;
+      }
+
       setStatus(STATUS.READY);
-      setMessage(
-        "No face detected. Make sure your face is clearly visible and well lit.",
-      );
-      return;
-    }
 
-    if (error === "multiple-faces") {
+      if (typeof onCapture === "function") {
+        onCapture(descriptor);
+      }
+    } catch (error) {
+      console.error("Face capture error:", error);
+
       setStatus(STATUS.READY);
-      setMessage(
-        "Multiple faces detected. Make sure only one person is in frame.",
-      );
-      return;
-    }
 
-    setStatus(STATUS.READY);
-    onCapture(descriptor);
+      setMessage("Face capture failed. Please try again.");
+    }
   };
+
+  // ===============================================
+  // CANCEL
+  // ===============================================
 
   const handleCancel = () => {
     stopCamera();
-    if (onCancel) onCancel();
+
+    if (typeof onCancel === "function") {
+      onCancel();
+    }
   };
+
+  // ===============================================
+  // BUSY STATE
+  // ===============================================
 
   const isBusy =
     status === STATUS.LOADING_MODELS ||
     status === STATUS.STARTING_CAMERA ||
     status === STATUS.CAPTURING;
+
+  // ===============================================
+  // UI
+  // ===============================================
 
   return (
     <div className="face-capture">
@@ -144,8 +243,19 @@ const FaceCapture = ({
             Loading face recognition models…
           </div>
         )}
+
         {status === STATUS.STARTING_CAMERA && (
           <div className="face-capture-overlay">Starting camera…</div>
+        )}
+
+        {status === STATUS.CAMERA_ERROR && (
+          <div className="face-capture-overlay">Camera access required</div>
+        )}
+
+        {status === STATUS.MODEL_ERROR && (
+          <div className="face-capture-overlay">
+            Face recognition unavailable
+          </div>
         )}
       </div>
 
@@ -156,7 +266,11 @@ const FaceCapture = ({
       {message && <p className="face-capture-message">{message}</p>}
 
       <div className="face-capture-actions">
-        <button type="button" onClick={handleCapture} disabled={isBusy}>
+        <button
+          type="button"
+          onClick={handleCapture}
+          disabled={isBusy || status !== STATUS.READY}
+        >
           {status === STATUS.CAPTURING ? "Capturing…" : captureLabel}
         </button>
 
