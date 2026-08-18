@@ -16,7 +16,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { loadFaceApiModels, getFaceDescriptor } from "../utils/faceApiLoader";
-import "./FaceCapture.css"
+import "./FaceCapture.css";
 
 const STATUS = {
   LOADING_MODELS: "loading-models",
