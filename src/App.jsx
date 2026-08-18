@@ -3,7 +3,7 @@
 // App.jsx
 // ===============================================
 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -111,10 +111,6 @@ import MaterialDetails from "./pages/materials/MaterialDetails";
 // ===============================================
 // MATERIAL REQUESTS
 // ===============================================
-// NOTE: adjust this folder path if your project places
-// these files somewhere other than ./pages/materialRequests/
-// (they were provided alongside MaterialRequest.css, so this
-// assumes all three live in the same folder as that stylesheet).
 
 import MaterialRequestList from "./pages/materialRequests/MaterialRequestList";
 import CreateMaterialRequest from "./pages/materialRequests/CreateMaterialRequest";
@@ -170,6 +166,7 @@ import CreateMaterialIssue from "./pages/materialIssues/CreateMaterialIssue";
 // ===============================================
 
 import AnalyticsDashboard from "./pages/analytics/AnalyticsDashboard";
+import AdvancedDashboard from "./pages/analytics/AdvancedDashboard";
 
 // ===============================================
 // USERS
@@ -239,6 +236,29 @@ import TaskDetails from "./pages/tasks/TaskDetails";
 import Settings from "./pages/settings/Settings";
 
 // ===============================================
+// CLIENT PORTAL
+// ===============================================
+//
+// Fully separate auth domain from everything above.
+// ClientAuthProvider is scoped locally to this route
+// subtree (not wrapped around the whole app), so it
+// never interferes with the staff AuthProvider that
+// wraps <App /> in main.jsx.
+// ===============================================
+
+import { ClientAuthProvider } from "./context/ClientAuthContext";
+import ClientProtectedRoute from "./routes/ClientProtectedRoute";
+import PortalLayout from "./layouts/PortalLayout";
+
+import PortalLogin from "./pages/portal/PortalLogin";
+import PortalForgotPassword from "./pages/portal/PortalForgotPassword";
+import PortalResetPassword from "./pages/portal/PortalResetPassword";
+import PortalDashboard from "./pages/portal/PortalDashboard";
+import PortalProjectDetails from "./pages/portal/PortalProjectDetails";
+import PortalInvoices from "./pages/portal/PortalInvoices";
+import PortalPayments from "./pages/portal/PortalPayments";
+
+// ===============================================
 // APP
 // ===============================================
 
@@ -257,7 +277,41 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* =============================================
-            PROTECTED APPLICATION
+            CLIENT PORTAL
+            Wrapped in its own ClientAuthProvider, kept
+            entirely separate from the staff app below.
+        ============================================= */}
+
+        <Route
+          path="/portal/*"
+          element={
+            <ClientAuthProvider>
+              <Outlet />
+            </ClientAuthProvider>
+          }
+        >
+          <Route path="login" element={<PortalLogin />} />
+          <Route path="forgot-password" element={<PortalForgotPassword />} />
+          <Route
+            path="reset-password/:token"
+            element={<PortalResetPassword />}
+          />
+
+          <Route element={<ClientProtectedRoute />}>
+            <Route element={<PortalLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<PortalDashboard />} />
+              <Route path="projects/:id" element={<PortalProjectDetails />} />
+              <Route path="invoices" element={<PortalInvoices />} />
+              <Route path="payments" element={<PortalPayments />} />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<Navigate to="login" replace />} />
+        </Route>
+
+        {/* =============================================
+            PROTECTED APPLICATION (STAFF)
         ============================================= */}
 
         <Route element={<ProtectedRoute />}>
@@ -465,6 +519,11 @@ function App() {
 
               <Route path="analytics" element={<AnalyticsDashboard />} />
 
+              <Route
+                path="analytics/advanced"
+                element={<AdvancedDashboard />}
+              />
+
               {/* Users */}
 
               <Route path="users" element={<UserList />} />
@@ -545,6 +604,11 @@ function App() {
               {/* Analytics */}
 
               <Route path="analytics" element={<AnalyticsDashboard />} />
+
+              <Route
+                path="analytics/advanced"
+                element={<AdvancedDashboard />}
+              />
 
               {/* Projects — profitability only (accountant has no
                   project list/detail routes above, so this is the
@@ -687,6 +751,11 @@ function App() {
               {/* Analytics */}
 
               <Route path="analytics" element={<AnalyticsDashboard />} />
+
+              <Route
+                path="analytics/advanced"
+                element={<AdvancedDashboard />}
+              />
 
               {/* Vendors */}
 
