@@ -36,7 +36,9 @@ const MarkAttendance = () => {
   // GPS Verification
   // =======================================
   //
-  // Captured silently in the background as soon as the page loads.
+  // Captured only when the Site Engineer explicitly taps "Turn On
+  // Location" below — not automatically on page load. Once captured
+  // it's held here and sent along with Check In, same as before.
   // Purely informational to the user — never blocks Check In. The
   // backend treats a missing/denied location the same way: it just
   // skips verification (locationVerified: null) instead of failing.
@@ -46,7 +48,7 @@ const MarkAttendance = () => {
     status: "idle", // idle | locating | done | denied | unsupported
   });
 
-  useEffect(() => {
+  const handleTurnOnLocation = () => {
     if (!navigator.geolocation) {
       setLocation((prev) => ({ ...prev, status: "unsupported" }));
       return;
@@ -67,7 +69,7 @@ const MarkAttendance = () => {
       },
       { enableHighAccuracy: true, timeout: 10000 },
     );
-  }, []);
+  };
 
   // =======================================
   // Face Verification
@@ -273,15 +275,59 @@ const MarkAttendance = () => {
           <div className="form-group verification-section">
             <label>Verification</label>
 
-            <p className="location-status">
-              {location.status === "locating" && "Detecting your location…"}
-              {location.status === "done" &&
-                "Location captured — will be checked against the site on submit."}
-              {location.status === "denied" &&
-                "Location permission denied — continuing without GPS verification."}
-              {location.status === "unsupported" &&
-                "Location not supported on this device — continuing without GPS verification."}
-            </p>
+            <div className="location-capture">
+              {location.status === "idle" && (
+                <button
+                  type="button"
+                  className="face-enrollment-btn"
+                  onClick={handleTurnOnLocation}
+                >
+                  Turn On Location
+                </button>
+              )}
+
+              {location.status === "locating" && (
+                <p className="location-status">Detecting your location…</p>
+              )}
+
+              {location.status === "done" && (
+                <>
+                  <span className="face-enrollment-badge enrolled">
+                    Location captured
+                  </span>
+                  <button
+                    type="button"
+                    className="face-enrollment-btn"
+                    onClick={handleTurnOnLocation}
+                  >
+                    Update Location
+                  </button>
+                </>
+              )}
+
+              {location.status === "denied" && (
+                <>
+                  <p className="location-status">
+                    Location permission denied — continuing without GPS
+                    verification.
+                  </p>
+                  <button
+                    type="button"
+                    className="face-enrollment-btn"
+                    onClick={handleTurnOnLocation}
+                  >
+                    Try Again
+                  </button>
+                </>
+              )}
+
+              {location.status === "unsupported" && (
+                <p className="location-status">
+                  Location not supported on this device — continuing without GPS
+                  verification.
+                </p>
+              )}
+            </div>
 
             {faceDescriptor ? (
               <div className="face-capture-summary">

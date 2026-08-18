@@ -16,6 +16,7 @@ const AddEmployee = () => {
   const role = user?.role?.toLowerCase();
 
   const [loading, setLoading] = useState(false);
+  const [pendingFaceDescriptor, setPendingFaceDescriptor] = useState(null);
 
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -45,16 +46,21 @@ const AddEmployee = () => {
     try {
       setLoading(true);
 
-      const res = await employeeService.createEmployee(formData);
+      const payload = {
+        ...formData,
+        faceDescriptor: pendingFaceDescriptor,
+      };
+
+      const res = await employeeService.createEmployee(payload);
 
       toast.success(
-        "Employee Created Successfully — you can now enroll their face",
+        pendingFaceDescriptor
+          ? "Employee Created Successfully — face enrolled"
+          : "Employee Created Successfully — you can now enroll their face",
       );
 
-      // Redirect straight into Edit Employee: enrollment needs an
-      // existing employee _id, which we only have now that create
-      // has succeeded. Going to the list would be a dead end for
-      // enrolling right away.
+      // Redirect into Edit Employee either way — lets them verify the
+      // enrollment (or re-enroll/remove it) even if it was captured here.
       navigate(`/${role}/employees/edit/${res.employee._id}`);
     } catch (error) {
       console.error(error);
@@ -73,6 +79,9 @@ const AddEmployee = () => {
       onSubmit={handleSubmit}
       loading={loading}
       submitText="Create Employee"
+      pendingFaceDescriptor={pendingFaceDescriptor}
+      onCapturePendingFace={setPendingFaceDescriptor}
+      onClearPendingFace={() => setPendingFaceDescriptor(null)}
     />
   );
 };

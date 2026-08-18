@@ -11,21 +11,31 @@ const EmployeeForm = ({
   onSubmit,
   loading,
   submitText,
-  // ---- Face enrollment (all optional — see EditEmployee.jsx) ----
-  // employeeId: the employee's _id. Enrollment needs an existing
-  // employee to attach to, so on Add Employee (no id yet) this
-  // section just points the user to Edit Employee instead.
+  // ---- Face enrollment on Edit Employee (existing employee) ----
   employeeId,
   faceEnrolledAt,
   onEnrollFace,
   onRemoveFace,
   faceSaving,
+  // ---- Face capture on Add Employee (before the employee exists) ----
+  // Captured in-memory here and sent along with the create request in
+  // one step (see AddEmployee.jsx), instead of a separate Edit-page
+  // visit afterwards.
+  pendingFaceDescriptor,
+  onCapturePendingFace,
+  onClearPendingFace,
 }) => {
   const [showCapture, setShowCapture] = useState(false);
 
   const handleCapture = async (descriptor) => {
     if (!onEnrollFace) return;
     await onEnrollFace(descriptor);
+    setShowCapture(false);
+  };
+
+  const handlePendingCapture = (descriptor) => {
+    if (!onCapturePendingFace) return;
+    onCapturePendingFace(descriptor);
     setShowCapture(false);
   };
 
@@ -197,10 +207,49 @@ const EmployeeForm = ({
             <label>Face Enrollment</label>
 
             {!employeeId ? (
-              <p className="face-enrollment-hint">
-                Save this employee first — you can enroll their face from the
-                Edit Employee page afterwards.
-              </p>
+              // ---- Add Employee: capture now, saved with the employee
+              // on submit (createEmployee accepts faceDescriptor) ----
+              showCapture ? (
+                <FaceCapture
+                  captureLabel="Capture Face"
+                  helperText="Center the employee's face in the frame and click capture."
+                  onCapture={handlePendingCapture}
+                  onCancel={() => setShowCapture(false)}
+                />
+              ) : pendingFaceDescriptor ? (
+                <div className="face-enrollment-status">
+                  <span className="face-enrollment-badge enrolled">
+                    Face captured — will be saved with this employee
+                  </span>
+                  <button
+                    type="button"
+                    className="face-enrollment-btn"
+                    onClick={() => setShowCapture(true)}
+                  >
+                    Recapture
+                  </button>
+                  <button
+                    type="button"
+                    className="face-enrollment-btn danger"
+                    onClick={onClearPendingFace}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="face-enrollment-status">
+                  <span className="face-enrollment-badge not-enrolled">
+                    Not captured
+                  </span>
+                  <button
+                    type="button"
+                    className="face-enrollment-btn"
+                    onClick={() => setShowCapture(true)}
+                  >
+                    Capture Face
+                  </button>
+                </div>
+              )
             ) : showCapture ? (
               <FaceCapture
                 captureLabel={faceEnrolledAt ? "Re-enroll Face" : "Enroll Face"}
