@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import attendanceService from "../../services/attendanceService";
 import employeeService from "../../services/employeeService";
 import siteService from "../../services/siteService";
+import FaceCapture from "../../components/FaceCapture";
 
 import "./Attendance.css";
 
@@ -15,7 +16,8 @@ const MarkAttendance = () => {
 
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
-  const isSelfCheckIn = role === "admin" || role === "hr" || role === "siteengineer";
+  const isSelfCheckIn =
+    role === "admin" || role === "hr" || role === "siteengineer";
 
   const [employees, setEmployees] = useState([]);
   const [sites, setSites] = useState([]);
@@ -29,6 +31,54 @@ const MarkAttendance = () => {
   });
 
   const [loading, setLoading] = useState(false);
+
+  // =======================================
+  // GPS Verification
+  // =======================================
+  //
+  // Captured silently in the background as soon as the page loads.
+  // Purely informational to the user — never blocks Check In. The
+  // backend treats a missing/denied location the same way: it just
+  // skips verification (locationVerified: null) instead of failing.
+  const [location, setLocation] = useState({
+    latitude: null,
+    longitude: null,
+    status: "idle", // idle | locating | done | denied | unsupported
+  });
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setLocation((prev) => ({ ...prev, status: "unsupported" }));
+      return;
+    }
+
+    setLocation((prev) => ({ ...prev, status: "locating" }));
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          status: "done",
+        });
+      },
+      () => {
+        setLocation((prev) => ({ ...prev, status: "denied" }));
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  }, []);
+
+  // =======================================
+  // Face Verification
+  // =======================================
+  //
+  // Also optional — see FaceCapture/faceApiLoader. If skipped or if
+  // no face is captured, faceDescriptor stays null and the backend
+  // simply skips face verification (faceVerified: null) for this
+  // check-in rather than rejecting it.
+  const [faceDescriptor, setFaceDescriptor] = useState(null);
+  const [faceSkipped, setFaceSkipped] = useState(false);
 
   useEffect(() => {
     if (isSelfCheckIn) {
@@ -103,7 +153,12 @@ const MarkAttendance = () => {
       );
     }
 
-    const payload = { ...formData };
+    const payload = {
+      ...formData,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      faceDescriptor,
+    };
 
     if (isSelfCheckIn && !payload.site && sites.length) {
       payload.site = sites[0]._id;
@@ -212,6 +267,56 @@ const MarkAttendance = () => {
               onChange={handleChange}
               placeholder="Enter remarks"
             />
+          </div>
+
+          {/* Verification */}
+          <div className="form-group verification-section">
+            <label>Verification</label>
+
+            <p className="location-status">
+              {location.status === "locating" && "Detecting your location…"}
+              {location.status === "done" &&
+                "Location captured — will be checked against the site on submit."}
+              {location.status === "denied" &&
+                "Location permission denied — continuing without GPS verification."}
+              {location.status === "unsupported" &&
+                "Location not supported on this device — continuing without GPS verification."}
+            </p>
+
+            {faceDescriptor ? (
+              <div className="face-capture-summary">
+                <span className="face-enrollment-badge enrolled">
+                  Face captured
+                </span>
+                <button
+                  type="button"
+                  className="face-enrollment-btn"
+                  onClick={() => setFaceDescriptor(null)}
+                >
+                  Recapture
+                </button>
+              </div>
+            ) : faceSkipped ? (
+              <div className="face-capture-summary">
+                <span className="face-enrollment-badge not-enrolled">
+                  Face verification skipped
+                </span>
+                <button
+                  type="button"
+                  className="face-enrollment-btn"
+                  onClick={() => setFaceSkipped(false)}
+                >
+                  Capture Now
+                </button>
+              </div>
+            ) : (
+              <FaceCapture
+                captureLabel="Verify Face"
+                helperText="Optional — center your face in the frame and click capture."
+                onCapture={(descriptor) => setFaceDescriptor(descriptor)}
+                onCancel={() => setFaceSkipped(true)}
+              />
+            )}
           </div>
 
           <div className="form-buttons">

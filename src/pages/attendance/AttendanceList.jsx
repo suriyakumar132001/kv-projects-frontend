@@ -38,9 +38,7 @@ const AttendanceList = () => {
       // Search Filter
       if (search) {
         data = data.filter((item) =>
-          item.employee?.name
-            ?.toLowerCase()
-            .includes(search.toLowerCase())
+          item.employee?.name?.toLowerCase().includes(search.toLowerCase()),
         );
       }
 
@@ -110,7 +108,7 @@ const AttendanceList = () => {
   // ==========================
   const handleDelete = async (attendance) => {
     const confirmDelete = window.confirm(
-      "Delete this attendance record? This cannot be undone."
+      "Delete this attendance record? This cannot be undone.",
     );
 
     if (!confirmDelete) return;
@@ -124,7 +122,7 @@ const AttendanceList = () => {
     } catch (error) {
       console.error("Delete attendance error:", error);
       toast.error(
-        error.response?.data?.message || "Failed to delete attendance"
+        error.response?.data?.message || "Failed to delete attendance",
       );
     }
   };
@@ -142,9 +140,7 @@ const AttendanceList = () => {
     } catch (error) {
       console.error(error);
 
-      toast.error(
-        error.response?.data?.message || "Check Out Failed"
-      );
+      toast.error(error.response?.data?.message || "Check Out Failed");
     }
   };
 
@@ -152,14 +148,30 @@ const AttendanceList = () => {
     return <h2>Loading Attendance...</h2>;
   }
 
+  // Count of currently-loaded (i.e. filtered) records flagged as outside
+  // the site geofence. Computed client-side from what's already loaded —
+  // no extra API call needed, and it naturally respects the active
+  // search/status/date filters.
+  const flaggedCount = attendance.filter(
+    (item) => item.locationVerified === false,
+  ).length;
+
   return (
     <div className="attendance-page">
-
       <div className="attendance-header">
         <div>
           <h2>Attendance</h2>
           <p>Manage employee attendance</p>
         </div>
+
+        {flaggedCount > 0 && (
+          <div
+            className="location-flag-summary"
+            title="Check-ins recorded outside the site's registered geofence"
+          >
+            ⚠ {flaggedCount} flagged check-in{flaggedCount > 1 ? "s" : ""}
+          </div>
+        )}
       </div>
 
       <AttendanceToolbar
@@ -171,9 +183,7 @@ const AttendanceList = () => {
         setDate={handleDateChange}
         onSearch={handleSearch}
         onRefresh={loadAttendance}
-        onMarkAttendance={() =>
-          navigate(`/${role}/attendance/mark`)
-        }
+        onMarkAttendance={() => navigate(`/${role}/attendance/mark`)}
         canMarkAttendance={role !== "owner"}
       />
 
@@ -184,7 +194,6 @@ const AttendanceList = () => {
         onDelete={handleDelete}
         canDelete={role === "owner" || role === "admin"}
       />
-
     </div>
   );
 };

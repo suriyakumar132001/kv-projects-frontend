@@ -37,6 +37,18 @@ const employeeService = {
     const response = await api.delete(`/employees/${id}`);
     return response.data;
   },
+
+  // Enroll / re-enroll face (descriptor captured client-side via FaceCapture)
+  enrollFace: async (id, descriptor) => {
+    const response = await api.put(`/employees/${id}/face`, { descriptor });
+    return response.data;
+  },
+
+  // Remove enrolled face
+  removeFace: async (id) => {
+    const response = await api.delete(`/employees/${id}/face`);
+    return response.data;
+  },
 };
 
 export default employeeService;

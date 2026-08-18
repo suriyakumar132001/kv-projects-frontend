@@ -1,8 +1,4 @@
-import {
-  FaSignOutAlt,
-  FaEye,
-  FaTrash,
-} from "react-icons/fa";
+import { FaSignOutAlt, FaEye, FaTrash } from "react-icons/fa";
 
 const AttendanceTable = ({
   attendance,
@@ -13,9 +9,7 @@ const AttendanceTable = ({
 }) => {
   return (
     <div className="attendance-table-container">
-
       <table className="attendance-table">
-
         <thead>
           <tr>
             <th>Employee ID</th>
@@ -32,19 +26,35 @@ const AttendanceTable = ({
         </thead>
 
         <tbody>
-
           {attendance.length > 0 ? (
             attendance.map((item) => (
-
               <tr key={item._id}>
-
                 <td>{item.employee?.employeeId}</td>
 
                 <td>{item.employee?.name}</td>
 
                 <td>{item.employee?.department}</td>
 
-                <td>{item.site?.siteName || "--"}</td>
+                <td>
+                  {item.site?.siteName || "--"}
+
+                  {/* Only shown when the check-in was actually outside the
+                      geofence (locationVerified === false). If it's null —
+                      no site coordinates set, or GPS was denied — nothing
+                      renders, so unverified records don't look flagged. */}
+                  {item.locationVerified === false && (
+                    <span
+                      className="location-flag"
+                      title={
+                        item.distanceFromSite != null
+                          ? `${item.distanceFromSite}m from registered site location`
+                          : "Outside geofence"
+                      }
+                    >
+                      ⚠ Flagged
+                    </span>
+                  )}
+                </td>
 
                 <td>
                   {item.checkIn
@@ -79,7 +89,6 @@ const AttendanceTable = ({
                 </td>
 
                 <td>
-
                   <button
                     className="action-btn view"
                     onClick={() => onView(item)}
@@ -107,17 +116,13 @@ const AttendanceTable = ({
                       <FaTrash />
                     </button>
                   )}
-
                 </td>
-
               </tr>
-
             ))
           ) : (
-
             <tr>
               <td
-                colSpan="9"
+                colSpan="10"
                 style={{
                   textAlign: "center",
                   padding: "30px",
@@ -126,13 +131,9 @@ const AttendanceTable = ({
                 No Attendance Records Found
               </td>
             </tr>
-
           )}
-
         </tbody>
-
       </table>
-
     </div>
   );
 };

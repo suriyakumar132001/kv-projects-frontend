@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import FaceCapture from "../FaceCapture";
+
 import "./EmployeeForm.css";
 
 const EmployeeForm = ({
@@ -7,21 +11,45 @@ const EmployeeForm = ({
   onSubmit,
   loading,
   submitText,
+  // ---- Face enrollment (all optional — see EditEmployee.jsx) ----
+  // employeeId: the employee's _id. Enrollment needs an existing
+  // employee to attach to, so on Add Employee (no id yet) this
+  // section just points the user to Edit Employee instead.
+  employeeId,
+  faceEnrolledAt,
+  onEnrollFace,
+  onRemoveFace,
+  faceSaving,
 }) => {
+  const [showCapture, setShowCapture] = useState(false);
+
+  const handleCapture = async (descriptor) => {
+    if (!onEnrollFace) return;
+    await onEnrollFace(descriptor);
+    setShowCapture(false);
+  };
+
+  const handleRemove = () => {
+    if (!onRemoveFace) return;
+    if (
+      window.confirm(
+        "Remove this employee's enrolled face? They will need to be re-enrolled before face verification works for them again.",
+      )
+    ) {
+      onRemoveFace();
+    }
+  };
+
   return (
     <div className="employee-form-page">
-
       <div className="employee-form-card">
-
         <div className="form-header">
           <h2>{title}</h2>
           <p>Fill in the employee information below.</p>
         </div>
 
         <form onSubmit={onSubmit}>
-
           <div className="form-grid">
-
             {/* Employee ID */}
             <div className="form-group">
               <label>Employee ID</label>
@@ -132,11 +160,7 @@ const EmployeeForm = ({
             <div className="form-group">
               <label>Status</label>
 
-              <select
-                name="status"
-                value={formData.status}
-                onChange={onChange}
-              >
+              <select name="status" value={formData.status} onChange={onChange}>
                 <option>Active</option>
                 <option>Inactive</option>
               </select>
@@ -153,13 +177,11 @@ const EmployeeForm = ({
                 onChange={onChange}
               />
             </div>
-
           </div>
 
           {/* Address */}
 
           <div className="form-group">
-
             <label>Address</label>
 
             <textarea
@@ -168,25 +190,75 @@ const EmployeeForm = ({
               value={formData.address}
               onChange={onChange}
             />
+          </div>
 
+          {/* Face Enrollment */}
+          <div className="form-group face-enrollment">
+            <label>Face Enrollment</label>
+
+            {!employeeId ? (
+              <p className="face-enrollment-hint">
+                Save this employee first — you can enroll their face from the
+                Edit Employee page afterwards.
+              </p>
+            ) : showCapture ? (
+              <FaceCapture
+                captureLabel={faceEnrolledAt ? "Re-enroll Face" : "Enroll Face"}
+                helperText="Center the employee's face in the frame and click capture."
+                onCapture={handleCapture}
+                onCancel={() => setShowCapture(false)}
+              />
+            ) : (
+              <div className="face-enrollment-status">
+                {faceEnrolledAt ? (
+                  <>
+                    <span className="face-enrollment-badge enrolled">
+                      Enrolled on{" "}
+                      {new Date(faceEnrolledAt).toLocaleDateString()}
+                    </span>
+                    <button
+                      type="button"
+                      className="face-enrollment-btn"
+                      onClick={() => setShowCapture(true)}
+                      disabled={faceSaving}
+                    >
+                      Re-enroll
+                    </button>
+                    <button
+                      type="button"
+                      className="face-enrollment-btn danger"
+                      onClick={handleRemove}
+                      disabled={faceSaving}
+                    >
+                      Remove
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span className="face-enrollment-badge not-enrolled">
+                      Not enrolled
+                    </span>
+                    <button
+                      type="button"
+                      className="face-enrollment-btn"
+                      onClick={() => setShowCapture(true)}
+                      disabled={faceSaving}
+                    >
+                      Enroll Face
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="form-actions">
-
-            <button
-              type="submit"
-              className="save-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="save-btn" disabled={loading}>
               {loading ? "Saving..." : submitText}
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
   );
 };

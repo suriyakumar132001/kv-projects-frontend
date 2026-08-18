@@ -18,6 +18,21 @@ const formatDateTimeLocal = (value) => {
 
 const parseDateTimeLocal = (value) => (value ? new Date(value) : null);
 
+// Renders the coordinates pair, or "--" when either half is missing.
+const formatCoords = (location) => {
+  if (
+    !location ||
+    location.latitude === null ||
+    location.latitude === undefined ||
+    location.longitude === null ||
+    location.longitude === undefined
+  ) {
+    return "--";
+  }
+
+  return `${location.latitude}, ${location.longitude}`;
+};
+
 const AttendanceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -128,23 +143,17 @@ const AttendanceDetails = () => {
 
   return (
     <div className="attendance-details">
-
       <div className="details-card">
-
         <div className="details-card-header">
           <h2>Attendance Details</h2>
           {canEdit && !editMode && (
-            <button
-              className="edit-btn"
-              onClick={() => setEditMode(true)}
-            >
+            <button className="edit-btn" onClick={() => setEditMode(true)}>
               Edit
             </button>
           )}
         </div>
 
         <div className="details-grid">
-
           <div>
             <label>Employee ID</label>
             <p>{attendance.employee?.employeeId}</p>
@@ -180,9 +189,7 @@ const AttendanceDetails = () => {
 
           <div>
             <label>Attendance Date</label>
-            <p>
-              {new Date(attendance.attendanceDate).toLocaleDateString()}
-            </p>
+            <p>{new Date(attendance.attendanceDate).toLocaleDateString()}</p>
           </div>
 
           <div>
@@ -248,13 +255,57 @@ const AttendanceDetails = () => {
               </select>
             ) : (
               <p>
-                {attendance.site?.siteName || "--"} {
-                  attendance.site?.projectName
-                    ? `- ${attendance.site.projectName}`
-                    : ""
-                }
+                {attendance.site?.siteName || "--"}{" "}
+                {attendance.site?.projectName
+                  ? `- ${attendance.site.projectName}`
+                  : ""}
               </p>
             )}
+          </div>
+
+          {/* ===========================================
+              GPS Verification
+              ===========================================
+              Read-only in both view and edit mode — this
+              reflects what actually happened at check-in
+              time, so it isn't something to hand-edit like
+              status or remarks.
+              =========================================== */}
+
+          <div>
+            <label>Location Verification</label>
+
+            {attendance.locationVerified === true && (
+              <p className="location-status verified">
+                ✅ Verified — within site geofence
+              </p>
+            )}
+
+            {attendance.locationVerified === false && (
+              <p className="location-status flagged">
+                ⚠ Flagged
+                {attendance.distanceFromSite != null &&
+                  ` — ${attendance.distanceFromSite}m from registered site location`}
+              </p>
+            )}
+
+            {(attendance.locationVerified === null ||
+              attendance.locationVerified === undefined) && (
+              <p className="location-status unchecked">
+                Not checked — no site coordinates set, or GPS was unavailable at
+                check-in
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label>Check-In Coordinates</label>
+            <p>{formatCoords(attendance.checkInLocation)}</p>
+          </div>
+
+          <div>
+            <label>Check-Out Coordinates</label>
+            <p>{formatCoords(attendance.checkOutLocation)}</p>
           </div>
 
           <div className="full-width">
@@ -270,7 +321,6 @@ const AttendanceDetails = () => {
               <p>{attendance.remarks || "No Remarks"}</p>
             )}
           </div>
-
         </div>
 
         <div className="attendance-detail-actions">
@@ -291,9 +341,7 @@ const AttendanceDetails = () => {
             </button>
           )}
         </div>
-
       </div>
-
     </div>
   );
 };

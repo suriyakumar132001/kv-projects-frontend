@@ -39,6 +39,9 @@ const initialForm = {
   description: "",
   clientName: "",
   status: "Planning",
+  latitude: "",
+  longitude: "",
+  geofenceRadius: 200,
 };
 
 export default function AddSite() {
@@ -46,6 +49,7 @@ export default function AddSite() {
 
   const [form, setForm] = useState(initialForm);
   const [saving, setSaving] = useState(false);
+  const [locating, setLocating] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -54,6 +58,45 @@ export default function AddSite() {
       ...previous,
       [name]: value,
     }));
+  };
+
+  // ===============================================
+  // Use the browser's Geolocation API to fill in
+  // latitude/longitude — same capture pattern as the
+  // check-in flow in MarkAttendance.jsx, so an
+  // Admin/Owner can just stand at the site and tap
+  // one button instead of typing coordinates.
+  // ===============================================
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Your browser doesn't support location");
+      return;
+    }
+
+    setLocating(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setForm((previous) => ({
+          ...previous,
+          latitude: position.coords.latitude.toFixed(6),
+          longitude: position.coords.longitude.toFixed(6),
+        }));
+
+        setLocating(false);
+        toast.success("Location captured");
+      },
+      (error) => {
+        console.warn("Geolocation error:", error.message);
+        toast.error("Unable to get your location. Check browser permissions.");
+        setLocating(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      },
+    );
   };
 
   const validateForm = () => {
@@ -69,6 +112,19 @@ export default function AddSite() {
 
     if (!form.location.trim()) {
       toast.error("Please enter site location");
+      return false;
+    }
+
+    // Coordinates are optional, but if one is set the other must be too —
+    // a lone lat or lng is worse than none (skips verification silently
+    // wrong instead of skipping it cleanly).
+    const hasLat = form.latitude !== "";
+    const hasLng = form.longitude !== "";
+
+    if (hasLat !== hasLng) {
+      toast.error(
+        "Please provide both latitude and longitude, or leave both blank",
+      );
       return false;
     }
 
@@ -92,6 +148,10 @@ export default function AddSite() {
         description: form.description.trim(),
         clientName: form.clientName.trim(),
         status: form.status,
+        latitude: form.latitude !== "" ? Number(form.latitude) : null,
+        longitude: form.longitude !== "" ? Number(form.longitude) : null,
+        geofenceRadius:
+          form.geofenceRadius !== "" ? Number(form.geofenceRadius) : 200,
       };
 
       const siteResponse = await siteService.createSite(payload);
@@ -254,6 +314,90 @@ export default function AddSite() {
                 rows={5}
                 placeholder="Enter site description..."
               />
+            </div>
+
+            <div className="form-group full-width">
+              <label>GPS Coordinates</label>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "var(--text-muted, #6b7280)",
+                  margin: "0 0 10px",
+                }}
+              >
+                Used to verify employee check-ins happen at the site. Stand at
+                the site and tap the button, or leave blank to skip GPS
+                verification for this site.
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                  alignItems: "flex-end",
+                }}
+              >
+                <div
+                  className="form-group"
+                  style={{ flex: "1 1 160px", margin: 0 }}
+                >
+                  <label>Latitude</label>
+                  <input
+                    type="number"
+                    step="any"
+                    name="latitude"
+                    value={form.latitude}
+                    onChange={handleChange}
+                    placeholder="e.g. 28.613900"
+                  />
+                </div>
+
+                <div
+                  className="form-group"
+                  style={{ flex: "1 1 160px", margin: 0 }}
+                >
+                  <label>Longitude</label>
+                  <input
+                    type="number"
+                    step="any"
+                    name="longitude"
+                    value={form.longitude}
+                    onChange={handleChange}
+                    placeholder="e.g. 77.209000"
+                  />
+                </div>
+
+                <div
+                  className="form-group"
+                  style={{ flex: "1 1 140px", margin: 0 }}
+                >
+                  <label>Geofence Radius (m)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    name="geofenceRadius"
+                    value={form.geofenceRadius}
+                    onChange={handleChange}
+                    placeholder="200"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={handleUseCurrentLocation}
+                  disabled={locating}
+                  style={{ height: "42px" }}
+                >
+                  {locating ? (
+                    <Loader2 size={17} className="spin" />
+                  ) : (
+                    <MapPin size={17} />
+                  )}
+                  {locating ? "Locating..." : "Use My Current Location"}
+                </button>
+              </div>
             </div>
           </div>
 

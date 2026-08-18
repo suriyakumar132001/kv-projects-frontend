@@ -16,6 +16,8 @@ const EditEmployee = () => {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [faceSaving, setFaceSaving] = useState(false);
+  const [faceEnrolledAt, setFaceEnrolledAt] = useState(null);
 
   const [employee, setEmployee] = useState({
     employeeId: "",
@@ -54,6 +56,8 @@ const EditEmployee = () => {
         address: res.employee.address || "",
         emergencyContact: res.employee.emergencyContact || "",
       });
+
+      setFaceEnrolledAt(res.employee.faceEnrolledAt || null);
     } catch (error) {
       console.error(error);
       toast.error("Failed to load employee");
@@ -81,11 +85,53 @@ const EditEmployee = () => {
 
       navigate(`/${role}/employees`);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Update failed"
-      );
+      toast.error(error.response?.data?.message || "Update failed");
     } finally {
       setSaving(false);
+    }
+  };
+
+  // =======================================
+  // Face Enrollment
+  // =======================================
+  //
+  // Called by EmployeeForm/FaceCapture once a descriptor has been
+  // captured in the browser. The actual match logic never runs
+  // here — this just saves the reference descriptor for this
+  // employee (see enrollFace in employeeController.js).
+  const handleEnrollFace = async (descriptor) => {
+    try {
+      setFaceSaving(true);
+
+      const res = await employeeService.enrollFace(id, descriptor);
+
+      setFaceEnrolledAt(
+        res.employee.faceEnrolledAt || new Date().toISOString(),
+      );
+
+      toast.success("Face enrolled successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to enroll face");
+    } finally {
+      setFaceSaving(false);
+    }
+  };
+
+  const handleRemoveFace = async () => {
+    try {
+      setFaceSaving(true);
+
+      await employeeService.removeFace(id);
+
+      setFaceEnrolledAt(null);
+
+      toast.success("Face enrollment removed");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to remove face enrollment",
+      );
+    } finally {
+      setFaceSaving(false);
     }
   };
 
@@ -101,6 +147,11 @@ const EditEmployee = () => {
       onSubmit={handleSubmit}
       loading={saving}
       submitText="Update Employee"
+      employeeId={id}
+      faceEnrolledAt={faceEnrolledAt}
+      onEnrollFace={handleEnrollFace}
+      onRemoveFace={handleRemoveFace}
+      faceSaving={faceSaving}
     />
   );
 };
