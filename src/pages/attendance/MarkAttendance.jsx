@@ -8,6 +8,7 @@ import attendanceService from "../../services/attendanceService";
 import employeeService from "../../services/employeeService";
 import siteService from "../../services/siteService";
 import FaceCapture from "../../components/FaceCapture";
+import LocationMap from "../../components/LocationMap";
 
 import "./Attendance.css";
 
@@ -29,6 +30,12 @@ const MarkAttendance = () => {
     site: "",
     remarks: "",
   });
+
+  // Full site doc for whatever's currently selected — used only to draw
+  // the geofence circle in the map preview below. The actual
+  // verification never trusts anything computed here; that's the
+  // backend's job (see verifyLocation() in attendanceController.js).
+  const selectedSite = sites.find((site) => site._id === formData.site);
 
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +88,10 @@ const MarkAttendance = () => {
   // check-in rather than rejecting it.
   const [faceDescriptor, setFaceDescriptor] = useState(null);
   const [faceSkipped, setFaceSkipped] = useState(false);
+  // See checkBlinkLiveness in faceApiLoader.js for exactly what this
+  // does/doesn't guarantee — basic anti-photo signal, not strong
+  // liveness security. null = not run, true/false = blink outcome.
+  const [livenessVerified, setLivenessVerified] = useState(null);
 
   useEffect(() => {
     if (isSelfCheckIn) {
@@ -160,6 +171,7 @@ const MarkAttendance = () => {
       latitude: location.latitude,
       longitude: location.longitude,
       faceDescriptor,
+      livenessVerified,
     };
 
     if (isSelfCheckIn && !payload.site && sites.length) {
@@ -302,6 +314,14 @@ const MarkAttendance = () => {
                   >
                     Update Location
                   </button>
+
+                  <LocationMap
+                    latitude={location.latitude}
+                    longitude={location.longitude}
+                    siteLatitude={selectedSite?.latitude ?? null}
+                    siteLongitude={selectedSite?.longitude ?? null}
+                    siteRadius={selectedSite?.geofenceRadius}
+                  />
                 </>
               )}
 
@@ -359,7 +379,11 @@ const MarkAttendance = () => {
               <FaceCapture
                 captureLabel="Verify Face"
                 helperText="Optional — center your face in the frame and click capture."
-                onCapture={(descriptor) => setFaceDescriptor(descriptor)}
+                requireLiveness
+                onCapture={(descriptor, liveness) => {
+                  setFaceDescriptor(descriptor);
+                  setLivenessVerified(liveness);
+                }}
                 onCancel={() => setFaceSkipped(true)}
               />
             )}

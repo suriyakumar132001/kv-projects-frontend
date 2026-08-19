@@ -60,6 +60,12 @@
   color: var(--text-soft, #6b7280);
 }
 
+.face-capture-liveness-note {
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.85;
+}
+
 .face-capture-message {
   margin: 0;
 

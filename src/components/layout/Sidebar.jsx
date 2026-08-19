@@ -25,6 +25,7 @@ import {
   FaDolly,
   FaShoppingCart,
   FaClipboardCheck,
+  FaMapMarkedAlt,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -48,6 +49,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         name: "Attendance",
         icon: <FaCalendarCheck />,
         path: "/owner/attendance",
+      },
+      {
+        name: "Attendance Map",
+        icon: <FaMapMarkedAlt />,
+        path: "/owner/attendance-map",
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
@@ -100,6 +106,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         name: "Attendance",
         icon: <FaCalendarCheck />,
         path: "/admin/attendance",
+      },
+      {
+        name: "Attendance Map",
+        icon: <FaMapMarkedAlt />,
+        path: "/admin/attendance-map",
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },

@@ -12,7 +12,11 @@
 // ===============================================
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { loadFaceApiModels, getFaceDescriptor } from "../utils/faceApiLoader";
+import {
+  loadFaceApiModels,
+  getFaceDescriptor,
+  checkBlinkLiveness,
+} from "../utils/faceApiLoader";
 
 import "./FaceCapture.css";
 
@@ -20,6 +24,7 @@ const STATUS = {
   LOADING_MODELS: "loading-models",
   STARTING_CAMERA: "starting-camera",
   READY: "ready",
+  CHECKING_LIVENESS: "checking-liveness",
   CAPTURING: "capturing",
   CAMERA_ERROR: "camera-error",
   MODEL_ERROR: "model-error",
@@ -30,6 +35,16 @@ const FaceCapture = ({
   onCancel,
   captureLabel = "Capture Face",
   helperText = "Center your face in the frame and click capture.",
+  // When true (Mark Attendance passes this), a short blink check runs
+  // before the descriptor is extracted, and onCapture is called with
+  // a second argument: onCapture(descriptor, livenessVerified).
+  //
+  // IMPORTANT: this is a basic anti-photo measure, not strong
+  // liveness/anti-spoofing security — see the disclaimer on
+  // checkBlinkLiveness in faceApiLoader.js for exactly what it does
+  // and doesn't protect against. It flags, it never blocks capture —
+  // callers that ignore the second argument keep working unchanged.
+  requireLiveness = false,
 }) => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -152,6 +167,20 @@ const FaceCapture = ({
       return;
     }
 
+    let livenessVerified = null;
+
+    if (requireLiveness) {
+      setStatus(STATUS.CHECKING_LIVENESS);
+      setMessage("");
+
+      try {
+        livenessVerified = await checkBlinkLiveness(videoRef.current);
+      } catch (error) {
+        console.error("Liveness check error:", error);
+        livenessVerified = false;
+      }
+    }
+
     setStatus(STATUS.CAPTURING);
     setMessage("");
 
@@ -190,8 +219,14 @@ const FaceCapture = ({
 
       setStatus(STATUS.READY);
 
+      if (requireLiveness && livenessVerified === false) {
+        setMessage(
+          "Liveness check didn't confirm a blink — captured anyway, but this may be flagged for review.",
+        );
+      }
+
       if (typeof onCapture === "function") {
-        onCapture(descriptor);
+        onCapture(descriptor, livenessVerified);
       }
     } catch (error) {
       console.error("Face capture error:", error);
@@ -221,6 +256,7 @@ const FaceCapture = ({
   const isBusy =
     status === STATUS.LOADING_MODELS ||
     status === STATUS.STARTING_CAMERA ||
+    status === STATUS.CHECKING_LIVENESS ||
     status === STATUS.CAPTURING;
 
   // ===============================================
@@ -257,7 +293,18 @@ const FaceCapture = ({
             Face recognition unavailable
           </div>
         )}
+
+        {status === STATUS.CHECKING_LIVENESS && (
+          <div className="face-capture-overlay">Please blink naturally…</div>
+        )}
       </div>
+
+      {requireLiveness && status === STATUS.READY && (
+        <p className="face-capture-helper face-capture-liveness-note">
+          A quick blink check runs when you capture — this is a basic anti-photo
+          check, not full liveness security.
+        </p>
+      )}
 
       {helperText && status === STATUS.READY && (
         <p className="face-capture-helper">{helperText}</p>
@@ -271,7 +318,11 @@ const FaceCapture = ({
           onClick={handleCapture}
           disabled={isBusy || status !== STATUS.READY}
         >
-          {status === STATUS.CAPTURING ? "Capturing…" : captureLabel}
+          {status === STATUS.CHECKING_LIVENESS
+            ? "Checking…"
+            : status === STATUS.CAPTURING
+              ? "Capturing…"
+              : captureLabel}
         </button>
 
         {onCancel && (

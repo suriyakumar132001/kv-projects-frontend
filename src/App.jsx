@@ -45,6 +45,7 @@ import EmployeeDetails from "./pages/employees/EmployeeDetails";
 import AttendanceList from "./pages/attendance/AttendanceList";
 import MarkAttendance from "./pages/attendance/MarkAttendance";
 import AttendanceDetails from "./pages/attendance/AttendanceDetails";
+import AttendanceMap from "./pages/attendance/AttendanceMap";
 
 // ===============================================
 // LEAVE
@@ -346,6 +347,8 @@ function App() {
                 element={<AttendanceDetails />}
               />
 
+              <Route path="attendance-map" element={<AttendanceMap />} />
+
               {/* Payroll */}
 
               <Route path="payroll" element={<PayrollList />} />
@@ -645,6 +648,8 @@ function App() {
                 path="attendance/view/:id"
                 element={<AttendanceDetails />}
               />
+
+              <Route path="attendance-map" element={<AttendanceMap />} />
 
               {/* Leave */}
 
