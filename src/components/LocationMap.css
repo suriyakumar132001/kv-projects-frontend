@@ -6,3 +6,104 @@
   border: 1px solid var(--border, #d9dee7);
   margin-top: 8px;
 }
+
+/* =============================================
+   SiteLocationPicker — place search box
+   ============================================= */
+
+.site-location-search {
+  position: relative;
+}
+
+.site-location-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px 0 10px;
+  height: 40px;
+  border: 1px solid var(--border, #d9dee7);
+  border-radius: var(--radius-sm, 6px);
+  background: #fff;
+}
+
+.site-location-search-icon {
+  color: var(--text-muted, #6b7280);
+  flex-shrink: 0;
+}
+
+.site-location-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+.site-location-search-spinner {
+  color: var(--text-muted, #6b7280);
+  flex-shrink: 0;
+}
+
+.site-location-search-btn {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: calc(var(--radius-sm, 6px) - 2px);
+  background: var(--primary, #111827);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.site-location-search-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.site-location-search-btn:disabled {
+  background: var(--border, #d9dee7);
+  color: var(--text-muted, #6b7280);
+  cursor: not-allowed;
+}
+
+.site-location-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--border, #d9dee7);
+  border-radius: var(--radius-sm, 6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.site-location-search-results li {
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: pointer;
+  color: var(--text, #1f2937);
+}
+
+.site-location-search-results li:hover {
+  background: var(--bg, #f3f4f6);
+}
+
+.site-location-search-empty {
+  padding: 10px 12px !important;
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+  cursor: default !important;
+}
+
+.site-location-search-empty:hover {
+  background: transparent !important;
+}

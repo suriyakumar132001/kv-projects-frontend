@@ -686,6 +686,12 @@ function App() {
 
               <Route path="sites" element={<SiteList />} />
 
+              {/* Admin can edit sites, same as Owner — backend's
+                  updateSite is authorize("owner", "admin"). This route
+                  was missing here, so the "Edit Site" button on
+                  SiteDetails had nowhere to navigate to for Admins. */}
+              <Route path="sites/edit/:id" element={<EditSite />} />
+
               <Route path="sites/view/:id" element={<SiteDetails />} />
 
               {/* Tasks */}

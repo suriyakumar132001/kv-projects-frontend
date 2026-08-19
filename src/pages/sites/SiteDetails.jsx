@@ -16,10 +16,12 @@ import {
   FileText,
   Loader2,
   RefreshCw,
+  Navigation,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
 import siteService from "../../services/siteService";
+import SiteLocationPicker from "../../components/SiteLocationPicker";
 import "./Site.css";
 
 export default function SiteDetails() {
@@ -149,6 +151,12 @@ export default function SiteDetails() {
 
   const engineer = site.siteEngineer || site.engineer || site.assignedEngineer;
   const engineerName = typeof engineer === "object" ? engineer?.name : engineer;
+
+  // Geofence is only meaningful once both lat/lng are set — see the
+  // Site model's note on why these stay explicit null instead of
+  // just being left undefined.
+  const hasGeofence =
+    typeof site.latitude === "number" && typeof site.longitude === "number";
 
   return (
     <div className="site-details-page">
@@ -284,6 +292,55 @@ export default function SiteDetails() {
             >
               {site.description || "No description has been added."}
             </div>
+          </div>
+
+          <div className="site-details-card">
+            <div className="site-details-card-header">
+              <div className="header-icon-badge">
+                <Navigation size={21} />
+              </div>
+              <div>
+                <h2>GPS Geofence</h2>
+                <p>Location used to verify employee check-ins</p>
+              </div>
+            </div>
+
+            {hasGeofence ? (
+              <>
+                <div
+                  className="info-item-grid"
+                  style={{ marginBottom: "12px" }}
+                >
+                  <InfoItem
+                    icon={<MapPin size={18} />}
+                    label="Latitude"
+                    value={site.latitude}
+                  />
+                  <InfoItem
+                    icon={<MapPin size={18} />}
+                    label="Longitude"
+                    value={site.longitude}
+                  />
+                  <InfoItem
+                    icon={<Navigation size={18} />}
+                    label="Geofence Radius"
+                    value={`${site.geofenceRadius ?? 200} m`}
+                  />
+                </div>
+
+                <SiteLocationPicker
+                  latitude={site.latitude}
+                  longitude={site.longitude}
+                  radius={site.geofenceRadius ?? 200}
+                  onChange={() => {}}
+                />
+              </>
+            ) : (
+              <div className="description-box empty">
+                Not geo-tagged yet — attendance check-ins for this site skip GPS
+                verification. Edit the site to place a pin.
+              </div>
+            )}
           </div>
         </div>
 

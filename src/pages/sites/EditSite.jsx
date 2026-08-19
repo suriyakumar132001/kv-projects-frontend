@@ -5,10 +5,11 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save, RotateCcw, MapPin, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, RotateCcw, MapPin, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 
 import siteService from "../../services/siteService";
+import SiteLocationPicker from "../../components/SiteLocationPicker";
 import "./Site.css";
 
 const initialForm = {
@@ -84,6 +85,35 @@ export default function EditSite() {
     setForm((previous) => ({
       ...previous,
       [name]: value,
+    }));
+  };
+
+  // ===============================================
+  // Fired by SiteLocationPicker on click/drag — keeps
+  // the number inputs and the map in sync no matter
+  // which one the user touches.
+  // ===============================================
+  const handleMapChange = (lat, lng) => {
+    setForm((previous) => ({
+      ...previous,
+      latitude: String(lat),
+      longitude: String(lng),
+    }));
+  };
+
+  // ===============================================
+  // Wipe the pin back to blank. Combined with Update
+  // Site this is what actually deletes a previously
+  // saved location — handleSubmit below sends
+  // latitude/longitude as null whenever the fields are
+  // blank, and the backend's Site model treats null as
+  // "not geo-tagged" (see verifyLocation()).
+  // ===============================================
+  const handleClearLocation = () => {
+    setForm((previous) => ({
+      ...previous,
+      latitude: "",
+      longitude: "",
     }));
   };
 
@@ -329,9 +359,10 @@ export default function EditSite() {
                   margin: "0 0 10px",
                 }}
               >
-                Used to verify employee check-ins happen at the site. Stand at
-                the site and tap the button, or leave blank to skip GPS
-                verification for this site.
+                Used to verify employee check-ins happen at the site. Click the
+                map or drag the pin to place it, tap "Use My Current Location"
+                while standing at the site, or clear it to skip GPS verification
+                for this site.
               </p>
 
               <div
@@ -404,7 +435,31 @@ export default function EditSite() {
                   )}
                   {locating ? "Locating..." : "Use My Current Location"}
                 </button>
+
+                {(form.latitude !== "" || form.longitude !== "") && (
+                  <button
+                    type="button"
+                    className="btn btn-outline"
+                    onClick={handleClearLocation}
+                    disabled={saving}
+                    style={{ height: "42px" }}
+                  >
+                    <X size={17} />
+                    Clear Location
+                  </button>
+                )}
               </div>
+
+              <SiteLocationPicker
+                latitude={form.latitude !== "" ? Number(form.latitude) : null}
+                longitude={
+                  form.longitude !== "" ? Number(form.longitude) : null
+                }
+                radius={
+                  form.geofenceRadius !== "" ? Number(form.geofenceRadius) : 200
+                }
+                onChange={handleMapChange}
+              />
             </div>
           </div>
 
