@@ -26,6 +26,7 @@ import {
   FaShoppingCart,
   FaClipboardCheck,
   FaMapMarkedAlt,
+  FaUserPlus,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -58,6 +59,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/owner/projects" },
+      { name: "Leads", icon: <FaUserPlus />, path: "/owner/leads" },
       { name: "Clients", icon: <FaUserTie />, path: "/owner/clients" },
       { name: "Vendors", icon: <FaTruck />, path: "/owner/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/owner/sites" },
@@ -115,6 +117,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/admin/projects" },
+      { name: "Leads", icon: <FaUserPlus />, path: "/admin/leads" },
       { name: "Clients", icon: <FaUserTie />, path: "/admin/clients" },
       { name: "Vendors", icon: <FaTruck />, path: "/admin/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/admin/sites" },
@@ -226,6 +229,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         path: "/accountant/quotations",
       },
 
+      {
+        name: "Leads",
+        icon: <FaUserPlus />,
+        path: "/accountant/leads",
+      },
       {
         name: "Clients",
         icon: <FaUserTie />,

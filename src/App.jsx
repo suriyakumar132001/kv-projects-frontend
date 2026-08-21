@@ -186,6 +186,11 @@ import CreateClient from "./pages/clients/CreateClient";
 import EditClient from "./pages/clients/EditClient";
 import ClientDetails from "./pages/clients/ClientDetails";
 
+import LeadBoard from "./pages/leads/LeadBoard";
+import CreateLead from "./pages/leads/CreateLead";
+import EditLead from "./pages/leads/EditLead";
+import LeadDetails from "./pages/leads/LeadDetails";
+
 // ===============================================
 // ASSETS
 // ===============================================
@@ -477,6 +482,16 @@ function App() {
 
               <Route path="clients/view/:id" element={<ClientDetails />} />
 
+              {/* Leads */}
+
+              <Route path="leads" element={<LeadBoard />} />
+
+              <Route path="leads/add" element={<CreateLead />} />
+
+              <Route path="leads/edit/:id" element={<EditLead />} />
+
+              <Route path="leads/view/:id" element={<LeadDetails />} />
+
               {/* DPR */}
 
               <Route path="dpr" element={<DPRList />} />
@@ -603,6 +618,16 @@ function App() {
               <Route path="clients" element={<ClientList />} />
 
               <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* Leads */}
+
+              <Route path="leads" element={<LeadBoard />} />
+
+              <Route path="leads/add" element={<CreateLead />} />
+
+              <Route path="leads/edit/:id" element={<EditLead />} />
+
+              <Route path="leads/view/:id" element={<LeadDetails />} />
 
               {/* Analytics */}
 
@@ -904,6 +929,16 @@ function App() {
               <Route path="clients/edit/:id" element={<EditClient />} />
 
               <Route path="clients/view/:id" element={<ClientDetails />} />
+
+              {/* Leads */}
+
+              <Route path="leads" element={<LeadBoard />} />
+
+              <Route path="leads/add" element={<CreateLead />} />
+
+              <Route path="leads/edit/:id" element={<EditLead />} />
+
+              <Route path="leads/view/:id" element={<LeadDetails />} />
 
               {/* Quotations */}
 
