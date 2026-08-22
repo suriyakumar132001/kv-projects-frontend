@@ -16,7 +16,11 @@ const LeadBoard = () => {
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
-  const canCreate = role === "owner" || role === "admin" || role === "accountant";
+  const canCreate =
+    role === "owner" ||
+    role === "admin" ||
+    role === "accountant" ||
+    role === "hr";
 
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,9 +128,7 @@ const LeadBoard = () => {
           <div className={`lead-column ${stageClass(stage)}`} key={stage}>
             <div className="lead-column-header">
               <span className="lead-column-title">{stage}</span>
-              <span className="lead-column-count">
-                {grouped[stage].length}
-              </span>
+              <span className="lead-column-count">{grouped[stage].length}</span>
             </div>
 
             {grouped[stage].length === 0 && (
@@ -161,14 +163,16 @@ const LeadBoard = () => {
                   </div>
                 )}
 
-                {lead.nextFollowUpDate && stage !== "Lost" && stage !== "Converted" && (
-                  <span
-                    className={`lead-card-followup ${isOverdue(lead) ? "overdue" : ""}`}
-                  >
-                    {isOverdue(lead) ? "Overdue: " : "Follow up: "}
-                    {new Date(lead.nextFollowUpDate).toLocaleDateString()}
-                  </span>
-                )}
+                {lead.nextFollowUpDate &&
+                  stage !== "Lost" &&
+                  stage !== "Converted" && (
+                    <span
+                      className={`lead-card-followup ${isOverdue(lead) ? "overdue" : ""}`}
+                    >
+                      {isOverdue(lead) ? "Overdue: " : "Follow up: "}
+                      {new Date(lead.nextFollowUpDate).toLocaleDateString()}
+                    </span>
+                  )}
 
                 {stage !== "Lost" && stage !== "Converted" && (
                   <div
