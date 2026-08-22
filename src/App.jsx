@@ -190,6 +190,7 @@ import LeadBoard from "./pages/leads/LeadBoard";
 import CreateLead from "./pages/leads/CreateLead";
 import EditLead from "./pages/leads/EditLead";
 import LeadDetails from "./pages/leads/LeadDetails";
+import CRMDashboard from "./pages/crm/CRMDashboard";
 
 // ===============================================
 // ASSETS
@@ -486,6 +487,8 @@ function App() {
 
               <Route path="leads" element={<LeadBoard />} />
 
+              <Route path="crm/dashboard" element={<CRMDashboard />} />
+
               <Route path="leads/add" element={<CreateLead />} />
 
               <Route path="leads/edit/:id" element={<EditLead />} />
@@ -622,6 +625,8 @@ function App() {
               {/* Leads */}
 
               <Route path="leads" element={<LeadBoard />} />
+
+              <Route path="crm/dashboard" element={<CRMDashboard />} />
 
               <Route path="leads/add" element={<CreateLead />} />
 
@@ -777,6 +782,18 @@ function App() {
               <Route path="expenses/view/:id" element={<ExpenseDetails />} />
 
               <Route path="expenses/edit/:id" element={<EditExpense />} />
+
+              {/* Leads */}
+
+              <Route path="leads" element={<LeadBoard />} />
+
+              <Route path="crm/dashboard" element={<CRMDashboard />} />
+
+              <Route path="leads/add" element={<CreateLead />} />
+
+              <Route path="leads/edit/:id" element={<EditLead />} />
+
+              <Route path="leads/view/:id" element={<LeadDetails />} />
 
               {/* DPR */}
 
