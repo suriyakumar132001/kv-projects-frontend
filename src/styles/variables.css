@@ -1,59 +1,87 @@
 /* ===============================================
    KV Projects ERP — Design Tokens
-   Palette matches the Login page's "site badge" theme
-   (ink navy + amber/orange + concrete), so every screen
-   after login feels like the same product.
+   BOLD GRADIENT THEME — violet / indigo / pink,
+   high-energy. Every screen reads these same
+   tokens, so this file is the single place that
+   drives the whole app's colour identity.
    =============================================== */
 
 :root {
-  /* ---- Brand core (from Login.css) ---- */
-  --ink: #0d1522; /* matches Sidebar's dark navy */
-  --ink-2: #1b1f24;
-  --orange: #e8590c; /* primary brand accent */
-  --orange-dark: #c74a0a;
-  --amber: #f0a324; /* Sidebar's amber — secondary accent */
-  --signal: #ffc107; /* small highlights / warnings */
-  --steel: #4c5560;
-  --concrete: #d9d5c9;
+  /* ---- Brand core ---- */
+  --ink: #140f29; /* near-black indigo — sidebar / dark surfaces */
+  --ink-2: #1f1642; /* slightly lighter indigo, for layering */
+  --orange: #7c3aed; /* PRIMARY accent — vivid violet (was orange) */
+  --orange-dark: #5b21b6; /* deep violet for hover/active */
+  --amber: #ec4899; /* SECONDARY accent — hot pink (was amber) */
+  --signal: #fbbf24; /* warm highlight — warnings / attention pops */
+  --steel: #6b6394; /* muted violet-grey for secondary UI chrome */
+  --concrete: #efe9fb; /* soft lavender surface tint */
+
+  /* ---- Gradients — the "high-energy" signature ---- */
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  --gradient-vivid: linear-gradient(
+    135deg,
+    #4f46e5 0%,
+    #7c3aed 50%,
+    #db2777 100%
+  );
+  --gradient-dark: linear-gradient(
+    160deg,
+    #140f29 0%,
+    #2c1a55 55%,
+    #4c1d78 100%
+  );
+  --gradient-text: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
 
   /* ---- Surfaces ---- */
-  --bg: #f4f6f9; /* page background, slightly cool so cards pop */
+  --bg: #f6f4fc; /* page background — cool lavender-white */
   --card: #ffffff;
-  --border: #e5e7eb;
+  --border: #e6e1f5;
 
   /* ---- Text ---- */
-  --text-dark: #1f2937;
-  --text-soft: #64748b;
-  --text-muted: #94a3b8;
+  --text-dark: #1e1b2e;
+  --text-soft: #6b6483;
+  --text-muted: #9c96b5;
 
-  /* ---- Status colors (kept from before, still used everywhere) ---- */
+  /* ---- Status colors (kept legible, tuned to sit next to violet/pink) ---- */
   --success: #16a34a;
   --success-bg: #dcfce7;
   --success-dark: #15803d;
-  --danger: #dc2626;
-  --danger-bg: #fee2e2;
-  --danger-dark: #b91c1c;
+  --danger: #e11d48;
+  --danger-bg: #ffe4e9;
+  --danger-dark: #be123c;
   --warning: #b45309;
   --warning-bg: #fef3c7;
-  --info: #1d4ed8;
-  --info-bg: #dbeafe;
+  --info: #4f46e5;
+  --info-bg: #e6e4fd;
 
   /* ---- Shape / elevation ---- */
   --radius-sm: 8px;
   --radius: 12px;
   --radius-lg: 16px;
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
-  --shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.14);
+  --shadow-sm: 0 2px 8px rgba(30, 15, 60, 0.07);
+  --shadow: 0 8px 25px rgba(30, 15, 60, 0.1);
+  --shadow-lg: 0 20px 45px rgba(30, 15, 60, 0.16);
+  --shadow-glow: 0 10px 30px rgba(124, 58, 237, 0.35);
 
-  /* ---- Fonts (same families the Login page loads) ---- */
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.15s var(--ease);
+  --transition: 0.25s var(--ease);
+  --transition-slow: 0.4s var(--ease-out);
+
+  /* ---- Layout ---- */
+  --sidebar-width: 272px;
+  --sidebar-width-collapsed: 80px;
+  --navbar-height: 75px;
+
+  /* ---- Fonts ---- */
   --font-display: "Big Shoulders Display", "Oswald", sans-serif;
   --font-body: "Manrope", "Inter", sans-serif;
   --font-mono: "Space Mono", monospace;
 
-  /* ---- Shared breakpoints (for reference in comments —
-     CSS custom properties can't be used inside @media, so
-     every file's queries should just match these numbers) ----
+  /* ---- Shared breakpoints (reference only) ----
      Tablet:      max-width: 960px
      Phone:       max-width: 600px
      Small phone: max-width: 380px
