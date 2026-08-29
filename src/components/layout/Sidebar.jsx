@@ -31,6 +31,7 @@ import {
   FaAngleLeft,
   FaAngleRight,
   FaHardHat,
+  FaReceipt,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -63,6 +64,11 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
       { name: "Labour", icon: <FaHardHat />, path: "/owner/labour" },
+      {
+        name: "Labour Bills",
+        icon: <FaReceipt />,
+        path: "/owner/labour-bills",
+      },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/owner/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/owner/leads" },
       {
@@ -127,6 +133,11 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },
       { name: "Labour", icon: <FaHardHat />, path: "/admin/labour" },
+      {
+        name: "Labour Bills",
+        icon: <FaReceipt />,
+        path: "/admin/labour-bills",
+      },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/admin/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/admin/leads" },
       {

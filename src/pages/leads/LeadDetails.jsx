@@ -17,7 +17,8 @@ const LeadDetails = () => {
   const { user } = useAuth();
   const role = user?.role?.toLowerCase();
 
-  const canManage = role === "owner" || role === "admin" || role === "accountant";
+  const canManage =
+    role === "owner" || role === "admin" || role === "accountant";
   const canConvert = role === "owner" || role === "admin";
   const canDelete = role === "owner";
 
@@ -171,7 +172,10 @@ const LeadDetails = () => {
           </button>
 
           {canConvert && isOpen && (
-            <button className="lead-btn lead-btn-convert" onClick={handleConvert}>
+            <button
+              className="lead-btn lead-btn-convert"
+              onClick={handleConvert}
+            >
               Convert to Client
             </button>
           )}
@@ -275,9 +279,7 @@ const LeadDetails = () => {
                 </div>
               ))
             ) : (
-              <p style={{ fontSize: 13, color: "#6b7280" }}>
-                No activity yet
-              </p>
+              <p style={{ fontSize: 13, color: "#6b7280" }}>No activity yet</p>
             )}
           </div>
 

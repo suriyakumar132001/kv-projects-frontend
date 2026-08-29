@@ -126,6 +126,26 @@
   margin-top: 22px;
 }
 
+/* ---------- Loading spinner (used in LabourBillList) ---------- */
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: -3px;
+  border: 2px solid var(--border);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: lbSpin 0.7s linear infinite;
+}
+
+@keyframes lbSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 600px) {
