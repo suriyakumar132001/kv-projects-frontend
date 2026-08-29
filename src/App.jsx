@@ -133,6 +133,10 @@ import AddLabour from "./pages/labour/AddLabour";
 import EditLabour from "./pages/labour/EditLabour";
 import LabourDetails from "./pages/labour/LabourDetails";
 
+// LABOUR BILL
+import LabourBillList from "./pages/labourbill/LabourBillList";
+import LabourBillForm from "./pages/labourbill/LabourBillForm";
+
 // ===============================================
 // VENDORS
 // ===============================================
@@ -528,6 +532,12 @@ function App() {
 
               <Route path="labour/view/:id" element={<LabourDetails />} />
 
+              {/* Labour Bills */}
+
+              <Route path="labour-bills" element={<LabourBillList />} />
+
+              <Route path="labour-bills/create" element={<LabourBillForm />} />
+
               {/* Purchase Orders */}
 
               <Route path="purchase-orders" element={<PurchaseOrderList />} />
@@ -780,6 +790,12 @@ function App() {
               <Route path="labour/edit/:id" element={<EditLabour />} />
 
               <Route path="labour/view/:id" element={<LabourDetails />} />
+
+              {/* Labour Bills */}
+
+              <Route path="labour-bills" element={<LabourBillList />} />
+
+              <Route path="labour-bills/create" element={<LabourBillForm />} />
 
               {/* Inventory */}
 
