@@ -21,7 +21,7 @@
   flex-direction: column;
   position: sticky;
   top: 0;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
 
   /* The single transition that drives the whole "click sidebar,
      it slides to icon-rail, content reflows" effect. Because the

@@ -5,36 +5,33 @@
    =============================================== */
 
 :root {
-  --mr-navy: #0b1b2b;
-  --mr-navy-2: #14273b;
-  --mr-accent: #f59e0b;
-  --mr-ink: #111827;
-  --mr-text-soft: #6b7280;
-  --mr-border: #e5e7eb;
-  --mr-bg: #f3f4f6;
-  --mr-card: #ffffff;
+  /* Aliased to the app's shared Aura tokens (styles/variables.css)
+     so this page follows the same violet/pink brand instead of its
+     own separate navy/amber system. */
+  --mr-navy: var(--ink);
+  --mr-navy-2: var(--ink-2);
+  --mr-accent: var(--orange);
+  --mr-ink: var(--text-dark);
+  --mr-text-soft: var(--text-soft);
+  --mr-border: var(--border);
+  --mr-bg: var(--bg);
+  --mr-card: var(--card);
 
-  --mr-green-bg: #dcfce7;
-  --mr-green-text: #15803d;
-  --mr-red-bg: #fee2e2;
-  --mr-red-text: #b91c1c;
-  --mr-amber-bg: #fef3c7;
-  --mr-amber-text: #92400e;
-  --mr-blue-bg: #dbeafe;
-  --mr-blue-text: #1d4ed8;
+  --mr-green-bg: var(--success-bg);
+  --mr-green-text: var(--success-dark);
+  --mr-red-bg: var(--danger-bg);
+  --mr-red-text: var(--danger-dark);
+  --mr-amber-bg: var(--warning-bg);
+  --mr-amber-text: var(--warning);
+  --mr-blue-bg: var(--info-bg);
+  --mr-blue-text: var(--info);
 }
 
 .mr-page {
   padding: 28px 32px;
   background: var(--mr-bg);
   min-height: 100%;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--mr-ink);
 }
 
@@ -331,7 +328,7 @@
 .mr-form-group textarea:focus {
   outline: none;
   border-color: var(--mr-accent);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .mr-form-actions {

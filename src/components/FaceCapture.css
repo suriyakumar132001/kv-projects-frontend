@@ -99,7 +99,7 @@
 
   cursor: pointer;
 
-  background: var(--orange, #f97316);
+  background: var(--orange);
   color: #ffffff;
 
   transition:
@@ -108,7 +108,7 @@
 }
 
 .face-capture-actions button:hover:not(:disabled) {
-  background: var(--orange-dark, #ea580c);
+  background: var(--orange-dark);
 }
 
 .face-capture-actions button:disabled {

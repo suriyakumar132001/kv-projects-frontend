@@ -6,36 +6,33 @@
    =============================================== */
 
 :root {
-  --pc-navy: #0b1b2b;
-  --pc-navy-2: #14273b;
-  --pc-accent: #f59e0b;
-  --pc-ink: #111827;
-  --pc-text-soft: #6b7280;
-  --pc-border: #e5e7eb;
-  --pc-bg: #f3f4f6;
-  --pc-card: #ffffff;
+  /* Aliased to the app's shared Aura tokens (styles/variables.css)
+     so this page follows the same violet/pink brand instead of its
+     own separate navy/amber system. */
+  --pc-navy: var(--ink);
+  --pc-navy-2: var(--ink-2);
+  --pc-accent: var(--orange);
+  --pc-ink: var(--text-dark);
+  --pc-text-soft: var(--text-soft);
+  --pc-border: var(--border);
+  --pc-bg: var(--bg);
+  --pc-card: var(--card);
 
-  --pc-green-bg: #dcfce7;
-  --pc-green-text: #15803d;
-  --pc-red-bg: #fee2e2;
-  --pc-red-text: #b91c1c;
-  --pc-amber-bg: #fef3c7;
-  --pc-amber-text: #92400e;
-  --pc-blue-bg: #dbeafe;
-  --pc-blue-text: #1d4ed8;
+  --pc-green-bg: var(--success-bg);
+  --pc-green-text: var(--success-dark);
+  --pc-red-bg: var(--danger-bg);
+  --pc-red-text: var(--danger-dark);
+  --pc-amber-bg: var(--warning-bg);
+  --pc-amber-text: var(--warning);
+  --pc-blue-bg: var(--info-bg);
+  --pc-blue-text: var(--info);
 }
 
 .pc-page {
   padding: 28px 32px;
   background: var(--pc-bg);
   min-height: 100%;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--pc-ink);
 }
 
@@ -323,7 +320,7 @@
 .pc-form-group textarea:focus {
   outline: none;
   border-color: var(--pc-accent);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .pc-form-actions {

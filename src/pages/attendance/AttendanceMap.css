@@ -39,8 +39,8 @@
 }
 
 .attendance-map-filter button.active {
-  background: var(--orange, #f97316);
-  border-color: var(--orange, #f97316);
+  background: var(--orange);
+  border-color: var(--orange);
   color: #fff;
 }
 

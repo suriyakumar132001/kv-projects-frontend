@@ -134,6 +134,99 @@
   }
 }
 
+/* ---------- Construction-theme accents ---------- */
+
+.aura-hazard-tape {
+  position: absolute;
+  top: 22px;
+  left: -36px;
+  width: 160px;
+  height: 24px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #f5b301 0 10px,
+    #17131f 10px 20px
+  );
+  transform: rotate(-45deg) scaleX(0);
+  transform-origin: left center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  animation: aura-tape-unroll 0.6s 0.5s cubic-bezier(0.25, 0.9, 0.35, 1)
+    forwards;
+  z-index: 2;
+}
+@keyframes aura-tape-unroll {
+  to {
+    transform: rotate(-45deg) scaleX(1);
+  }
+}
+
+.aura-hardhat-badge {
+  position: absolute;
+  top: -16px;
+  right: 28px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f5b301;
+  color: #17131f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 8px 18px rgba(245, 179, 1, 0.45);
+  opacity: 0;
+  animation:
+    aura-hat-in 0.5s 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    aura-hat-bounce 2.4s 1.4s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes aura-hat-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes aura-hat-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 480px) {
+  .aura-hazard-tape {
+    top: 16px;
+    width: 130px;
+    height: 18px;
+  }
+  .aura-hardhat-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    right: 18px;
+    top: -12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aura-hardhat-badge {
+    animation: none;
+    opacity: 1;
+  }
+  .aura-hazard-tape {
+    animation: none;
+    transform: rotate(-45deg) scaleX(1);
+  }
+}
+
 /* ---------- Spinning gradient ring logo ---------- */
 
 .aura-ring {
@@ -222,7 +315,7 @@
 
 .aura-field {
   position: relative;
-  margin-bottom: 26px;
+  margin-bottom: 30px;
 }
 
 .aura-field input {
@@ -253,6 +346,7 @@
   color: rgba(255, 255, 255, 0.55);
   pointer-events: none;
   transition: all var(--transition-fast);
+  z-index: 2;
 }
 
 .aura-field input:focus,
@@ -261,16 +355,37 @@
   border-bottom-color: transparent;
 }
 
+/* Floated (active) label: lifted fully clear of the input box, on its own
+   solid chip so it never overlaps or gets cut off by the input's edge. */
 .aura-field input:focus + label,
 .aura-field input:not(:placeholder-shown) + label {
-  top: -6px;
+  top: -22px;
+  left: 0;
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(15, 8, 30, 0.85);
+  color: #f2b8dd;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+
+/* Chrome/Edge/Safari force their own white background + black text on
+   autofilled fields (e.g. a saved email), which broke this dark glass
+   theme and made the label unreadable. Keep our own dark, translucent
+   look instead. */
+.aura-field input:-webkit-autofill,
+.aura-field input:-webkit-autofill:hover,
+.aura-field input:-webkit-autofill:focus,
+.aura-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(40, 24, 64, 0.9) inset !important;
+  box-shadow: 0 0 0px 1000px rgba(40, 24, 64, 0.9) inset !important;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 .aura-underline {

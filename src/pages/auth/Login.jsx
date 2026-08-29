@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaHardHat } from "react-icons/fa";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -59,6 +59,11 @@ const Login = () => {
 
       {/* Floating glass card */}
       <div className="aura-card">
+        <div className="aura-hazard-tape" aria-hidden="true" />
+        <div className="aura-hardhat-badge" aria-hidden="true">
+          <FaHardHat />
+        </div>
+
         <div className="aura-ring">
           <span className="aura-ring-core">KV</span>
         </div>

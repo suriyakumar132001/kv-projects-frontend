@@ -1,0 +1,138 @@
+/* ===============================================
+   LabourBill.css
+   Builds on the shared .page / .card / .table-wrap /
+   .data-table classes from styles/global.css —
+   only the bill-specific bits live here.
+   =============================================== */
+
+.lb-header-card {
+  margin-bottom: 22px;
+}
+
+/* ---------- Tabs ---------- */
+
+.lb-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lb-tab {
+  padding: 11px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-soft);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.lb-tab:hover {
+  color: var(--text-dark);
+}
+
+.lb-tab.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+/* ---------- Table tweaks specific to this form ---------- */
+
+.lb-table th,
+.lb-table td {
+  white-space: nowrap;
+}
+
+.lb-table input,
+.lb-table select {
+  width: 100%;
+  min-width: 90px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13.5px;
+  background: #fff;
+  color: var(--text-dark);
+}
+
+.lb-table input:focus,
+.lb-table select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  outline: none;
+}
+
+.lb-num {
+  min-width: 64px;
+  text-align: right;
+}
+
+.lb-readonly {
+  font-weight: 600;
+  color: var(--text-dark);
+  text-align: right;
+}
+
+.lb-strong {
+  color: var(--orange);
+  font-size: 15px;
+}
+
+.lb-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-soft);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.lb-icon-btn.danger:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.lb-add-btn {
+  margin: 14px 16px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lb-grand-total-row td {
+  background: var(--concrete);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--ink);
+  text-align: right;
+}
+
+.lb-grand-total-row td:first-child {
+  text-align: left;
+}
+
+.lb-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 600px) {
+  .lb-tabs {
+    overflow-x: auto;
+  }
+  .lb-actions .btn-accent {
+    width: 100%;
+  }
+}
