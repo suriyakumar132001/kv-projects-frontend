@@ -6,38 +6,35 @@
    =============================================== */
 
 :root {
-  --lead-navy: #0b1b2b;
-  --lead-navy-2: #14273b;
-  --lead-accent: #f59e0b;
-  --lead-ink: #111827;
-  --lead-text-soft: #6b7280;
-  --lead-border: #e5e7eb;
-  --lead-bg: #f3f4f6;
-  --lead-card: #ffffff;
+  /* Aliased to the app's shared Aura tokens (styles/variables.css)
+     so this page follows the same violet/pink brand instead of its
+     own separate navy/amber system. */
+  --lead-navy: var(--ink);
+  --lead-navy-2: var(--ink-2);
+  --lead-accent: var(--orange);
+  --lead-ink: var(--text-dark);
+  --lead-text-soft: var(--text-soft);
+  --lead-border: var(--border);
+  --lead-bg: var(--bg);
+  --lead-card: var(--card);
 
-  --lead-green-bg: #dcfce7;
-  --lead-green-text: #15803d;
-  --lead-red-bg: #fee2e2;
-  --lead-red-text: #b91c1c;
-  --lead-amber-bg: #fef3c7;
-  --lead-amber-text: #92400e;
-  --lead-blue-bg: #dbeafe;
-  --lead-blue-text: #1d4ed8;
-  --lead-purple-bg: #ede9fe;
-  --lead-purple-text: #6d28d9;
+  --lead-green-bg: var(--success-bg);
+  --lead-green-text: var(--success-dark);
+  --lead-red-bg: var(--danger-bg);
+  --lead-red-text: var(--danger-dark);
+  --lead-amber-bg: var(--warning-bg);
+  --lead-amber-text: var(--warning);
+  --lead-blue-bg: var(--info-bg);
+  --lead-blue-text: var(--info);
+  --lead-purple-bg: rgba(124, 58, 237, 0.12);
+  --lead-purple-text: var(--orange-dark);
 }
 
 .lead-page {
   padding: 28px 32px;
   background: var(--lead-bg);
   min-height: 100%;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--lead-ink);
 }
 
@@ -164,11 +161,21 @@
   color: var(--lead-text-soft);
 }
 
-.lead-column.stage-New-Lead .lead-column-title { color: var(--lead-blue-text); }
-.lead-column.stage-Contacted .lead-column-title { color: var(--lead-purple-text); }
-.lead-column.stage-On-Hold .lead-column-title { color: var(--lead-amber-text); }
-.lead-column.stage-Lost .lead-column-title { color: var(--lead-red-text); }
-.lead-column.stage-Converted .lead-column-title { color: var(--lead-green-text); }
+.lead-column.stage-New-Lead .lead-column-title {
+  color: var(--lead-blue-text);
+}
+.lead-column.stage-Contacted .lead-column-title {
+  color: var(--lead-purple-text);
+}
+.lead-column.stage-On-Hold .lead-column-title {
+  color: var(--lead-amber-text);
+}
+.lead-column.stage-Lost .lead-column-title {
+  color: var(--lead-red-text);
+}
+.lead-column.stage-Converted .lead-column-title {
+  color: var(--lead-green-text);
+}
 
 /* Lead card */
 
@@ -260,11 +267,26 @@
   font-weight: 600;
 }
 
-.lead-stage-pill.stage-New-Lead { background: var(--lead-blue-bg); color: var(--lead-blue-text); }
-.lead-stage-pill.stage-Contacted { background: var(--lead-purple-bg); color: var(--lead-purple-text); }
-.lead-stage-pill.stage-On-Hold { background: var(--lead-amber-bg); color: var(--lead-amber-text); }
-.lead-stage-pill.stage-Lost { background: var(--lead-red-bg); color: var(--lead-red-text); }
-.lead-stage-pill.stage-Converted { background: var(--lead-green-bg); color: var(--lead-green-text); }
+.lead-stage-pill.stage-New-Lead {
+  background: var(--lead-blue-bg);
+  color: var(--lead-blue-text);
+}
+.lead-stage-pill.stage-Contacted {
+  background: var(--lead-purple-bg);
+  color: var(--lead-purple-text);
+}
+.lead-stage-pill.stage-On-Hold {
+  background: var(--lead-amber-bg);
+  color: var(--lead-amber-text);
+}
+.lead-stage-pill.stage-Lost {
+  background: var(--lead-red-bg);
+  color: var(--lead-red-text);
+}
+.lead-stage-pill.stage-Converted {
+  background: var(--lead-green-bg);
+  color: var(--lead-green-text);
+}
 
 /* Form card (Create / Edit) */
 
@@ -319,7 +341,7 @@
 .lead-form-group textarea:focus {
   outline: none;
   border-color: var(--lead-accent);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .lead-form-actions {

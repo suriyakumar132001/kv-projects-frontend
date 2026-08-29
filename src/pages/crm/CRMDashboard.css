@@ -6,29 +6,26 @@
    =============================================== */
 
 :root {
-  --crm-navy: #0b1b2b;
-  --crm-accent: #f59e0b;
-  --crm-ink: #111827;
-  --crm-text-soft: #6b7280;
-  --crm-border: #e5e7eb;
-  --crm-bg: #f3f4f6;
-  --crm-card: #ffffff;
-  --crm-green: #15803d;
-  --crm-red: #b91c1c;
-  --crm-blue: #1d4ed8;
+  /* Aliased to the app's shared Aura tokens (styles/variables.css)
+     so this page follows the same violet/pink brand instead of its
+     own separate navy/amber system. */
+  --crm-navy: var(--ink);
+  --crm-accent: var(--orange);
+  --crm-ink: var(--text-dark);
+  --crm-text-soft: var(--text-soft);
+  --crm-border: var(--border);
+  --crm-bg: var(--bg);
+  --crm-card: var(--card);
+  --crm-green: var(--success-dark);
+  --crm-red: var(--danger-dark);
+  --crm-blue: var(--info);
 }
 
 .crm-page {
   padding: 28px 32px;
   background: var(--crm-bg);
   min-height: 100%;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--crm-ink);
 }
 

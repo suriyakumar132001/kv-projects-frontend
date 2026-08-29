@@ -28,11 +28,14 @@ import {
   FaMapMarkedAlt,
   FaUserPlus,
   FaChartLine,
+  FaAngleLeft,
+  FaAngleRight,
+  FaHardHat,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
@@ -59,6 +62,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/owner/labour" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/owner/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/owner/leads" },
       {
@@ -122,6 +126,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/admin/labour" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/admin/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/admin/leads" },
       {
@@ -182,6 +187,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       { name: "Attendance", icon: <FaCalendarCheck />, path: "/hr/attendance" },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/hr/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/hr/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/hr/labour" },
       {
         name: "Material Requests",
         icon: <FaDolly />,
@@ -280,6 +286,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         path: "/siteengineer/attendance",
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/siteengineer/leave" },
+      { name: "Labour", icon: <FaHardHat />, path: "/siteengineer/labour" },
       { name: "Sites", icon: <FaBuilding />, path: "/siteengineer/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/siteengineer/inventory" },
       {
@@ -311,15 +318,29 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   return (
-    <aside className={`sidebar ${isOpen ? "sidebar-open" : ""}`}>
+    <aside
+      className={`sidebar ${isOpen ? "sidebar-open" : ""} ${
+        collapsed ? "sidebar-collapsed" : ""
+      }`}
+    >
       {/* Mobile close button */}
       <button className="sidebar-close-btn" onClick={onClose}>
         <FaTimes />
       </button>
 
+      {/* Desktop collapse / expand handle */}
+      <button
+        className="sidebar-collapse-btn"
+        onClick={onToggleCollapse}
+        title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {collapsed ? <FaAngleRight /> : <FaAngleLeft />}
+      </button>
+
       {/* Logo */}
       <div className="sidebar-logo">
-        <h2>KV ERP</h2>
+        <h2>{collapsed ? "KV" : "KV ERP"}</h2>
       </div>
 
       {/* User */}
@@ -336,20 +357,25 @@ const Sidebar = ({ isOpen, onClose }) => {
             key={item.path}
             to={item.path}
             onClick={onClose}
+            data-tooltip={item.name}
             className={({ isActive }) =>
               isActive ? "menu-item active" : "menu-item"
             }
           >
-            <span>{item.icon}</span>
-            <span>{item.name}</span>
+            <span className="menu-icon">{item.icon}</span>
+            <span className="menu-label">{item.name}</span>
           </NavLink>
         ))}
       </nav>
 
       {/* Logout */}
-      <button className="logout-btn" onClick={handleLogout}>
+      <button
+        className="logout-btn"
+        onClick={handleLogout}
+        data-tooltip="Logout"
+      >
         <FaSignOutAlt />
-        Logout
+        <span className="logout-label">Logout</span>
       </button>
     </aside>
   );

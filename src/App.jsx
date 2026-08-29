@@ -518,6 +518,16 @@ function App() {
                 element={<ConvertToPO />}
               />
 
+              {/* Labour */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/add" element={<AddLabour />} />
+
+              <Route path="labour/edit/:id" element={<EditLabour />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
+
               {/* Purchase Orders */}
 
               <Route path="purchase-orders" element={<PurchaseOrderList />} />
@@ -908,6 +918,13 @@ function App() {
               <Route path="payroll" element={<PayrollList />} />
 
               <Route path="payroll/report" element={<PayrollReport />} />
+
+              {/* Labour (view only — backend only authorizes HR to GET,
+                  not create/update/delete) */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
 
               {/* Projects */}
 

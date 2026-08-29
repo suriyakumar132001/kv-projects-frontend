@@ -6,41 +6,38 @@
    =============================================== */
 
 :root {
-  --dpr-navy: #0b1b2b;
-  --dpr-navy-2: #14273b;
-  --dpr-accent: #f59e0b;
-  --dpr-accent-dark: #b45309;
-  --dpr-ink: #111827;
-  --dpr-text-soft: #6b7280;
-  --dpr-border: #e5e7eb;
-  --dpr-bg: #f3f4f6;
-  --dpr-card: #ffffff;
+  /* Aliased to the app's shared Aura tokens (styles/variables.css)
+     so this page follows the same violet/pink brand instead of its
+     own separate navy/amber system. */
+  --dpr-navy: var(--ink);
+  --dpr-navy-2: var(--ink-2);
+  --dpr-accent: var(--orange);
+  --dpr-accent-dark: var(--orange-dark);
+  --dpr-ink: var(--text-dark);
+  --dpr-text-soft: var(--text-soft);
+  --dpr-border: var(--border);
+  --dpr-bg: var(--bg);
+  --dpr-card: var(--card);
 
-  --dpr-purple-bg: #ede9fe;
-  --dpr-purple-text: #6d28d9;
-  --dpr-green-bg: #dcfce7;
-  --dpr-green-text: #15803d;
-  --dpr-amber-bg: #fef3c7;
-  --dpr-amber-text: #92400e;
-  --dpr-red-bg: #fee2e2;
-  --dpr-red-text: #b91c1c;
+  --dpr-purple-bg: rgba(124, 58, 237, 0.12);
+  --dpr-purple-text: var(--orange-dark);
+  --dpr-green-bg: var(--success-bg);
+  --dpr-green-text: var(--success-dark);
+  --dpr-amber-bg: var(--warning-bg);
+  --dpr-amber-text: var(--warning);
+  --dpr-red-bg: var(--danger-bg);
+  --dpr-red-text: var(--danger-dark);
 
-  --dpr-view: #f59e0b;
-  --dpr-edit: #b45309;
-  --dpr-delete: #dc2626;
+  --dpr-view: var(--info);
+  --dpr-edit: var(--orange);
+  --dpr-delete: var(--danger);
 }
 
 .dpr-page {
   padding: 28px 32px;
   background: var(--dpr-bg);
   min-height: 100%;
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--dpr-ink);
 }
 
@@ -348,7 +345,7 @@
 .dpr-form-group textarea:focus {
   outline: none;
   border-color: var(--dpr-accent);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .dpr-progress-track {

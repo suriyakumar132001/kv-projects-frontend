@@ -4,20 +4,128 @@
    =============================================== */
 
 .sidebar {
-  width: 280px;
-  min-width: 280px;
+  width: var(--sidebar-width);
+  flex-shrink: 0;
   height: 100vh;
-  background-color: var(--ink); /* ink navy */
+  background-color: var(--ink);
   background-image:
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%),
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-size:
+    100% 100%,
+    24px 24px,
+    24px 24px;
   color: var(--border);
   display: flex;
   flex-direction: column;
   position: sticky;
   top: 0;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
+
+  /* The single transition that drives the whole "click sidebar,
+     it slides to icon-rail, content reflows" effect. Because the
+     layout is a flex row, animating width here is enough — the
+     content pane next to it resizes on every frame automatically. */
+  transition: width var(--transition-slow);
+  z-index: 950;
+}
+
+/* ===============================================
+   Collapsed (icon-rail) state — desktop only
+   =============================================== */
+
+.sidebar.sidebar-collapsed {
+  width: var(--sidebar-width-collapsed);
+}
+
+.sidebar-collapsed .sidebar-logo {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar-collapsed .sidebar-logo::before {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-user h3,
+.sidebar-collapsed .sidebar-user p,
+.sidebar-collapsed .menu-label,
+.sidebar-collapsed .logout-label {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-user .avatar {
+  width: 42px;
+  height: 42px;
+  font-size: 17px;
+  margin-bottom: 0;
+}
+
+.sidebar-collapsed .menu-item,
+.sidebar-collapsed .logout-btn {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar-collapsed .menu-item:hover {
+  transform: none;
+}
+
+/* Fade+slide the text in on expand, out on collapse, instead of
+   a hard cut — this is what makes the toggle feel "alive". */
+.menu-label,
+.logout-label,
+.sidebar-logo h2,
+.sidebar-user h3,
+.sidebar-user p {
+  opacity: 1;
+  transition:
+    opacity var(--transition-fast),
+    width var(--transition-fast);
+  white-space: nowrap;
+}
+
+/* ===============================================
+   Collapse / expand handle
+   =============================================== */
+
+.sidebar-collapse-btn {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .sidebar-collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 28px;
+    right: -13px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 10;
+    transition:
+      transform var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .sidebar-collapse-btn:hover {
+    transform: scale(1.12);
+    background: #ffb845;
+  }
+
+  .sidebar-collapse-btn:active {
+    transform: scale(0.95);
+  }
 }
 
 /* ===============================================
@@ -28,12 +136,10 @@
   padding: 24px 20px;
   flex-shrink: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.sidebar-logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
 }
 
 .sidebar-logo::before {
@@ -67,9 +173,10 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 20px 20px 22px;
+  padding: 20px 12px 22px;
   flex-shrink: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
 }
 
 .sidebar-user .avatar {
@@ -86,6 +193,10 @@
   margin-bottom: 10px;
   box-shadow: 0 6px 16px rgba(240, 163, 36, 0.3);
   animation: avatar-in 0.6s ease;
+  transition:
+    width var(--transition-fast),
+    height var(--transition-fast),
+    font-size var(--transition-fast);
 }
 
 @keyframes avatar-in {
@@ -147,6 +258,7 @@
 }
 
 .menu-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -165,12 +277,17 @@
   white-space: nowrap;
 }
 
-.menu-item span:first-child {
+.menu-icon {
   display: flex;
   align-items: center;
   font-size: 15px;
   flex-shrink: 0;
   opacity: 0.85;
+  transition: transform 0.18s ease;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.12);
 }
 
 .menu-item:hover {
@@ -180,15 +297,51 @@
 }
 
 .menu-item.active {
-  background: linear-gradient(90deg, rgba(240, 163, 36, 0.16), transparent);
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.32), transparent);
   border-left: 3px solid var(--amber);
   color: #ffffff;
   font-weight: 600;
+  box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.15);
 }
 
-.menu-item.active span:first-child {
+.menu-item.active .menu-icon {
   opacity: 1;
   color: var(--amber);
+}
+
+/* ===============================================
+   Collapsed tooltips — a small floating label that
+   pops out to the right of the icon rail on hover,
+   so nothing is lost when text is hidden.
+   =============================================== */
+
+.sidebar-collapsed .menu-item[data-tooltip]::after,
+.sidebar-collapsed .logout-btn[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: var(--ink-2);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+  z-index: 1200;
+}
+
+.sidebar-collapsed .menu-item[data-tooltip]:hover::after,
+.sidebar-collapsed .logout-btn[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 /* ===============================================
@@ -197,6 +350,7 @@
    =============================================== */
 
 .logout-btn {
+  position: relative;
   flex-shrink: 0;
   margin: 12px;
   padding: 12px;
@@ -211,11 +365,14 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .logout-btn:hover {
-  background-color: var(--danger);
+  background-color: var(--danger-dark);
+  transform: translateY(-1px);
 }
 
 /* ===============================================
@@ -231,7 +388,8 @@
    =============================================== */
 
 @media (max-width: 900px) {
-  .sidebar {
+  .sidebar,
+  .sidebar.sidebar-collapsed {
     /* top:0 + bottom:0 instead of height:100vh —
        100vh is unreliable on real mobile browsers
        because of the collapsing address bar / home
@@ -249,6 +407,15 @@
     transition: transform 0.28s ease;
     z-index: 1000;
     box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Collapse is a desktop-only concept; on mobile the sidebar is
+     always full width once opened, regardless of collapsed state. */
+  .sidebar.sidebar-collapsed .menu-label,
+  .sidebar.sidebar-collapsed .logout-label,
+  .sidebar.sidebar-collapsed .sidebar-user h3,
+  .sidebar.sidebar-collapsed .sidebar-user p {
+    display: block;
   }
 
   .sidebar.sidebar-open {

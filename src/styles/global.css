@@ -55,6 +55,13 @@ textarea {
   outline: none;
 }
 
+/* Accessible focus ring — keyboard users only, never shows on mouse click */
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Thin, unobtrusive scrollbar everywhere (matches Sidebar's) */
 ::-webkit-scrollbar {
   width: 7px;
@@ -63,6 +70,9 @@ textarea {
 ::-webkit-scrollbar-thumb {
   background-color: rgba(15, 23, 42, 0.18);
   border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(15, 23, 42, 0.32);
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -101,7 +111,8 @@ textarea {
 }
 
 /* ===============================================
-   Cards
+   Cards — subtle lift on hover so dashboards feel
+   alive without being distracting
    =============================================== */
 
 .card {
@@ -109,6 +120,16 @@ textarea {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 24px;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.card.card-hover:hover,
+a.card:hover,
+button.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* ===============================================
@@ -117,7 +138,8 @@ textarea {
 
 .btn-primary,
 .btn-secondary,
-.btn-danger {
+.btn-danger,
+.btn-accent {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -127,9 +149,10 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   transition:
-    background-color 0.15s ease,
+    background-color var(--transition-fast),
     transform 0.1s ease,
-    box-shadow 0.15s ease;
+    box-shadow var(--transition-fast),
+    filter var(--transition-fast);
 }
 
 .btn-primary {
@@ -160,25 +183,46 @@ textarea {
 
 .btn-primary:active:not(:disabled),
 .btn-secondary:active:not(:disabled),
-.btn-danger:active:not(:disabled) {
-  transform: scale(0.98);
+.btn-danger:active:not(:disabled),
+.btn-accent:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .btn-primary:disabled,
 .btn-secondary:disabled,
-.btn-danger:disabled {
+.btn-danger:disabled,
+.btn-accent:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* Accent variant — use sparingly for the one "hero" action on a page,
-   matches the Login page's orange brand accent */
+/* Accent variant — use sparingly for the one "hero" action on a page.
+   Uses the app's signature violet→pink gradient. */
 .btn-accent {
-  background: var(--orange);
+  background: var(--gradient-primary);
   color: #fff;
+  box-shadow: var(--shadow-glow);
 }
 .btn-accent:hover:not(:disabled) {
-  background: var(--orange-dark);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 34px rgba(124, 58, 237, 0.45);
+}
+
+/* Gradient text utility — headings, hero numbers, etc.
+     <h1 className="text-gradient">Dashboard</h1> */
+.text-gradient {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glowing card variant for hero/highlight panels */
+.card-glow {
+  border: 1px solid rgba(124, 58, 237, 0.15);
+}
+.card-glow:hover {
+  box-shadow: var(--shadow-glow);
 }
 
 /* ===============================================
@@ -218,6 +262,14 @@ textarea {
   border-bottom: 1px solid #f1f5f9;
   color: var(--text-dark);
   font-size: 14px;
+}
+
+.data-table tr {
+  transition: background-color var(--transition-fast);
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8fafc;
 }
 
 .data-table tr:last-child td {
@@ -282,12 +334,15 @@ textarea {
   font-size: 14px;
   color: var(--text-dark);
   background: #fff;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 .form-row input:focus,
 .form-row select:focus,
 .form-row textarea:focus {
   border-color: var(--orange);
-  box-shadow: 0 0 0 3px rgba(232, 89, 12, 0.12);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 /* Two-column form grid that collapses to one column on tablets —
@@ -299,7 +354,57 @@ textarea {
 }
 
 /* ===============================================
-   Motion — shared entrance animation, same easing
+   Skeleton loaders — drop these in while data fetches
+   instead of a blank page, e.g.
+     <div className="skeleton" style={{ height: 18, width: '60%' }} />
+   =============================================== */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e9edf2;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Small inline spinner — <span className="spinner" /> */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(13, 21, 34, 0.15);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===============================================
+   Motion — shared entrance animations, same easing
    family as the Login page's fade-up
    =============================================== */
 
@@ -315,7 +420,7 @@ textarea {
 }
 
 .fade-up {
-  animation: fadeUp 0.45s ease both;
+  animation: fadeUp 0.45s var(--ease-out) both;
 }
 
 @keyframes popIn {
@@ -333,10 +438,65 @@ textarea {
   animation: popIn 0.35s ease both;
 }
 
+/* Staggered list/grid entrance — add "stagger" to a container and
+   give each direct child an index via inline style, e.g.
+     <div className="stagger">
+       {items.map((it, i) => <Card style={{ '--i': i }} />)}
+     </div>
+   Cards then use `animation-delay: calc(var(--i) * 0.05s)` themselves,
+   or just rely on the default cascade below for up to 12 children. */
+.stagger > * {
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.1s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.14s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.18s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.22s;
+}
+.stagger > *:nth-child(n + 7) {
+  animation-delay: 0.26s;
+}
+
+/* Route/page transition — applied automatically by DashboardLayout
+   to <main className="dashboard-content"> on every navigation */
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: pageIn 0.3s var(--ease-out) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-up,
-  .pop-in {
+  .pop-in,
+  .page-transition,
+  .stagger > * {
     animation: none;
+  }
+  .skeleton::after,
+  .spinner {
+    animation-duration: 0.001s;
   }
   html {
     scroll-behavior: auto;
