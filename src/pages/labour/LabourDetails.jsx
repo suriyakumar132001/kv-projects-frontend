@@ -17,6 +17,7 @@ import {
 import { toast } from "react-toastify";
 
 import labourService from "../../services/labourService";
+import "./Labour.css";
 
 const LabourDetails = () => {
   const navigate = useNavigate();
@@ -87,8 +88,8 @@ const LabourDetails = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <p className="text-gray-500">Loading labour record...</p>
+      <div className="labour-page">
+        <p style={{ color: "#6b7280" }}>Loading labour record...</p>
       </div>
     );
   }
@@ -99,18 +100,17 @@ const LabourDetails = () => {
 
   if (!labour) {
     return (
-      <div className="p-6">
-        <div className="bg-white border border-gray-200 rounded-xl p-10 text-center">
-          <Users size={40} className="mx-auto text-gray-300" />
+      <div className="labour-page">
+        <div className="empty-state-card">
+          <Users size={40} style={{ margin: "0 auto" }} />
 
-          <p className="mt-3 font-medium text-gray-700">
-            Labour record not found
-          </p>
+          <p>Labour record not found</p>
 
           <button
             type="button"
             onClick={() => navigate("..")}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            className="btn btn-outline"
+            style={{ marginTop: "16px" }}
           >
             <ArrowLeft size={18} />
             Back to Labour List
@@ -123,31 +123,31 @@ const LabourDetails = () => {
   const status = labour?.status || "Active";
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="labour-page">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+      <div className="labour-header">
+        <div
+          className="labour-header-left"
+          style={{ display: "flex", alignItems: "center", gap: "14px" }}
+        >
           <button
             type="button"
             onClick={() => navigate("..")}
-            className="p-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50"
+            className="btn-icon view"
           >
             <ArrowLeft size={20} />
           </button>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Labour Details</h1>
-
-            <p className="text-sm text-gray-500 mt-1">
-              View labour record information.
-            </p>
+            <h1>Labour Details</h1>
+            <p>View labour record information.</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={() => navigate(`../edit/${id}`)}
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+          className="btn btn-primary"
         >
           <Edit size={18} />
           Edit Labour
@@ -155,102 +155,80 @@ const LabourDetails = () => {
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center">
-              <Users size={26} className="text-blue-600" />
+      <div className="labour-details-card">
+        <div className="details-profile-header">
+          <div className="details-profile-left">
+            <div className="details-avatar">
+              <Users size={26} />
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">
-                {labour?.name || "Unnamed"}
-              </h2>
-
-              <p className="text-sm text-gray-500">{labour?.role || "-"}</p>
+              <h2>{labour?.name || "Unnamed"}</h2>
+              <p>{labour?.role || "-"}</p>
             </div>
           </div>
 
           <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${
-              status === "Active"
-                ? "bg-green-50 text-green-700"
-                : "bg-gray-100 text-gray-600"
-            }`}
+            className={`status-pill ${status === "Active" ? "active" : "inactive"}`}
           >
             {status}
           </span>
         </div>
 
         {/* Details Grid */}
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-              <Phone size={18} className="text-gray-500" />
+        <div className="details-grid">
+          <div className="details-item">
+            <div className="details-icon">
+              <Phone size={18} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Contact Number</p>
-
-              <p className="font-medium text-gray-900 mt-0.5">
-                {labour?.contactNumber || "-"}
-              </p>
+              <label>Contact Number</label>
+              <p>{labour?.contactNumber || "-"}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-              <Wallet size={18} className="text-gray-500" />
+          <div className="details-item">
+            <div className="details-icon">
+              <Wallet size={18} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Wage Type</p>
-
-              <p className="font-medium text-gray-900 mt-0.5">
-                {labour?.wageType || "-"}
-              </p>
+              <label>Wage Type</label>
+              <p>{labour?.wageType || "-"}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-              <Wallet size={18} className="text-gray-500" />
+          <div className="details-item">
+            <div className="details-icon">
+              <Wallet size={18} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Wage Rate</p>
-
-              <p className="font-medium text-gray-900 mt-0.5">
-                {formatAmount(labour?.wageRate || 0)}
-              </p>
+              <label>Wage Rate</label>
+              <p>{formatAmount(labour?.wageRate || 0)}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-              <Calendar size={18} className="text-gray-500" />
+          <div className="details-item">
+            <div className="details-icon">
+              <Calendar size={18} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Joining Date</p>
-
-              <p className="font-medium text-gray-900 mt-0.5">
-                {formatDate(labour?.joiningDate)}
-              </p>
+              <label>Joining Date</label>
+              <p>{formatDate(labour?.joiningDate)}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3 md:col-span-2">
-            <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-              <MapPin size={18} className="text-gray-500" />
+          <div className="details-item full-width">
+            <div className="details-icon">
+              <MapPin size={18} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Address</p>
-
-              <p className="font-medium text-gray-900 mt-0.5 whitespace-pre-wrap">
-                {labour?.address || "-"}
-              </p>
+              <label>Address</label>
+              <p>{labour?.address || "-"}</p>
             </div>
           </div>
         </div>
@@ -260,4 +238,3 @@ const LabourDetails = () => {
 };
 
 export default LabourDetails;
-    

@@ -9,6 +9,7 @@ import { ArrowLeft, Users, Save } from "lucide-react";
 import { toast } from "react-toastify";
 
 import labourService from "../../services/labourService";
+import "./Labour.css";
 
 const EditLabour = () => {
   const navigate = useNavigate();
@@ -144,9 +145,7 @@ const EditLabour = () => {
     } catch (error) {
       console.error("Update labour error:", error);
 
-      toast.error(
-        error?.response?.data?.message || "Failed to update labour",
-      );
+      toast.error(error?.response?.data?.message || "Failed to update labour");
     } finally {
       setSaving(false);
     }
@@ -158,8 +157,8 @@ const EditLabour = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <p className="text-gray-500">Loading labour record...</p>
+      <div className="labour-page">
+        <p style={{ color: "#6b7280" }}>Loading labour record...</p>
       </div>
     );
   }
@@ -169,58 +168,49 @@ const EditLabour = () => {
   // ============================================
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="labour-page">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+      <div className="labour-header">
+        <div
+          className="labour-header-left"
+          style={{ display: "flex", alignItems: "center", gap: "14px" }}
+        >
           <button
             type="button"
             onClick={() => navigate("..")}
-            className="p-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50"
+            className="btn-icon view"
             disabled={saving}
           >
             <ArrowLeft size={20} />
           </button>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Labour</h1>
-
-            <p className="text-sm text-gray-500 mt-1">
-              Update labour information.
-            </p>
+            <h1>Edit Labour</h1>
+            <p>Update labour information.</p>
           </div>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit}>
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <form onSubmit={handleSubmit} className="labour-form-page">
+        <div className="labour-form-card">
           {/* Form Header */}
-          <div className="px-6 py-5 border-b border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                <Users size={21} className="text-blue-600" />
-              </div>
+          <div className="form-card-header">
+            <div className="form-card-icon">
+              <Users size={21} />
+            </div>
 
-              <div>
-                <h2 className="font-semibold text-gray-900">
-                  Labour Information
-                </h2>
-
-                <p className="text-sm text-gray-500">
-                  Update the labour details below.
-                </p>
-              </div>
+            <div>
+              <h2>Labour Information</h2>
+              <p>Update the labour details below.</p>
             </div>
           </div>
 
           {/* Fields */}
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="form-grid">
             {/* Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Labour Name *
-              </label>
+            <div className="form-group">
+              <label>Labour Name *</label>
 
               <input
                 type="text"
@@ -228,51 +218,36 @@ const EditLabour = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter full name"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               />
             </div>
 
             {/* Role */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role *
-              </label>
+            <div className="form-group">
+              <label>Role *</label>
 
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               >
                 <option value="">Select role</option>
-
                 <option value="Mason">Mason</option>
-
                 <option value="Helper">Helper</option>
-
                 <option value="Carpenter">Carpenter</option>
-
                 <option value="Electrician">Electrician</option>
-
                 <option value="Plumber">Plumber</option>
-
                 <option value="Painter">Painter</option>
-
                 <option value="Steel Fixer">Steel Fixer</option>
-
                 <option value="Supervisor">Supervisor</option>
-
                 <option value="Other">Other</option>
               </select>
             </div>
 
             {/* Contact Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contact Number
-              </label>
+            <div className="form-group">
+              <label>Contact Number</label>
 
               <input
                 type="text"
@@ -280,39 +255,30 @@ const EditLabour = () => {
                 value={formData.contactNumber}
                 onChange={handleChange}
                 placeholder="Enter contact number"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               />
             </div>
 
             {/* Wage Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Wage Type *
-              </label>
+            <div className="form-group">
+              <label>Wage Type *</label>
 
               <select
                 name="wageType"
                 value={formData.wageType}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               >
                 <option value="">Select wage type</option>
-
                 <option value="Daily">Daily</option>
-
                 <option value="Monthly">Monthly</option>
-
                 <option value="Piece Rate">Piece Rate</option>
               </select>
             </div>
 
             {/* Wage Rate */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Wage Rate (₹) *
-              </label>
+            <div className="form-group">
+              <label>Wage Rate (₹) *</label>
 
               <input
                 type="number"
@@ -322,51 +288,41 @@ const EditLabour = () => {
                 value={formData.wageRate}
                 onChange={handleChange}
                 placeholder="₹ 0.00"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               />
             </div>
 
             {/* Joining Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Joining Date
-              </label>
+            <div className="form-group">
+              <label>Joining Date</label>
 
               <input
                 type="date"
                 name="joiningDate"
                 value={formData.joiningDate}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               />
             </div>
 
             {/* Status */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
+            <div className="form-group">
+              <label>Status</label>
 
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               >
                 <option value="Active">Active</option>
-
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
 
             {/* Address */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Address
-              </label>
+            <div className="form-group full-width">
+              <label>Address</label>
 
               <textarea
                 name="address"
@@ -374,30 +330,24 @@ const EditLabour = () => {
                 onChange={handleChange}
                 rows="4"
                 placeholder="Enter address..."
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg outline-none resize-none focus:ring-2 focus:ring-blue-500"
                 disabled={saving}
               />
             </div>
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+          <div className="form-card-footer">
             <button
               type="button"
               onClick={() => navigate("..")}
               disabled={saving}
-              className="px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              className="btn btn-outline"
             >
               Cancel
             </button>
 
-            <button
-              type="submit"
-              disabled={saving}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
-            >
+            <button type="submit" disabled={saving} className="btn btn-primary">
               <Save size={18} />
-
               {saving ? "Updating..." : "Update Labour"}
             </button>
           </div>

@@ -134,14 +134,6 @@ import EditLabour from "./pages/labour/EditLabour";
 import LabourDetails from "./pages/labour/LabourDetails";
 
 // ===============================================
-// LABOUR BILLS (subcontractor NMR billing — separate
-// from the headcount-only "Labour" module above)
-// ===============================================
-
-import LabourBillList from "./pages/labourbill/LabourBillList.jsx";
-import LabourBillForm from "./pages/labourbill/LabourBillForm";
-
-// ===============================================
 // VENDORS
 // ===============================================
 
@@ -481,12 +473,6 @@ function App() {
 
               <Route path="payments/view/:id" element={<PaymentDetails />} />
 
-              {/* Labour Bills */}
-
-              <Route path="labour-bills" element={<LabourBillList />} />
-
-              <Route path="labour-bills/create" element={<LabourBillForm />} />
-
               {/* Clients */}
 
               <Route path="clients" element={<ClientList />} />
@@ -531,6 +517,16 @@ function App() {
                 path="material-requests/:id/convert-to-po"
                 element={<ConvertToPO />}
               />
+
+              {/* Labour */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/add" element={<AddLabour />} />
+
+              <Route path="labour/edit/:id" element={<EditLabour />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
 
               {/* Purchase Orders */}
 
@@ -606,12 +602,6 @@ function App() {
               <Route path="payments/edit/:id" element={<EditPayment />} />
 
               <Route path="payments/view/:id" element={<PaymentDetails />} />
-
-              {/* Labour Bills */}
-
-              <Route path="labour-bills" element={<LabourBillList />} />
-
-              <Route path="labour-bills/create" element={<LabourBillForm />} />
 
               {/* Expenses */}
 
@@ -791,12 +781,6 @@ function App() {
 
               <Route path="labour/view/:id" element={<LabourDetails />} />
 
-              {/* Labour Bills */}
-
-              <Route path="labour-bills" element={<LabourBillList />} />
-
-              <Route path="labour-bills/create" element={<LabourBillForm />} />
-
               {/* Inventory */}
 
               <Route path="inventory" element={<InventoryList />} />
@@ -935,6 +919,13 @@ function App() {
 
               <Route path="payroll/report" element={<PayrollReport />} />
 
+              {/* Labour (view only — backend only authorizes HR to GET,
+                  not create/update/delete) */}
+
+              <Route path="labour" element={<LabourList />} />
+
+              <Route path="labour/view/:id" element={<LabourDetails />} />
+
               {/* Projects */}
 
               <Route path="projects" element={<ProjectList />} />
@@ -962,12 +953,6 @@ function App() {
                 path="material-requests/create"
                 element={<CreateMaterialRequest />}
               />
-
-              {/* Labour Bills */}
-
-              <Route path="labour-bills" element={<LabourBillList />} />
-
-              <Route path="labour-bills/create" element={<LabourBillForm />} />
 
               {/* Clients */}
 
@@ -1118,13 +1103,6 @@ function App() {
               <Route path="labour" element={<LabourList />} />
 
               <Route path="labour/view/:id" element={<LabourDetails />} />
-
-              {/* Labour Bills — site engineer fills in the daily
-                  timesheet that feeds this bill */}
-
-              <Route path="labour-bills" element={<LabourBillList />} />
-
-              <Route path="labour-bills/create" element={<LabourBillForm />} />
 
               {/* Inventory */}
 

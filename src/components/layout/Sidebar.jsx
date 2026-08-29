@@ -30,6 +30,7 @@ import {
   FaChartLine,
   FaAngleLeft,
   FaAngleRight,
+  FaHardHat,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -61,6 +62,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/owner/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/owner/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/owner/labour" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/owner/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/owner/leads" },
       {
@@ -124,6 +126,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/admin/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/admin/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/admin/labour" },
       { name: "Projects", icon: <FaProjectDiagram />, path: "/admin/projects" },
       { name: "Leads", icon: <FaUserPlus />, path: "/admin/leads" },
       {
@@ -184,6 +187,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       { name: "Attendance", icon: <FaCalendarCheck />, path: "/hr/attendance" },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/hr/leave" },
       { name: "Payroll", icon: <FaMoneyCheckAlt />, path: "/hr/payroll" },
+      { name: "Labour", icon: <FaHardHat />, path: "/hr/labour" },
       {
         name: "Material Requests",
         icon: <FaDolly />,
@@ -282,6 +286,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
         path: "/siteengineer/attendance",
       },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/siteengineer/leave" },
+      { name: "Labour", icon: <FaHardHat />, path: "/siteengineer/labour" },
       { name: "Sites", icon: <FaBuilding />, path: "/siteengineer/sites" },
       { name: "Inventory", icon: <FaBoxes />, path: "/siteengineer/inventory" },
       {
