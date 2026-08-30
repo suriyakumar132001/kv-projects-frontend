@@ -93,6 +93,24 @@ import EditSite from "./pages/sites/EditSite";
 import SiteDetails from "./pages/sites/SiteDetails";
 
 // ===============================================
+// BUDGETS
+// ===============================================
+
+import BudgetList from "./pages/budgets/BudgetList";
+import CreateBudget from "./pages/budgets/CreateBudget";
+import EditBudget from "./pages/budgets/EditBudget";
+
+// ===============================================
+// EMPLOYEE SELF-SERVICE (ESS)
+// Available to every logged-in role — the backend (/api/ess)
+// resolves "own" data from the token, not from a role check.
+// ===============================================
+
+import MyProfile from "./pages/ess/MyProfile";
+import MyPayslips from "./pages/ess/MyPayslips";
+import PayslipDetails from "./pages/ess/PayslipDetails";
+
+// ===============================================
 // DPR
 // ===============================================
 
@@ -338,6 +356,14 @@ function App() {
 
               <Route path="dashboard" element={<Dashboard />} />
 
+              {/* My Profile (ESS) */}
+
+              <Route path="my-profile" element={<MyProfile />} />
+
+              <Route path="my-payslips" element={<MyPayslips />} />
+
+              <Route path="my-payslips/view/:id" element={<PayslipDetails />} />
+
               {/* Employees */}
 
               <Route path="employees" element={<EmployeeList />} />
@@ -411,6 +437,14 @@ function App() {
               <Route path="sites/edit/:id" element={<EditSite />} />
 
               <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Budgets */}
+
+              <Route path="budgets" element={<BudgetList />} />
+
+              <Route path="budgets/create" element={<CreateBudget />} />
+
+              <Route path="budgets/edit/:id" element={<EditBudget />} />
 
               {/* Tasks */}
 
@@ -587,6 +621,14 @@ function App() {
 
               <Route path="dashboard" element={<Dashboard />} />
 
+              {/* My Profile (ESS) */}
+
+              <Route path="my-profile" element={<MyProfile />} />
+
+              <Route path="my-payslips" element={<MyPayslips />} />
+
+              <Route path="my-payslips/view/:id" element={<PayslipDetails />} />
+
               {/* Leave */}
 
               <Route path="leave" element={<LeaveList />} />
@@ -682,6 +724,14 @@ function App() {
 
               <Route path="dashboard" element={<Dashboard />} />
 
+              {/* My Profile (ESS) */}
+
+              <Route path="my-profile" element={<MyProfile />} />
+
+              <Route path="my-payslips" element={<MyPayslips />} />
+
+              <Route path="my-payslips/view/:id" element={<PayslipDetails />} />
+
               <Route path="employees" element={<EmployeeList />} />
 
               <Route path="employees/add" element={<AddEmployee />} />
@@ -743,6 +793,14 @@ function App() {
               <Route path="sites/edit/:id" element={<EditSite />} />
 
               <Route path="sites/view/:id" element={<SiteDetails />} />
+
+              {/* Budgets */}
+
+              <Route path="budgets" element={<BudgetList />} />
+
+              <Route path="budgets/create" element={<CreateBudget />} />
+
+              <Route path="budgets/edit/:id" element={<EditBudget />} />
 
               {/* Tasks */}
 
@@ -906,6 +964,14 @@ function App() {
 
               <Route path="dashboard" element={<Dashboard />} />
 
+              {/* My Profile (ESS) */}
+
+              <Route path="my-profile" element={<MyProfile />} />
+
+              <Route path="my-payslips" element={<MyPayslips />} />
+
+              <Route path="my-payslips/view/:id" element={<PayslipDetails />} />
+
               <Route path="employees" element={<EmployeeList />} />
 
               <Route path="employees/add" element={<AddEmployee />} />
@@ -1042,6 +1108,14 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
 
               <Route path="dashboard" element={<Dashboard />} />
+
+              {/* My Profile (ESS) */}
+
+              <Route path="my-profile" element={<MyProfile />} />
+
+              <Route path="my-payslips" element={<MyPayslips />} />
+
+              <Route path="my-payslips/view/:id" element={<PayslipDetails />} />
 
               {/* Projects */}
 
