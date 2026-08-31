@@ -98,3 +98,22 @@
     padding: 18px;
   }
 }
+
+/* Photo/initials avatar next to the name in the details header */
+.employee-details-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+.employee-details-avatar.employee-avatar-fallback {
+  background: var(--ink, #140f29);
+  color: #fff;
+}

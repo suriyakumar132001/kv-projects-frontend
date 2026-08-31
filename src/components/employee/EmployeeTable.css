@@ -88,3 +88,21 @@
     min-width: 1000px;
   }
 }
+
+/* Small circular photo/initials avatar in the employee list */
+.employee-avatar-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.employee-avatar-fallback {
+  background: var(--ink, #140f29);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}

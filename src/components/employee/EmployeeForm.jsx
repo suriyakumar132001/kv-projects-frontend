@@ -4,6 +4,13 @@ import FaceCapture from "../FaceCapture";
 
 import "./EmployeeForm.css";
 
+// Uploaded images are served from the backend's root (e.g. /uploads/xyz.jpg),
+// not under /api — same convention as DPRDetails.jsx.
+const BACKEND_ORIGIN = (import.meta.env.VITE_API_URL || "").replace(
+  /\/api\/?$/,
+  "",
+);
+
 const EmployeeForm = ({
   title,
   formData,
@@ -24,8 +31,53 @@ const EmployeeForm = ({
   pendingFaceDescriptor,
   onCapturePendingFace,
   onClearPendingFace,
+  // ---- Profile photo on Edit Employee (existing employee) ----
+  // A visible photo, separate from the face descriptor above — see
+  // the comment on Employee.profilePhoto in models/Employee.js.
+  profilePhotoPath,
+  onUploadPhoto,
+  onRemovePhoto,
+  photoSaving,
+  // ---- Profile photo on Add Employee (before the employee exists) ----
+  // Held as a plain File in memory here; the actual upload happens
+  // after the employee is created (see AddEmployee.jsx) since the
+  // photo endpoint needs an employee id to attach to.
+  pendingPhotoFile,
+  onSelectPendingPhoto,
+  onClearPendingPhoto,
 }) => {
   const [showCapture, setShowCapture] = useState(false);
+
+  const photoUrl = profilePhotoPath
+    ? `${BACKEND_ORIGIN}/${profilePhotoPath}`
+    : null;
+
+  const pendingPhotoPreview = pendingPhotoFile
+    ? URL.createObjectURL(pendingPhotoFile)
+    : null;
+
+  const handlePhotoInputChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      window.alert("Please choose an image file (JPG, PNG, or WEBP).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      window.alert("Image must be 5MB or smaller.");
+      return;
+    }
+
+    if (employeeId && onUploadPhoto) {
+      onUploadPhoto(file);
+    } else if (onSelectPendingPhoto) {
+      onSelectPendingPhoto(file);
+    }
+
+    // Allow re-selecting the same file later (e.g. after removing it)
+    e.target.value = "";
+  };
 
   const handleCapture = async (descriptor) => {
     if (!onEnrollFace) return;
@@ -200,6 +252,64 @@ const EmployeeForm = ({
               value={formData.address}
               onChange={onChange}
             />
+          </div>
+
+          {/* Profile Photo */}
+          <div className="form-group face-enrollment">
+            <label>Profile Photo</label>
+
+            <div className="face-enrollment-status">
+              {photoUrl || pendingPhotoPreview ? (
+                <img
+                  src={pendingPhotoPreview || photoUrl}
+                  alt="Employee"
+                  className="employee-photo-preview"
+                />
+              ) : (
+                <span className="face-enrollment-badge not-enrolled">
+                  No photo
+                </span>
+              )}
+
+              <label
+                className="face-enrollment-btn"
+                style={{ cursor: "pointer" }}
+              >
+                {photoSaving
+                  ? "Uploading..."
+                  : photoUrl || pendingPhotoPreview
+                    ? "Replace"
+                    : "Upload Photo"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handlePhotoInputChange}
+                  disabled={photoSaving}
+                  style={{ display: "none" }}
+                />
+              </label>
+
+              {employeeId && photoUrl && onRemovePhoto && (
+                <button
+                  type="button"
+                  className="face-enrollment-btn danger"
+                  onClick={onRemovePhoto}
+                  disabled={photoSaving}
+                >
+                  Remove
+                </button>
+              )}
+
+              {!employeeId && pendingPhotoFile && onClearPendingPhoto && (
+                <button
+                  type="button"
+                  className="face-enrollment-btn danger"
+                  onClick={onClearPendingPhoto}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Face Enrollment */}

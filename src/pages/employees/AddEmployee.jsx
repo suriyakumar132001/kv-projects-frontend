@@ -17,6 +17,7 @@ const AddEmployee = () => {
 
   const [loading, setLoading] = useState(false);
   const [pendingFaceDescriptor, setPendingFaceDescriptor] = useState(null);
+  const [pendingPhotoFile, setPendingPhotoFile] = useState(null);
 
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -53,6 +54,20 @@ const AddEmployee = () => {
 
       const res = await employeeService.createEmployee(payload);
 
+      // Photo needs an employee id to attach to, so it's a second
+      // request right after creation — same reasoning as why face
+      // enrollment on Add can go in the same request (it's just JSON)
+      // but a photo (binary file) can't.
+      if (pendingPhotoFile) {
+        try {
+          await employeeService.uploadPhoto(res.employee._id, pendingPhotoFile);
+        } catch (photoError) {
+          toast.error(
+            "Employee created, but the photo upload failed — you can retry it from Edit Employee.",
+          );
+        }
+      }
+
       toast.success(
         pendingFaceDescriptor
           ? "Employee Created Successfully — face enrolled"
@@ -82,6 +97,9 @@ const AddEmployee = () => {
       pendingFaceDescriptor={pendingFaceDescriptor}
       onCapturePendingFace={setPendingFaceDescriptor}
       onClearPendingFace={() => setPendingFaceDescriptor(null)}
+      pendingPhotoFile={pendingPhotoFile}
+      onSelectPendingPhoto={setPendingPhotoFile}
+      onClearPendingPhoto={() => setPendingPhotoFile(null)}
     />
   );
 };

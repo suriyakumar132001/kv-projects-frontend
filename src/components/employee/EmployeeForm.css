@@ -154,3 +154,14 @@ textarea {
     padding: 20px;
   }
 }
+
+/* Profile photo preview — circular, matches the avatar style used
+   in the Sidebar. */
+.employee-photo-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}

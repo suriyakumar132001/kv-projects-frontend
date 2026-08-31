@@ -49,6 +49,24 @@ const employeeService = {
     const response = await api.delete(`/employees/${id}/face`);
     return response.data;
   },
+
+  // Upload / replace profile photo — file must be a File/Blob from an
+  // <input type="file">. Same multipart convention as dprService.js.
+  uploadPhoto: async (id, file) => {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    const response = await api.post(`/employees/${id}/photo`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // Remove profile photo
+  removePhoto: async (id) => {
+    const response = await api.delete(`/employees/${id}/photo`);
+    return response.data;
+  },
 };
 
 export default employeeService;
