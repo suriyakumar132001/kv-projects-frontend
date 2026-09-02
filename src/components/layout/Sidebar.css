@@ -7,26 +7,16 @@
   width: var(--sidebar-width);
   flex-shrink: 0;
   height: 100vh;
-  background-color: var(--ink);
-  background-image:
-    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    24px 24px,
-    24px 24px;
+  background:
+    radial-gradient(circle at top left, rgba(91, 76, 242, 0.28), transparent 30%),
+    linear-gradient(180deg, #101935 0%, #0f172a 100%);
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
   color: var(--border);
   display: flex;
   flex-direction: column;
   position: sticky;
   top: 0;
   font-family: var(--font-body);
-
-  /* The single transition that drives the whole "click sidebar,
-     it slides to icon-rail, content reflows" effect. Because the
-     layout is a flex row, animating width here is enough — the
-     content pane next to it resizes on every frame automatically. */
   transition: width var(--transition-slow);
   z-index: 950;
 }
@@ -133,34 +123,32 @@
    =============================================== */
 
 .sidebar-logo {
-  padding: 24px 20px;
+  padding: 22px 18px 18px;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
   display: flex;
   align-items: center;
   gap: 10px;
   overflow: hidden;
+  background: rgba(15, 23, 42, 0.15);
 }
 
 .sidebar-logo::before {
   content: "";
-  width: 6px;
-  height: 22px;
-  border-radius: 2px;
+  width: 8px;
+  height: 24px;
+  border-radius: 999px;
   flex-shrink: 0;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--amber) 0 4px,
-    var(--ink) 4px 8px
-  );
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.4);
 }
 
 .sidebar-logo h2 {
-  color: var(--amber); /* amber */
-  font-family: "Oswald", sans-serif;
-  font-size: 21px;
+  color: #f8fafc;
+  font-family: "Big Shoulders Display", "Oswald", sans-serif;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
   margin: 0;
 }
 
@@ -175,7 +163,7 @@
   text-align: center;
   padding: 20px 12px 22px;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
   overflow: hidden;
 }
 
@@ -183,7 +171,7 @@
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: conic-gradient(from 180deg, var(--amber), #3c6e9e, var(--amber));
+  background: linear-gradient(135deg, #5b4cf2 0%, #38bdf8 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -191,7 +179,7 @@
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 10px;
-  box-shadow: 0 6px 16px rgba(240, 163, 36, 0.3);
+  box-shadow: 0 12px 24px rgba(91, 76, 242, 0.24);
   animation: avatar-in 0.6s ease;
   transition:
     width var(--transition-fast),
@@ -263,17 +251,18 @@
   align-items: center;
   gap: 12px;
   padding: 11px 13px;
-  border-radius: 6px;
+  border-radius: 10px;
   border-left: 3px solid transparent;
-  color: #b9c2d0;
+  color: #dfe7f3;
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
     transform 0.18s ease,
-    border-color 0.18s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
   white-space: nowrap;
 }
 
@@ -282,7 +271,7 @@
   align-items: center;
   font-size: 15px;
   flex-shrink: 0;
-  opacity: 0.85;
+  opacity: 0.9;
   transition: transform 0.18s ease;
 }
 
@@ -291,22 +280,22 @@
 }
 
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background: rgba(148, 163, 184, 0.08);
   color: #ffffff;
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
 
 .menu-item.active {
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.32), transparent);
-  border-left: 3px solid var(--amber);
+  background: linear-gradient(90deg, rgba(91, 76, 242, 0.28), rgba(59, 130, 246, 0.08));
+  border-left: 3px solid #8b5cf6;
   color: #ffffff;
-  font-weight: 600;
-  box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.15);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.12);
 }
 
 .menu-item.active .menu-icon {
   opacity: 1;
-  color: var(--amber);
+  color: #c4b5fd;
 }
 
 /* ===============================================

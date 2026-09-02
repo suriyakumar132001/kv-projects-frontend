@@ -18,6 +18,8 @@ const EditEmployee = () => {
   const [saving, setSaving] = useState(false);
   const [faceSaving, setFaceSaving] = useState(false);
   const [faceEnrolledAt, setFaceEnrolledAt] = useState(null);
+  const [photoSaving, setPhotoSaving] = useState(false);
+  const [profilePhotoPath, setProfilePhotoPath] = useState(null);
 
   const [employee, setEmployee] = useState({
     employeeId: "",
@@ -58,6 +60,7 @@ const EditEmployee = () => {
       });
 
       setFaceEnrolledAt(res.employee.faceEnrolledAt || null);
+      setProfilePhotoPath(res.employee.profilePhoto || null);
     } catch (error) {
       console.error(error);
       toast.error("Failed to load employee");
@@ -135,6 +138,44 @@ const EditEmployee = () => {
     }
   };
 
+  // =======================================
+  // Profile Photo
+  // =======================================
+
+  const handleUploadPhoto = async (file) => {
+    try {
+      setPhotoSaving(true);
+
+      const res = await employeeService.uploadPhoto(id, file);
+
+      setProfilePhotoPath(res.employee.profilePhoto);
+
+      toast.success("Photo updated successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to upload photo");
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
+
+  const handleRemovePhoto = async () => {
+    if (!window.confirm("Remove this employee's photo?")) return;
+
+    try {
+      setPhotoSaving(true);
+
+      await employeeService.removePhoto(id);
+
+      setProfilePhotoPath(null);
+
+      toast.success("Photo removed");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to remove photo");
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
+
   if (loading) {
     return <h2>Loading Employee...</h2>;
   }
@@ -152,6 +193,10 @@ const EditEmployee = () => {
       onEnrollFace={handleEnrollFace}
       onRemoveFace={handleRemoveFace}
       faceSaving={faceSaving}
+      profilePhotoPath={profilePhotoPath}
+      onUploadPhoto={handleUploadPhoto}
+      onRemovePhoto={handleRemovePhoto}
+      photoSaving={photoSaving}
     />
   );
 };

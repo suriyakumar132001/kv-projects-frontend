@@ -13,6 +13,14 @@ const payrollService = {
     return response.data;
   },
 
+  // Get attendance summary for payroll pre-fill
+  getAttendanceSummary: async ({ employee, month, year }) => {
+    const response = await api.get(`/payroll/attendance-summary`, {
+      params: { employee, month, year },
+    });
+    return response.data;
+  },
+
   // Generate Payroll
   createPayroll: async (data) => {
     const response = await api.post("/payroll", data);

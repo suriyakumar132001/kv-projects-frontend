@@ -32,6 +32,8 @@ import {
   FaAngleRight,
   FaHardHat,
   FaReceipt,
+  FaWallet,
+  FaIdBadge,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -50,6 +52,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
         icon: <FaTachometerAlt />,
         path: "/owner/dashboard",
       },
+      { name: "My Profile", icon: <FaIdBadge />, path: "/owner/my-profile" },
       { name: "Employees", icon: <FaUsers />, path: "/owner/employees" },
       {
         name: "Attendance",
@@ -79,6 +82,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       { name: "Clients", icon: <FaUserTie />, path: "/owner/clients" },
       { name: "Vendors", icon: <FaTruck />, path: "/owner/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/owner/sites" },
+      { name: "Budgets", icon: <FaWallet />, path: "/owner/budgets" },
       { name: "Inventory", icon: <FaBoxes />, path: "/owner/inventory" },
       {
         name: "Material Requests",
@@ -119,6 +123,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
         icon: <FaTachometerAlt />,
         path: "/admin/dashboard",
       },
+      { name: "My Profile", icon: <FaIdBadge />, path: "/admin/my-profile" },
       { name: "Employees", icon: <FaUsers />, path: "/admin/employees" },
       {
         name: "Attendance",
@@ -148,6 +153,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       { name: "Clients", icon: <FaUserTie />, path: "/admin/clients" },
       { name: "Vendors", icon: <FaTruck />, path: "/admin/vendors" },
       { name: "Sites", icon: <FaBuilding />, path: "/admin/sites" },
+      { name: "Budgets", icon: <FaWallet />, path: "/admin/budgets" },
       { name: "Inventory", icon: <FaBoxes />, path: "/admin/inventory" },
       {
         name: "Material Requests",
@@ -194,6 +200,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
 
     hr: [
       { name: "Dashboard", icon: <FaTachometerAlt />, path: "/hr/dashboard" },
+      { name: "My Profile", icon: <FaIdBadge />, path: "/hr/my-profile" },
       { name: "Employees", icon: <FaUsers />, path: "/hr/employees" },
       { name: "Attendance", icon: <FaCalendarCheck />, path: "/hr/attendance" },
       { name: "Leave", icon: <FaCalendarAlt />, path: "/hr/leave" },
@@ -229,6 +236,12 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
         name: "Dashboard",
         icon: <FaTachometerAlt />,
         path: "/accountant/dashboard",
+      },
+
+      {
+        name: "My Profile",
+        icon: <FaIdBadge />,
+        path: "/accountant/my-profile",
       },
 
       { name: "Leave", icon: <FaCalendarAlt />, path: "/accountant/leave" },
@@ -285,6 +298,11 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
         name: "Dashboard",
         icon: <FaTachometerAlt />,
         path: "/siteengineer/dashboard",
+      },
+      {
+        name: "My Profile",
+        icon: <FaIdBadge />,
+        path: "/siteengineer/my-profile",
       },
       {
         name: "Projects",

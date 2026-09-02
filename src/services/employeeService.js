@@ -26,6 +26,16 @@ const employeeService = {
     return response.data;
   },
 
+  // Create employee WITH login access — the merged flow. Hits
+  // /auth/register (creates the User + auto-provisions the linked
+  // Employee in one step) instead of the Employee-only endpoint above.
+  // Use this when the "Create login access" toggle is on in
+  // AddEmployee.jsx; use createEmployee when it's off.
+  registerEmployee: async (data) => {
+    const response = await api.post("/auth/register", data);
+    return response.data;
+  },
+
   // Update employee
   updateEmployee: async (id, data) => {
     const response = await api.put(`/employees/${id}`, data);
@@ -47,6 +57,24 @@ const employeeService = {
   // Remove enrolled face
   removeFace: async (id) => {
     const response = await api.delete(`/employees/${id}/face`);
+    return response.data;
+  },
+
+  // Upload / replace profile photo — file must be a File/Blob from an
+  // <input type="file">. Same multipart convention as dprService.js.
+  uploadPhoto: async (id, file) => {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    const response = await api.post(`/employees/${id}/photo`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // Remove profile photo
+  removePhoto: async (id) => {
+    const response = await api.delete(`/employees/${id}/photo`);
     return response.data;
   },
 };

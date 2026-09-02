@@ -154,3 +154,29 @@ textarea {
     padding: 20px;
   }
 }
+
+/* Profile photo preview — circular, matches the avatar style used
+   in the Sidebar. */
+.employee-photo-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* "Create login access" checkbox row on Add Employee */
+.login-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-toggle-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

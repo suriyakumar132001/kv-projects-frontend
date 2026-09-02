@@ -42,8 +42,6 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [ringReady, setRingReady] = useState(false);
-  const [todayAttendance, setTodayAttendance] = useState(null);
-  const [todayAttendanceLoading, setTodayAttendanceLoading] = useState(false);
   const [companyOverview, setCompanyOverview] = useState(null);
   const [companyOverviewLoading, setCompanyOverviewLoading] = useState(false);
 
@@ -65,9 +63,7 @@ const Dashboard = () => {
       setLoading(false);
     }
 
-    // Load today's attendance for Owner and Admin
     if (role === "owner" || role === "admin") {
-      getTodayAttendanceData();
       getCompanyOverviewData();
     }
   };
@@ -82,18 +78,6 @@ const Dashboard = () => {
       setCompanyOverview(null);
     } finally {
       setCompanyOverviewLoading(false);
-    }
-  };
-
-  const getTodayAttendanceData = async () => {
-    try {
-      setTodayAttendanceLoading(true);
-      const res = await attendanceService.getTodayAttendance();
-      setTodayAttendance(res);
-    } catch (error) {
-      console.log("Failed to load today's attendance:", error);
-    } finally {
-      setTodayAttendanceLoading(false);
     }
   };
 
@@ -203,113 +187,33 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Today's Attendance Status — visible only for Owner and Admin */}
       {(role === "owner" || role === "admin") && (
-        <div className="today-attendance-section">
-          <h2>Today's Attendance Status</h2>
+        <div className="analytics-panel">
+          <div className="analytics-panel-header">
+            <div>
+              <h2>Analytics Overview</h2>
+              <p>Attendance, productivity, and payroll snapshot</p>
+            </div>
+          </div>
 
-          {todayAttendanceLoading ? (
-            <p>Loading attendance data...</p>
-          ) : todayAttendance ? (
-            <>
-              {/* Summary Stats */}
-              <div className="attendance-summary">
-                <div className="summary-item">
-                  <label>Total Employees</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.totalEmployees}
-                  </span>
-                </div>
-
-                <div className="summary-item present">
-                  <label>Present</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.presentCount}
-                  </span>
-                </div>
-
-                <div className="summary-item absent">
-                  <label>Absent</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.absentCount}
-                  </span>
-                </div>
-
-                <div className="summary-item half-day">
-                  <label>Half Day</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.halfDayCount}
-                  </span>
-                </div>
-
-                <div className="summary-item leave">
-                  <label>On Leave</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.leaveCount}
-                  </span>
-                </div>
-
-                <div className="summary-item not-marked">
-                  <label>Not Marked</label>
-                  <span className="stat-value">
-                    {todayAttendance.stats.notMarkedCount}
-                  </span>
-                </div>
-              </div>
-
-              {/* Attendance Records Table */}
-              <div className="attendance-table-wrapper">
-                <table className="attendance-table">
-                  <thead>
-                    <tr>
-                      <th>Employee ID</th>
-                      <th>Name</th>
-                      <th>Department</th>
-                      <th>Status</th>
-                      <th>Check-In Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {todayAttendance.records.slice(0, 10).map((record, idx) => (
-                      <tr key={idx}>
-                        <td>{record.employeeId}</td>
-                        <td>{record.name}</td>
-                        <td>{record.department}</td>
-                        <td>
-                          <span
-                            className={`status-badge status-${record.status
-                              .toLowerCase()
-                              .replace(" ", "-")}`}
-                          >
-                            {record.status}
-                          </span>
-                        </td>
-                        <td>
-                          {record.checkIn
-                            ? new Date(record.checkIn).toLocaleTimeString(
-                                "en-IN",
-                                {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                },
-                              )
-                            : "-"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                {todayAttendance.records.length > 10 && (
-                  <p className="table-footer">
-                    Showing 10 of {todayAttendance.records.length} employees
-                  </p>
-                )}
-              </div>
-            </>
-          ) : (
-            <p>Unable to load attendance data</p>
-          )}
+          <div className="analytics-grid">
+            <div className="analytics-stat">
+              <span>Employees</span>
+              <strong>{stats.employees || 0}</strong>
+            </div>
+            <div className="analytics-stat">
+              <span>Present Today</span>
+              <strong>{stats.attendance || 0}</strong>
+            </div>
+            <div className="analytics-stat">
+              <span>Attendance Rate</span>
+              <strong>{attendanceRate}%</strong>
+            </div>
+            <div className="analytics-stat">
+              <span>Revenue</span>
+              <strong>₹ {Number(stats.revenue || 0).toLocaleString("en-IN")}</strong>
+            </div>
+          </div>
         </div>
       )}
 
