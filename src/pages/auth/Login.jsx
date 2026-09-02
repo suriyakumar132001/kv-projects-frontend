@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -13,6 +13,31 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, googleLogin, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+
+  // Measure the wrapper so the Google button always fits the card,
+  // instead of using a hardcoded pixel width that overflows on small phones.
+  const googleWrapRef = useRef(null);
+  const [googleBtnWidth, setGoogleBtnWidth] = useState(320);
+
+  useEffect(() => {
+    const el = googleWrapRef.current;
+    if (!el) return;
+
+    const updateWidth = () => {
+      const width = el.offsetWidth;
+      if (width > 0) {
+        // Google's button has a supported range roughly 200-400px
+        setGoogleBtnWidth(Math.min(400, Math.max(200, Math.floor(width))));
+      }
+    };
+
+    updateWidth();
+
+    const resizeObserver = new ResizeObserver(updateWidth);
+    resizeObserver.observe(el);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const {
     register,
@@ -76,7 +101,9 @@ const Login = () => {
           navigate("/");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Google Login Failed");
+      toast.error(
+        err.response?.data?.message || err.message || "Google Login Failed",
+      );
     }
   };
 
@@ -186,21 +213,27 @@ const Login = () => {
             </span>
           </button>
 
-          <div className="aura-google-wrap" style={{ "--i": 4 }}>
+          <div
+            className="aura-google-wrap"
+            style={{ "--i": 4 }}
+            ref={googleWrapRef}
+          >
             <div className="aura-divider">
               <span>or continue with</span>
             </div>
 
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              text="signin_with"
-              shape="pill"
-              size="large"
-              width={320}
-              theme="filled_black"
-              locale="en"
-            />
+            <div className="aura-google-btn">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                text="signin_with"
+                shape="pill"
+                size="large"
+                width={googleBtnWidth}
+                theme="filled_black"
+                locale="en"
+              />
+            </div>
           </div>
         </form>
 
