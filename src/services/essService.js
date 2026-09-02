@@ -24,6 +24,13 @@ const essService = {
     const response = await api.get(`/ess/payslips/${id}`);
     return response.data;
   },
+
+  downloadMyPayslip: async (id) => {
+    const response = await api.get(`/pdf/payslip/${id}`, {
+      responseType: "blob",
+    });
+    return response;
+  },
 };
 
 export default essService;

@@ -42,6 +42,24 @@ const PayslipDetails = () => {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await essService.downloadMyPayslip(id);
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${payslip?.employee?.employeeId || "payslip"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success("Payslip downloaded successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to download payslip");
+    }
+  };
+
   if (loading) {
     return (
       <div className="page fade-up">
@@ -77,13 +95,37 @@ const PayslipDetails = () => {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="lb-icon-btn"
-          onClick={() => navigate(`/${role}/my-payslips`)}
-        >
-          Back to Payslips
-        </button>
+        <div className="ess-detail-actions">
+          <button
+            type="button"
+            className="lb-icon-btn"
+            onClick={handleDownload}
+          >
+            Download PDF
+          </button>
+          <button
+            type="button"
+            className="lb-icon-btn"
+            onClick={() => navigate(`/${role}/my-payslips`)}
+          >
+            Back to Payslips
+          </button>
+        </div>
+      </div>
+
+      <div className="ess-detail-summary">
+        <div className="ess-detail-metric">
+          <span>Net Salary</span>
+          <strong>{money(payslip.netSalary)}</strong>
+        </div>
+        <div className="ess-detail-metric">
+          <span>Total Earnings</span>
+          <strong>{money(totalEarnings)}</strong>
+        </div>
+        <div className="ess-detail-metric">
+          <span>Total Deductions</span>
+          <strong>{money(totalDeductions)}</strong>
+        </div>
       </div>
 
       <div className="card ess-payslip-card">
@@ -95,6 +137,32 @@ const PayslipDetails = () => {
             Net Salary: {money(payslip.netSalary)}
           </strong>
         </div>
+
+        {(payslip.daysInMonth || payslip.daysPresent || payslip.daysOnApprovedLeave || payslip.daysAbsent || payslip.lopDeduction) && (
+          <div className="card" style={{ marginTop: 16, padding: 16 }}>
+            <h4>Attendance Summary</h4>
+            <div className="ess-payslip-row">
+              <span>Days in Month</span>
+              <span>{Number(payslip.daysInMonth || 0)}</span>
+            </div>
+            <div className="ess-payslip-row">
+              <span>Days Present</span>
+              <span>{Number(payslip.daysPresent || 0)}</span>
+            </div>
+            <div className="ess-payslip-row">
+              <span>Approved Leave</span>
+              <span>{Number(payslip.daysOnApprovedLeave || 0)}</span>
+            </div>
+            <div className="ess-payslip-row">
+              <span>Days Absent</span>
+              <span>{Number(payslip.daysAbsent || 0)}</span>
+            </div>
+            <div className="ess-payslip-row">
+              <span>LOP Deduction</span>
+              <span>{money(payslip.lopDeduction)}</span>
+            </div>
+          </div>
+        )}
 
         <div className="ess-payslip-columns">
           <div>
@@ -138,6 +206,10 @@ const PayslipDetails = () => {
             <div className="ess-payslip-row">
               <span>Professional Tax</span>
               <span>{money(payslip.professionalTax)}</span>
+            </div>
+            <div className="ess-payslip-row">
+              <span>LOP Deduction</span>
+              <span>{money(payslip.lopDeduction)}</span>
             </div>
             <div className="ess-payslip-row ess-payslip-total">
               <span>Total Deductions</span>

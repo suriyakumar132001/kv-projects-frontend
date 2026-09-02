@@ -40,6 +40,42 @@
   margin-bottom: 22px;
 }
 
+.ess-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ess-detail-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.ess-detail-metric {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+}
+
+.ess-detail-metric span {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.ess-detail-metric strong {
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
 .ess-card-title {
   margin-bottom: 4px;
 }

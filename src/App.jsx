@@ -61,6 +61,9 @@ import EditLeave from "./pages/leave/EditLeave";
 // ===============================================
 
 import PayrollList from "./pages/payroll/PayrollList";
+import GeneratePayroll from "./pages/payroll/GeneratePayroll";
+import EditPayroll from "./pages/payroll/EditPayroll";
+import PayrollDetails from "./pages/payroll/PayrollDetails";
 import PayrollReport from "./pages/payroll/PayrollReport";
 
 // ===============================================
@@ -388,6 +391,12 @@ function App() {
               {/* Payroll */}
 
               <Route path="payroll" element={<PayrollList />} />
+
+              <Route path="payroll/generate" element={<GeneratePayroll />} />
+
+              <Route path="payroll/edit/:id" element={<EditPayroll />} />
+
+              <Route path="payroll/view/:id" element={<PayrollDetails />} />
 
               <Route path="payroll/report" element={<PayrollReport />} />
 
@@ -763,6 +772,12 @@ function App() {
 
               <Route path="payroll" element={<PayrollList />} />
 
+              <Route path="payroll/generate" element={<GeneratePayroll />} />
+
+              <Route path="payroll/edit/:id" element={<EditPayroll />} />
+
+              <Route path="payroll/view/:id" element={<PayrollDetails />} />
+
               <Route path="payroll/report" element={<PayrollReport />} />
 
               {/* Projects */}
@@ -998,6 +1013,12 @@ function App() {
               <Route path="leave/edit/:id" element={<EditLeave />} />
 
               <Route path="payroll" element={<PayrollList />} />
+
+              <Route path="payroll/generate" element={<GeneratePayroll />} />
+
+              <Route path="payroll/edit/:id" element={<EditPayroll />} />
+
+              <Route path="payroll/view/:id" element={<PayrollDetails />} />
 
               <Route path="payroll/report" element={<PayrollReport />} />
 

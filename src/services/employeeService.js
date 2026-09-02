@@ -26,6 +26,16 @@ const employeeService = {
     return response.data;
   },
 
+  // Create employee WITH login access — the merged flow. Hits
+  // /auth/register (creates the User + auto-provisions the linked
+  // Employee in one step) instead of the Employee-only endpoint above.
+  // Use this when the "Create login access" toggle is on in
+  // AddEmployee.jsx; use createEmployee when it's off.
+  registerEmployee: async (data) => {
+    const response = await api.post("/auth/register", data);
+    return response.data;
+  },
+
   // Update employee
   updateEmployee: async (id, data) => {
     const response = await api.put(`/employees/${id}`, data);

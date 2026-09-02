@@ -30,16 +30,24 @@ const EditPayroll = () => {
     hra: "",
     allowance: "",
     overtime: "",
+    overtimeHours: "",
     bonus: "",
 
     pf: "",
     esi: "",
     professionalTax: "",
+    daysInMonth: "",
+    daysPresent: "",
+    daysOnApprovedLeave: "",
+    daysAbsent: "",
+    perDaySalary: "",
+    lopDeduction: "",
   });
 
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [totalDeductions, setTotalDeductions] = useState(0);
   const [netSalary, setNetSalary] = useState(0);
+  const [summaryInfo, setSummaryInfo] = useState(null);
 
   // ===============================
   // Load Initial Data
@@ -75,11 +83,18 @@ const EditPayroll = () => {
         hra: payroll.hra || 0,
         allowance: payroll.allowance || 0,
         overtime: payroll.overtime || 0,
+        overtimeHours: payroll.overtimeHours || 0,
         bonus: payroll.bonus || 0,
 
         pf: payroll.pf || 0,
         esi: payroll.esi || 0,
         professionalTax: payroll.professionalTax || 0,
+        daysInMonth: payroll.daysInMonth || 0,
+        daysPresent: payroll.daysPresent || 0,
+        daysOnApprovedLeave: payroll.daysOnApprovedLeave || 0,
+        daysAbsent: payroll.daysAbsent || 0,
+        perDaySalary: payroll.perDaySalary || 0,
+        lopDeduction: payroll.lopDeduction || 0,
       });
     } catch (error) {
       toast.error("Failed to load payroll");
@@ -104,12 +119,60 @@ const EditPayroll = () => {
     const deductions =
       Number(formData.pf || 0) +
       Number(formData.esi || 0) +
-      Number(formData.professionalTax || 0);
+      Number(formData.professionalTax || 0) +
+      Number(formData.lopDeduction || 0);
 
     setTotalEarnings(earnings);
     setTotalDeductions(deductions);
     setNetSalary(earnings - deductions);
   }, [formData]);
+
+  useEffect(() => {
+    if (!formData.employee || !formData.month || !formData.year) {
+      setSummaryInfo(null);
+      return;
+    }
+
+    let active = true;
+
+    const loadSummary = async () => {
+      try {
+        const res = await payrollService.getAttendanceSummary({
+          employee: formData.employee,
+          month: formData.month,
+          year: formData.year,
+        });
+
+        if (!active || !res?.summary) return;
+
+        const summary = res.summary;
+        const perDaySalary = Number(summary.daysInMonth)
+          ? Number(formData.basicSalary || 0) / Number(summary.daysInMonth)
+          : 0;
+
+        const lopDeduction = Math.max(0, Number(summary.daysAbsent || 0) * perDaySalary);
+        const overtimeHours = Number(summary.overtimeHours || 0);
+        const overtimeRate = perDaySalary > 0 ? perDaySalary / 8 : 0;
+        const overtimePay = overtimeHours * overtimeRate;
+
+        setSummaryInfo({
+          ...summary,
+          perDaySalary,
+          lopDeduction,
+          overtimeHours,
+          overtimePay,
+        });
+      } catch (error) {
+        setSummaryInfo(null);
+      }
+    };
+
+    loadSummary();
+
+    return () => {
+      active = false;
+    };
+  }, [formData.employee, formData.month, formData.year, formData.basicSalary]);
 
   // ======================================
   // Handle Change
@@ -239,7 +302,18 @@ const EditPayroll = () => {
             </div>
 
             <div className="form-group">
-              <label>Overtime</label>
+              <label>Overtime Hours</label>
+
+              <input
+                type="number"
+                name="overtimeHours"
+                value={formData.overtimeHours}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Overtime Pay</label>
 
               <input
                 type="number"
@@ -292,7 +366,92 @@ const EditPayroll = () => {
                 onChange={handleChange}
               />
             </div>
+
+            <div className="form-group">
+              <label>Days in Month</label>
+
+              <input
+                type="number"
+                name="daysInMonth"
+                value={formData.daysInMonth}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Days Present</label>
+
+              <input
+                type="number"
+                name="daysPresent"
+                value={formData.daysPresent}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Approved Leave Days</label>
+
+              <input
+                type="number"
+                name="daysOnApprovedLeave"
+                value={formData.daysOnApprovedLeave}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Days Absent</label>
+
+              <input
+                type="number"
+                name="daysAbsent"
+                value={formData.daysAbsent}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Per Day Salary</label>
+
+              <input
+                type="number"
+                name="perDaySalary"
+                value={formData.perDaySalary}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>LOP Deduction</label>
+
+              <input
+                type="number"
+                name="lopDeduction"
+                value={formData.lopDeduction}
+                onChange={handleChange}
+              />
+            </div>
           </div>
+
+          {summaryInfo && (
+            <div className="form-group full-width">
+              <div className="salary-summary">
+                <div className="summary-card"> 
+                  <h4>Attendance Summary</h4>
+                  <p>
+                    {summaryInfo.daysPresent} present · {summaryInfo.daysOnApprovedLeave} approved leave · {summaryInfo.daysAbsent} absent
+                  </p>
+                  <p>
+                    LOP formula: {summaryInfo.daysAbsent} × ₹{Number(summaryInfo.perDaySalary || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })} = ₹{Number(formData.lopDeduction || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                  </p>
+                  <p>
+                    Overtime: {summaryInfo.overtimeHours || 0} hrs × ₹{Number(summaryInfo.perDaySalary > 0 ? summaryInfo.perDaySalary / 8 : 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}/hr = ₹{Number(summaryInfo.overtimePay || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="form-group full-width">
             <div className="salary-summary">

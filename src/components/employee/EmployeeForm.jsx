@@ -45,6 +45,19 @@ const EmployeeForm = ({
   pendingPhotoFile,
   onSelectPendingPhoto,
   onClearPendingPhoto,
+  // ---- Login access on Add Employee only ----
+  // Not every Employee needs a login — labourers billed through
+  // Labour Bills, for instance, never sign into the ERP. This toggle
+  // decides whether AddEmployee.jsx calls the merged
+  // /auth/register flow (creates a User + linked Employee) or the
+  // plain Employee-only createEmployee endpoint.
+  createLogin,
+  onToggleCreateLogin,
+  loginRole,
+  onLoginRoleChange,
+  loginPassword,
+  onLoginPasswordChange,
+  availableLoginRoles,
 }) => {
   const [showCapture, setShowCapture] = useState(false);
 
@@ -115,13 +128,22 @@ const EmployeeForm = ({
             {/* Employee ID */}
             <div className="form-group">
               <label>Employee ID</label>
-              <input
-                type="text"
-                name="employeeId"
-                value={formData.employeeId}
-                onChange={onChange}
-                required
-              />
+              {!employeeId && createLogin ? (
+                <input
+                  type="text"
+                  value="Auto-generated on save"
+                  disabled
+                  title="Employees with login access get an auto-generated ID, same as accounts created from Add User."
+                />
+              ) : (
+                <input
+                  type="text"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={onChange}
+                  required
+                />
+              )}
             </div>
 
             {/* Name */}
@@ -253,6 +275,60 @@ const EmployeeForm = ({
               onChange={onChange}
             />
           </div>
+
+          {/* Login Access — Add Employee only. Editing an existing
+              employee's login (role, password) is a User-module concern,
+              handled from the Users page, not here. */}
+          {!employeeId && (
+            <div className="form-group face-enrollment">
+              <label className="login-toggle-label">
+                <input
+                  type="checkbox"
+                  checked={createLogin}
+                  onChange={(e) => onToggleCreateLogin?.(e.target.checked)}
+                />
+                Create login access for this employee
+              </label>
+              <p className="face-enrollment-hint">
+                Turn this on for staff who need to sign into the ERP (Site
+                Engineer, HR, Accountant, Admin). Leave it off for field labour
+                tracked only through DPR/Labour Bills — they never need to log
+                in.
+              </p>
+
+              {createLogin && (
+                <div className="form-grid" style={{ marginTop: 12 }}>
+                  <div className="form-group">
+                    <label>Role</label>
+                    <select
+                      value={loginRole}
+                      onChange={(e) => onLoginRoleChange?.(e.target.value)}
+                      required={createLogin}
+                    >
+                      <option value="">Select role</option>
+                      {availableLoginRoles?.map((r) => (
+                        <option key={r.value} value={r.value}>
+                          {r.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Temporary Password</label>
+                    <input
+                      type="password"
+                      placeholder="At least 6 characters"
+                      value={loginPassword}
+                      onChange={(e) => onLoginPasswordChange?.(e.target.value)}
+                      required={createLogin}
+                      minLength={6}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Profile Photo */}
           <div className="form-group face-enrollment">
