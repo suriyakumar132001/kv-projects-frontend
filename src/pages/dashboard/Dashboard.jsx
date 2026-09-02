@@ -118,7 +118,7 @@ const Dashboard = () => {
             </h1>
             <div className="welcome-meta">
               <p>
-                Role: <strong>{user.role}</strong>
+                Role: <strong>{user.role === "owner" ? "Managing Director" : user.role}</strong>
               </p>
               <p>
                 Status:{" "}

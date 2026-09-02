@@ -128,7 +128,7 @@ const MarkAttendance = () => {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "No employee profile is linked to your account. Contact your Admin/Owner.",
+          "No employee profile is linked to your account. Contact your Admin/Managing Director.",
       );
     } finally {
       setLoadingProfile(false);
@@ -226,7 +226,7 @@ const MarkAttendance = () => {
               ) : (
                 <p style={{ color: "#b91c1c", margin: 0 }}>
                   No employee profile linked to your account. Contact your
-                  Admin/Owner.
+                  Admin/Managing Director.
                 </p>
               )
             ) : (
@@ -266,7 +266,7 @@ const MarkAttendance = () => {
               </select>
             ) : (
               <p style={{ color: "#b91c1c", margin: 0 }}>
-                No site is assigned to your account. Contact your Admin/Owner.
+                No site is assigned to your account. Contact your Admin/Managing Director.
               </p>
             )}
           </div>

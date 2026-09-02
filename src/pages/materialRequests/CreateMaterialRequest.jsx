@@ -98,7 +98,7 @@ const CreateMaterialRequest = () => {
         <div>
           <h2>New Material Request</h2>
           <p className="mr-header-subtitle">
-            Request material for a site — an Owner or Admin will review it
+            Request material for a site — a Managing Director or Admin will review it
           </p>
         </div>
       </div>
