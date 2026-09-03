@@ -5,6 +5,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Bell } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   getNotifications,
   markAsRead,
@@ -24,6 +25,7 @@ function timeAgo(dateString) {
 }
 
 export default function NotificationBell() {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -66,7 +68,8 @@ export default function NotificationBell() {
       fetchNotifications();
     }
     if (notification.link) {
-      window.location.href = notification.link;
+      navigate(notification.link);
+      setOpen(false);
     }
   };
 

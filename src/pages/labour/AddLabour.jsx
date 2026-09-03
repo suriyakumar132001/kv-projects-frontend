@@ -1,100 +1,94 @@
-// ===============================================
-// KV Projects ERP
-// Add Labour
-// ===============================================
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Save, RotateCcw } from "lucide-react";
+import { ArrowLeft, Save, RotateCcw, Users } from "lucide-react";
 import { toast } from "react-toastify";
 
+import { useAuth } from "../../context/AuthContext";
 import labourService from "../../services/labourService";
+import siteService from "../../services/siteService";
 import "./Labour.css";
+
+const LABOUR_TYPES = [
+  ["mason", "Mason"],
+  ["helper", "Helper"],
+  ["carpenter", "Carpenter"],
+  ["electrician", "Electrician"],
+  ["plumber", "Plumber"],
+  ["painter", "Painter"],
+];
+
+const initialFormData = {
+  site: "",
+  mason: 0,
+  helper: 0,
+  carpenter: 0,
+  electrician: 0,
+  plumber: 0,
+  painter: 0,
+  remarks: "",
+};
 
 const AddLabour = () => {
   const navigate = useNavigate();
-
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
+  const [sites, setSites] = useState([]);
+  const [formData, setFormData] = useState(initialFormData);
+  const [loadingSites, setLoadingSites] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    role: "",
-    contactNumber: "",
-    wageType: "",
-    wageRate: "",
-    joiningDate: "",
-    address: "",
-    status: "Active",
-  });
+  useEffect(() => {
+    const loadSites = async () => {
+      try {
+        const response = await siteService.getSites();
+        const siteOptions = response.sites || [];
+        setSites(siteOptions);
+        if (siteOptions.length === 1) {
+          setFormData((prev) => ({ ...prev, site: siteOptions[0]._id }));
+        }
+      } catch (error) {
+        toast.error("Unable to load sites");
+      } finally {
+        setLoadingSites(false);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+    loadSites();
+  }, []);
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      role: "",
-      contactNumber: "",
-      wageType: "",
-      wageRate: "",
-      joiningDate: "",
-      address: "",
-      status: "Active",
-    });
-  };
+  const resetForm = () => setFormData(initialFormData);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!formData.name.trim()) {
-      toast.error("Please enter labour name");
+    if (!formData.site) {
+      toast.error("Please select a site");
       return;
     }
 
-    if (!formData.role) {
-      toast.error("Please select a role");
-      return;
-    }
-
-    if (!formData.wageType) {
-      toast.error("Please select wage type");
-      return;
-    }
-
-    if (!formData.wageRate) {
-      toast.error("Please enter wage rate");
-      return;
-    }
+    const payload = {
+      site: formData.site,
+      ...Object.fromEntries(
+        LABOUR_TYPES.map(([field]) => [field, Number(formData[field]) || 0]),
+      ),
+      remarks: formData.remarks.trim(),
+    };
 
     try {
       setLoading(true);
-
-      const payload = {
-        name: formData.name.trim(),
-        role: formData.role,
-        contactNumber: formData.contactNumber.trim(),
-        wageType: formData.wageType,
-        wageRate: Number(formData.wageRate),
-        joiningDate: formData.joiningDate || undefined,
-        address: formData.address.trim(),
-        status: formData.status,
-      };
-
       await labourService.createLabour(payload);
-
-      toast.success("Labour added successfully");
-
-      navigate("..");
+      toast.success("Labour attendance added successfully");
+      navigate(`/${role}/labour`);
     } catch (error) {
-      console.error("Create labour error:", error);
-
-      toast.error(error?.response?.data?.message || "Failed to add labour");
+      console.error("Create labour attendance error:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to add labour attendance",
+      );
     } finally {
       setLoading(false);
     }
@@ -102,7 +96,6 @@ const AddLabour = () => {
 
   return (
     <div className="labour-page">
-      {/* Header */}
       <div className="labour-header">
         <div
           className="labour-header-left"
@@ -112,150 +105,81 @@ const AddLabour = () => {
             type="button"
             onClick={() => navigate("..")}
             className="btn-icon view"
+            aria-label="Back"
           >
             <ArrowLeft size={20} />
           </button>
-
           <div>
             <h1>Add Labour</h1>
-            <p>Add a new labour record.</p>
+            <p>Record labour attendance for a site.</p>
           </div>
         </div>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="labour-form-page">
         <div className="labour-form-card">
-          {/* Form Header */}
           <div className="form-card-header">
             <div className="form-card-icon">
               <Users size={21} />
             </div>
-
             <div>
-              <h2>Labour Information</h2>
-              <p>Enter the labour details below.</p>
+              <h2>Labour Attendance</h2>
+              <p>Enter the headcount for each labour type.</p>
             </div>
           </div>
 
-          {/* Fields */}
           <div className="form-grid">
-            {/* Name */}
-            <div className="form-group">
-              <label>Labour Name *</label>
-
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter full name"
-              />
-            </div>
-
-            {/* Role */}
-            <div className="form-group">
-              <label>Role *</label>
-
-              <select name="role" value={formData.role} onChange={handleChange}>
-                <option value="">Select role</option>
-                <option value="Mason">Mason</option>
-                <option value="Helper">Helper</option>
-                <option value="Carpenter">Carpenter</option>
-                <option value="Electrician">Electrician</option>
-                <option value="Plumber">Plumber</option>
-                <option value="Painter">Painter</option>
-                <option value="Steel Fixer">Steel Fixer</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            {/* Contact Number */}
-            <div className="form-group">
-              <label>Contact Number</label>
-
-              <input
-                type="text"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleChange}
-                placeholder="Enter contact number"
-              />
-            </div>
-
-            {/* Wage Type */}
-            <div className="form-group">
-              <label>Wage Type *</label>
-
-              <select
-                name="wageType"
-                value={formData.wageType}
-                onChange={handleChange}
-              >
-                <option value="">Select wage type</option>
-                <option value="Daily">Daily</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Piece Rate">Piece Rate</option>
-              </select>
-            </div>
-
-            {/* Wage Rate */}
-            <div className="form-group">
-              <label>Wage Rate (₹) *</label>
-
-              <input
-                type="number"
-                name="wageRate"
-                min="0"
-                step="0.01"
-                value={formData.wageRate}
-                onChange={handleChange}
-                placeholder="₹ 0.00"
-              />
-            </div>
-
-            {/* Joining Date */}
-            <div className="form-group">
-              <label>Joining Date</label>
-
-              <input
-                type="date"
-                name="joiningDate"
-                value={formData.joiningDate}
-                onChange={handleChange}
-              />
-            </div>
-
-            {/* Status */}
-            <div className="form-group">
-              <label>Status</label>
-
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-
-            {/* Address */}
             <div className="form-group full-width">
-              <label>Address</label>
+              <label htmlFor="site">Site *</label>
+              {loadingSites ? (
+                <p>Loading sites...</p>
+              ) : sites.length ? (
+                <select
+                  id="site"
+                  name="site"
+                  value={formData.site}
+                  onChange={handleChange}
+                >
+                  <option value="">Select site</option>
+                  {sites.map((site) => (
+                    <option key={site._id} value={site._id}>
+                      {site.siteName} - {site.projectName}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p className="form-error">No sites are assigned to your account.</p>
+              )}
+            </div>
 
+            {LABOUR_TYPES.map(([field, label]) => (
+              <div className="form-group" key={field}>
+                <label htmlFor={field}>{label}</label>
+                <input
+                  id={field}
+                  type="number"
+                  name={field}
+                  min="0"
+                  step="1"
+                  value={formData[field]}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+
+            <div className="form-group full-width">
+              <label htmlFor="remarks">Remarks</label>
               <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
+                id="remarks"
                 rows="4"
-                placeholder="Enter address..."
+                name="remarks"
+                value={formData.remarks}
+                onChange={handleChange}
+                placeholder="Enter remarks"
               />
             </div>
           </div>
 
-          {/* Footer */}
           <div className="form-card-footer">
             <button
               type="button"
@@ -266,23 +190,21 @@ const AddLabour = () => {
               <RotateCcw size={18} />
               Reset
             </button>
-
             <button
               type="button"
-              onClick={() => navigate("..")}
+              onClick={() => navigate("..")} 
               disabled={loading}
               className="btn btn-outline"
             >
               Cancel
             </button>
-
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || loadingSites || !sites.length}
               className="btn btn-primary"
             >
               <Save size={18} />
-              {loading ? "Saving..." : "Save Labour"}
+              {loading ? "Saving..." : "Save Attendance"}
             </button>
           </div>
         </div>

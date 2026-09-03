@@ -24,7 +24,7 @@ const LabourList = () => {
 
       const response = await labourService.getLabours();
 
-      const data = response?.labours || response?.data || [];
+      const data = response?.attendance || response?.labours || response?.data || [];
 
       setLabours(Array.isArray(data) ? data : []);
     } catch (error) {

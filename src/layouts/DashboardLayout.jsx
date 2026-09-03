@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
+import ChatAssistant from "../components/ai/ChatAssistant";
 
 import "./DashboardLayout.css";
 
@@ -47,6 +48,7 @@ const DashboardLayout = () => {
 
       <div className="dashboard-main">
         <Navbar onMenuClick={toggleSidebar} />
+        <ChatAssistant />
 
         {/* key={pathname} remounts the animation (not the page) on every
             navigation, giving the "content slides/fades in" feel the
