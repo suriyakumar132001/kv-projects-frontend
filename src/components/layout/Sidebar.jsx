@@ -44,6 +44,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
   const { user, logout } = useAuth();
 
   const role = user?.role?.toLowerCase();
+  const roleLabel = role === "owner" ? "Managing Director" : user?.role;
 
   const menuItems = {
     owner: [
@@ -376,7 +377,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, onToggleCollapse }) => {
       <div className="sidebar-user">
         <div className="avatar">{user?.name?.charAt(0)?.toUpperCase()}</div>
         <h3>{user?.name}</h3>
-        <p>{user?.role}</p>
+        <p>{roleLabel}</p>
       </div>
 
       {/* Menu */}
