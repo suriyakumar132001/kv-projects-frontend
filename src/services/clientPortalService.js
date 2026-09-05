@@ -29,9 +29,25 @@ export const getMyPayments = async () => {
   return res.data;
 };
 
+export const createRazorpayOrder = async (invoiceId) => {
+  const res = await clientApi.post("/client-portal/payments/create-order", {
+    invoiceId,
+  });
+
+  return res.data;
+};
+
+export const verifyRazorpayPayment = async (payload) => {
+  const res = await clientApi.post("/client-portal/payments/verify", payload);
+
+  return res.data;
+};
+
 export default {
   getMyProjects,
   getMyProjectDetail,
   getMyInvoices,
   getMyPayments,
+  createRazorpayOrder,
+  verifyRazorpayPayment,
 };

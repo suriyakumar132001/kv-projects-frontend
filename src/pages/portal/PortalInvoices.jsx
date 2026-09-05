@@ -11,7 +11,10 @@ import {
   Chip,
   CircularProgress,
   Alert,
+  Button,
 } from "@mui/material";
+import toast from "react-hot-toast";
+import { useClientAuth } from "../../context/ClientAuthContext";
 
 import clientPortalService from "../../services/clientPortalService";
 
@@ -24,28 +27,99 @@ const STATUS_COLORS = {
 const formatCurrency = (n) =>
   `₹${Number(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
 
+const loadRazorpayScript = () =>
+  new Promise((resolve, reject) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => reject(new Error("Unable to load Razorpay checkout."));
+    document.body.appendChild(script);
+  });
+
 const PortalInvoices = () => {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [payingInvoiceId, setPayingInvoiceId] = useState(null);
+  const { client } = useClientAuth();
+
+  const loadInvoices = async () => {
+    try {
+      setLoading(true);
+      const res = await clientPortalService.getMyInvoices();
+      setInvoices(res.invoices || []);
+      setError("");
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Unable to load your invoices.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const res = await clientPortalService.getMyInvoices();
-        setInvoices(res.invoices || []);
-      } catch (err) {
-        setError(
-          err.response?.data?.message || "Unable to load your invoices.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
+    loadInvoices();
   }, []);
+
+  const payInvoice = async (invoice) => {
+    try {
+      setPayingInvoiceId(invoice._id);
+      await loadRazorpayScript();
+      const order = await clientPortalService.createRazorpayOrder(invoice._id);
+
+      const checkout = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: "KV Projects ERP",
+        description: `Payment for invoice ${invoice.invoiceNumber}`,
+        order_id: order.orderId,
+        prefill: {
+          name: client?.clientName || "",
+          email: client?.email || "",
+        },
+        handler: async (response) => {
+          try {
+            await clientPortalService.verifyRazorpayPayment({
+              invoiceId: invoice._id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            toast.success("Payment completed successfully.");
+            await loadInvoices();
+          } catch (err) {
+            toast.error(
+              err.response?.data?.message || "Payment verification failed.",
+            );
+          } finally {
+            setPayingInvoiceId(null);
+          }
+        },
+        modal: {
+          ondismiss: () => setPayingInvoiceId(null),
+        },
+        theme: { color: "#1976d2" },
+      });
+
+      checkout.on("payment.failed", (response) => {
+        toast.error(response.error?.description || "Payment failed.");
+        setPayingInvoiceId(null);
+      });
+      checkout.open();
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || err.message || "Unable to start payment.",
+      );
+      setPayingInvoiceId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -86,6 +160,9 @@ const PortalInvoices = () => {
                   Amount
                 </TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                <TableCell sx={{ fontWeight: 700 }} align="right">
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
 
@@ -111,6 +188,18 @@ const PortalInvoices = () => {
                       color={STATUS_COLORS[inv.paymentStatus] || "default"}
                       size="small"
                     />
+                  </TableCell>
+                  <TableCell align="right">
+                    {inv.paymentStatus !== "Paid" && (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => payInvoice(inv)}
+                        disabled={payingInvoiceId === inv._id}
+                      >
+                        {payingInvoiceId === inv._id ? "Processing..." : "Pay Now"}
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

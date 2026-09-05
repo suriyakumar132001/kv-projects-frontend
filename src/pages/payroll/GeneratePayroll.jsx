@@ -224,7 +224,7 @@ const GeneratePayroll = () => {
 
 
       console.debug("GeneratePayroll payload:", payload);
-      console.debug("API baseURL:", import.meta.env.VITE_API_URL, "token:", localStorage.getItem("token"));
+      console.debug("API baseURL:", import.meta.env.VITE_API_URL);
 
       const res = await payrollService.createPayroll(payload);
 
